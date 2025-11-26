@@ -1,392 +1,359 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Goldwire Games | Trophic</title>
-    <meta name="description" content="Goldwire Games - Designing board games that fight extinction. Home of TROPHIC.">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Goldwire Games | Trophic</title>
+  <meta name="description" content="Goldwire Games - Designing board games that fight extinction. Home of TROPHIC.">
 
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Cabin:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Cabin:wght@400;700&display=swap" rel="stylesheet">
 
-    <style>
-        :root {
-            --bg-color: #f7f3e9;
-            --text-color: #2a2a2a;
-            --accent-green: #4d7b48;
-            --accent-orange: #d08a43;
-            --accent-gold: #b8913b;
-            --card-bg: #ffffff;
-            --nav-bg: rgba(241,236,223,0.85);
+  <style>
+    :root{
+      --bg-color: #f7f3e9;
+      --text-color: #2a2a2a;
+      --accent-green: #4d7b48;
+      --accent-orange: #d08a43;
+      --accent-gold: #b8913b;
+      --card-bg: #ffffff;
+      --nav-bg: rgba(241,236,223,0.85);
 
-            /* Dark mode variables */
-            --bg-night: #0d0f11;
-            --text-night: #e8e8e8;
-            --card-night: #1a1d21;
-        }
+      --bg-night: #0d0f11;
+      --text-night: #e8e8e8;
+      --card-night: #141619;
+    }
 
-        * {
-            transition: all 0.25s ease;
-        }
+    *{box-sizing:border-box; transition: all 0.22s ease;}
+    body{
+      margin:0;
+      font-family: 'Cabin', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: var(--bg-color) url('paper-texture.png');
+      background-size: 350px;
+      color:var(--text-color);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+    body.night{
+      background: var(--bg-night);
+      color:var(--text-night);
+    }
 
-        body {
-            margin: 0;
-            font-family: 'Cabin', sans-serif;
-            background: var(--bg-color) url('paper-texture.png');
-            background-size: 350px;
-            color: var(--text-color);
-        }
+    /* Stars layer */
+    #stars{
+      pointer-events:none;
+      position:fixed; inset:0; z-index:0; opacity:0; transition:opacity 0.9s ease-in-out;
+    }
+    body.night #stars{ opacity:1; }
+    /* gentle twinkle with CSS animation */
+    #stars::after{
+      content:"";
+      position:absolute; inset:0;
+      background-image:
+        radial-gradient(circle at 20% 30%, rgba(255,255,255,0.95) 0.5px, transparent 2px),
+        radial-gradient(circle at 70% 18%, rgba(255,255,255,0.9) 0.6px, transparent 2px),
+        radial-gradient(circle at 40% 70%, rgba(255,255,255,0.85) 0.6px, transparent 2px);
+      filter: blur(0.6px);
+      animation: twinkle 3.8s infinite;
+      opacity:0.95;
+    }
+    @keyframes twinkle{
+      0%{ transform: translateY(0) scale(1); opacity:0.8; }
+      50%{ transform: translateY(-1px) scale(1.02); opacity:1; }
+      100%{ transform: translateY(0) scale(1); opacity:0.8; }
+    }
 
-        /* NOCTURNAL MODE */
-        body.night {
-            background: var(--bg-night);
-            color: var(--text-night);
-        }
+    /* NAV */
+    nav{
+      position: sticky; top:0; z-index: 40;
+      display:flex; justify-content:center; gap:40px;
+      padding:14px 18px;
+      background: var(--nav-bg); backdrop-filter: blur(4px);
+      border-bottom: 1px solid rgba(77,123,72,0.18);
+      border-radius: 0 0 12px 12px;
+    }
+    nav a{
+      color: var(--accent-gold); /* ALWAYS gold per request */
+      text-decoration:none; font-weight:700; letter-spacing:0.4px;
+    }
+    nav a:hover{ color: var(--accent-orange); }
 
-        body.night section {
-            background: var(--card-night);
-            border-left: 6px solid rgba(180,180,180,0.3);
-        }
+    /* moon toggle (right side) */
+    #moon-toggle{
+      position:absolute; right:16px; top:10px; font-size:1.5rem; cursor:pointer; user-select:none;
+    }
 
-        /* STAR LAYER */
-        #stars {
-            pointer-events: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: -1;
-            opacity: 0;
-            transition: opacity 1s ease;
-            background: transparent;
-        }
+    .container{ max-width:900px; margin:0 auto; padding:40px 20px; position:relative; z-index:10; }
 
-        body.night #stars {
-            opacity: 1;
-            background: radial-gradient(2px 2px at 20% 40%, #ffffffaa, transparent),
-                        radial-gradient(1.7px 1.7px at 80% 20%, #ffffff99, transparent),
-                        radial-gradient(1.6px 1.6px at 55% 70%, #ffffffbb, transparent),
-                        radial-gradient(1.4px 1.4px at 30% 85%, #ffffff88, transparent),
-                        radial-gradient(1.8px 1.8px at 70% 50%, #ffffff99, transparent);
-            background-size: cover;
-        }
+    .hero{ text-align:center; margin-bottom:36px; }
+    .hero h1{ font-family:'Merriweather', serif; font-size:3rem; margin:0 0 6px; color:var(--accent-gold); background:linear-gradient(180deg,#caaa59,#9a7a38); -webkit-background-clip:text; -webkit-text-fill-color:transparent;}
+    .hero p{ margin:0; color:#555; font-size:1.15rem; }
 
-        /* NAVIGATION */
-        nav {
-            position: sticky;
-            top: 0;
-            z-index: 30;
-            background: var(--nav-bg);
-            backdrop-filter: blur(5px);
-            padding: 14px 20px;
-            display: flex;
-            justify-content: center;
-            gap: 42px;
-            border-bottom: 2px solid rgba(77,123,72,0.25);
-            border-radius: 0 0 14px 14px;
-        }
+    /* simple divider (leaf image) */
+    .divider{ width:160px; display:block; margin:36px auto; opacity:0.95; }
 
-        nav a {
-            text-decoration: none;
-            color: var(--accent-green);
-            font-weight: 600;
-            font-size: 1.05rem;
-        }
+    section{
+      background: var(--card-bg); border-radius:14px; padding:28px; margin:48px 0;
+      border-left:6px solid rgba(77,123,72,0.28); box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+    }
+    body.night section{ background: var(--card-night); border-left-color: rgba(180,180,180,0.18); box-shadow: 0 6px 20px rgba(0,0,0,0.16); }
 
-        body.night nav a {
-            color: #9fcf9f;
-        }
+    section h2{ font-family:'Merriweather', serif; margin-top:0; color:var(--accent-green); }
 
-        nav a:hover {
-            color: var(--accent-orange);
-        }
+    /* GRID of habitat cards */
+    .grid{ display:grid; grid-template-columns: repeat(2,1fr); gap:22px; margin-top:20px; }
+    @media (max-width:700px){ .grid{ grid-template-columns:1fr; } }
 
-        /* MOON TOGGLE */
-        #moon-toggle {
-            position: absolute;
-            right: 18px;
-            top: 12px;
-            font-size: 1.6rem;
-            cursor: pointer;
-            user-select: none;
-            transition: transform 0.3s ease;
-        }
-        #moon-toggle:hover {
-            transform: scale(1.15);
-        }
+    .card{ perspective:1000px; height:200px; position:relative; }
+    .card .inner{
+      position:absolute; inset:0; border-radius:12px; transform-style:preserve-3d; transition: transform 0.7s;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    }
+    .card.flipped .inner{ transform: rotateY(180deg); }
 
-        /* GOLD TITLE */
-        .gold-text {
-            background: linear-gradient(180deg, #caaa59, #9a7a38);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-family: 'Merriweather', serif;
-        }
+    .face{
+      position:absolute; inset:0; backface-visibility: hidden; border-radius:12px; overflow:hidden;
+      display:flex; align-items:center; justify-content:center; text-align:center;
+      padding:14px;
+    }
 
-        .container {
-            max-width: 860px;
-            margin: auto;
-            padding: 40px 22px;
-        }
+    .front{
+      background:#ddd; color:#111; font-family:'Merriweather', serif; font-size:1.6rem;
+      border:1px solid rgba(77,123,72,0.14);
+    }
+    .front .title{
+      position:relative; z-index:5; padding:8px 12px; border-radius:8px; background:linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.05));
+      color:white; font-weight:700; font-size:1.25rem; text-shadow: 0 2px 6px rgba(0,0,0,0.45);
+    }
 
-        /* HERO */
-        .hero { text-align: center; margin-bottom: 50px; }
-        .hero h1 { font-size: 3rem; letter-spacing: 2px; margin-bottom: 8px; }
+    /* background image layer for front */
+    .front .bg{
+      position:absolute; inset:0; background-size:cover; background-position:center; filter:brightness(0.68);
+      transform: translateZ(-1px);
+    }
+    body.night .front .bg{ filter:brightness(0.45) contrast(0.95); }
 
-        /* SECTIONS */
-        section {
-            background: var(--card-bg);
-            padding: 28px 32px;
-            margin: 60px 0;
-            border-radius: 16px;
-            border-left: 6px solid rgba(77,123,72,0.35);
-            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-        }
+    /* overlay gradient so title is readable */
+    .front:before{
+      content:""; position:absolute; inset:0; background: linear-gradient(180deg, rgba(0,0,0,0.12), rgba(0,0,0,0.36)); pointer-events:none;
+    }
 
-        section h2 {
-            font-family: 'Merriweather', serif;
-            margin-top: 0;
-        }
+    /* back face */
+    .back{
+      transform: rotateY(180deg);
+      background:rgba(255,255,255,0.96); color:var(--text-color); padding:20px; display:flex; flex-direction:column; justify-content:center;
+      border:1px solid rgba(77,123,72,0.10);
+    }
+    body.night .back{ background: rgba(20,22,25,0.95); color:var(--text-night); border-color: rgba(200,200,200,0.06); }
 
-        /* BOTANICAL DIVIDER */
-        .divider {
-            width: 160px;
-            margin: 50px auto;
-            opacity: 0.8;
-        }
+    .back p{ margin:0; font-size:0.95rem; line-height:1.4; }
+    .learn-link{ margin-top:12px; display:inline-block; color:var(--accent-gold); font-weight:700; text-decoration:none; }
+    body.night .learn-link{ color:var(--accent-gold); }
 
-        /* HABITAT GRID */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 28px;
-            margin-top: 30px;
-        }
+    /* Mailchimp overrides so it looks consistent and supports dark mode */
+    /* keep selectors specific to avoid breaking MC functionality */
+    #mc_embed_signup{ max-width:100%; }
+    #mc_embed_signup .mc-field-group label{ font-weight:600; color:var(--text-color); display:block; margin-bottom:6px; }
+    body.night #mc_embed_signup .mc-field-group label{ color:var(--text-night); }
+    #mc_embed_signup input.email{ width:100%; padding:10px 12px; border-radius:8px; border:1px solid rgba(0,0,0,0.08); margin-bottom:8px; }
+    body.night #mc_embed_signup input.email{ background:#0f1412; color:var(--text-night); border:1px solid rgba(255,255,255,0.06); }
+    #mc_embed_signup input.button{ background:var(--accent-gold); color:#fff; border:none; padding:10px 16px; border-radius:8px; cursor:pointer; font-weight:700; }
+    #mc_embed_signup input.button:hover{ background: #d6a850; }
+    body.night #mc_embed_signup input.button{ box-shadow:none; }
 
-        .card {
-            perspective: 1000px;
-            cursor: pointer;
-        }
+    footer{ text-align:center; margin-top:40px; padding:30px 10px; color:#666; font-size:0.95rem; }
+    body.night footer{ color:#aaa; }
 
-        .inner {
-            width: 100%;
-            height: 180px;
-            position: relative;
-            transform-style: preserve-3d;
-            transition: transform 0.7s;
-            border-radius: 16px;
-        }
-
-        .card:hover .inner {
-            transform: rotateY(180deg);
-        }
-
-        .front, .back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 16px;
-            backface-visibility: hidden;
-            padding: 18px;
-            box-shadow: 0 4px 18px rgba(0,0,0,0.1);
-        }
-
-        .front {
-            background: #ffffff;
-            border: 2px solid rgba(77,123,72,0.25);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.35rem;
-            font-family: 'Merriweather', serif;
-        }
-
-        .back {
-            background: #ffffff;
-            border: 2px solid rgba(77,123,72,0.25);
-            transform: rotateY(180deg);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            text-align: center;
-            font-size: 0.95rem;
-        }
-
-        body.night .front, body.night .back {
-            background: var(--card-night);
-            border-color: rgba(200,200,200,0.25);
-        }
-
-        .learn-link {
-            margin-top: 10px;
-            color: var(--accent-green);
-            text-decoration: none;
-            font-weight: bold;
-        }
-        body.night .learn-link {
-            color: #b2ddb2;
-        }
-
-        /* SIGNUP */
-        .signup-box {
-            background: rgba(255,255,255,0.7);
-            border: 2px solid rgba(77,123,72,0.35);
-            border-radius: 16px;
-            padding: 30px;
-            box-shadow: 0 4px 22px rgba(0,0,0,0.08);
-        }
-
-        /* FOOTER */
-        footer {
-            text-align: center;
-            margin-top: 80px;
-            padding-bottom: 30px;
-            color: #666;
-            font-size: 0.9rem;
-        }
-
-        body.night footer {
-            color: #aaa;
-        }
-
-        /* MOBILE */
-        @media (max-width: 600px) {
-            .grid { grid-template-columns: 1fr; }
-            .hero h1 { font-size: 2.3rem; }
-        }
-    </style>
+  </style>
 </head>
-
 <body>
 
-<div id="stars"></div>
+  <div id="stars" aria-hidden="true"></div>
 
-<nav>
+  <nav>
     <a href="index.html">Home</a>
     <a href="learn.html">Learn</a>
     <a href="#">About</a>
     <a href="#">Shop</a>
     <a href="#">Contact</a>
-    <div id="moon-toggle">🌙</div>
-</nav>
+    <div id="moon-toggle" aria-hidden="true">🌙</div>
+  </nav>
 
-<div class="container">
+  <main class="container">
+    <header class="hero">
+      <h1 class="gold-text">GOLDWIRE GAMES</h1>
+      <p>Build the Ultimate Ecosystem. Save the Real World.</p>
+    </header>
 
-    <div class="hero">
-        <h1 class="gold-text">GOLDWIRE GAMES</h1>
-        <p>Build the Ultimate Ecosystem. Save the Real World.</p>
-    </div>
+    <img class="divider" src="leaves-divider.png" alt="leaf divider">
+
+    <section aria-labelledby="habitats-title">
+      <h2 id="habitats-title">Habitats</h2>
+      <p>Explore the four major habitats featured in the game. Click a panel to flip it over and read a short description — or go to the full Learn page.</p>
+
+      <div class="grid" id="habitat-grid">
+        <!-- Savannah -->
+        <div class="card" data-bg="savannahbackground.png" data-title="Savannah" data-desc="Open grasslands home to large herbivores and powerful apex predators.">
+          <div class="inner">
+            <div class="face front" aria-hidden="false">
+              <div class="bg" style="background-image: url('savannahbackground.png');"></div>
+              <div class="title">Savannah</div>
+            </div>
+            <div class="face back" aria-hidden="true">
+              <p>Open grasslands home to large herbivores and powerful apex predators.</p>
+              <a class="learn-link" href="learn.html" target="_blank">Learn More →</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Arctic -->
+        <div class="card" data-bg="arcticbackground.png" data-title="Arctic" data-desc="A frozen world of extreme survival, specialized species, and harsh conditions.">
+          <div class="inner">
+            <div class="face front">
+              <div class="bg" style="background-image: url('arcticbackground.png');"></div>
+              <div class="title">Arctic</div>
+            </div>
+            <div class="face back">
+              <p>A frozen world of extreme survival, specialized species, and harsh conditions.</p>
+              <a class="learn-link" href="learn.html" target="_blank">Learn More →</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rainforest -->
+        <div class="card" data-bg="rainforestbackground.png" data-title="Rainforest" data-desc="Dense, vibrant ecosystems filled with biodiversity and layered food webs.">
+          <div class="inner">
+            <div class="face front">
+              <div class="bg" style="background-image: url('rainforestbackground.png');"></div>
+              <div class="title">Rainforest</div>
+            </div>
+            <div class="face back">
+              <p>Dense, vibrant ecosystems filled with biodiversity and layered food webs.</p>
+              <a class="learn-link" href="learn.html" target="_blank">Learn More →</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Temperate Forest -->
+        <div class="card" data-bg="temperatebackground.png" data-title="Temperate Forest" data-desc="Seasonal forests marked by rich soils, diverse mammals, and unique decomposers.">
+          <div class="inner">
+            <div class="face front">
+              <div class="bg" style="background-image: url('temperatebackground.png');"></div>
+              <div class="title">Temperate Forest</div>
+            </div>
+            <div class="face back">
+              <p>Seasonal forests marked by rich soils, diverse mammals, and unique decomposers.</p>
+              <a class="learn-link" href="learn.html" target="_blank">Learn More →</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
 
     <img class="divider" src="leaves-divider.png" alt="leaf divider">
 
     <section>
-        <h2>Habitats</h2>
-        <p>Explore the four major habitats featured in the game:</p>
-
-        <div class="grid">
-            <!-- SAVANNAH -->
-            <div class="card">
-                <div class="inner">
-                    <div class="front">Savannah</div>
-                    <div class="back">
-                        Open grasslands home to large herbivores and powerful apex predators.
-                        <a class="learn-link" href="learn.html" target="_blank">Learn More →</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ARCTIC -->
-            <div class="card">
-                <div class="inner">
-                    <div class="front">Arctic</div>
-                    <div class="back">
-                        A frozen world of extreme survival, specialized species, and harsh conditions.
-                        <a class="learn-link" href="learn.html" target="_blank">Learn More →</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- RAINFOREST -->
-            <div class="card">
-                <div class="inner">
-                    <div class="front">Rainforest</div>
-                    <div class="back">
-                        Dense, vibrant ecosystems filled with biodiversity and layered food webs.
-                        <a class="learn-link" href="learn.html" target="_blank">Learn More →</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- TEMPERATE FOREST -->
-            <div class="card">
-                <div class="inner">
-                    <div class="front">Temperate Forest</div>
-                    <div class="back">
-                        Seasonal forests marked by rich soils, diverse mammals, and unique decomposers.
-                        <a class="learn-link" href="learn.html" target="_blank">Learn More →</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <img class="divider" src="leaves-divider.png" alt="leaf divider">
-
-    <section>
-        <h2>What is Trophic?</h2>
-        <p>We are currently developing <strong>TROPHIC</strong>, a strategic board game where you guide the evolution of a living food web.</p>
-        <p>From the producers at the bottom to the apex predators at the top, every card you play triggers a cascade of life.</p>
+      <h2>What is Trophic?</h2>
+      <p>We are currently developing <strong>TROPHIC</strong>, a strategic board game where you guide the evolution of a living food web.</p>
+      <p>From the producers at the bottom to the apex predators at the top, every card you play triggers a cascade of life.</p>
     </section>
 
     <section>
-        <h2>Our Mission</h2>
-        <p>We believe games can make a difference. That is why we have pledged to donate <strong>20% of all profits</strong> directly to wildlife conservation funds protecting the habitats featured in the game.</p>
+      <h2>Our Mission</h2>
+      <p>We believe games can make a difference. That is why we have pledged to donate <strong>20% of all profits</strong> directly to wildlife conservation funds protecting the habitats featured in the game.</p>
     </section>
 
-    <div class="signup-box">
-        <h2 style="text-align:center; color:var(--accent-green); font-family:'Merriweather',serif;">Join the Movement</h2>
-        <p style="text-align:center;">Sign up to see exclusive art, follow the design process, and get notified when we launch on Kickstarter.</p>
+    <div class="signup-box" id="signup">
+      <h2 style="text-align:center; color:var(--accent-green); font-family:'Merriweather', serif;">Join the Movement</h2>
+      <p style="text-align:center;">Sign up to see exclusive art, follow the design process, and get notified when we launch on Kickstarter.</p>
 
-        <!-- Mailchimp embed -->
-        <div id="mc_embed_shell">
-            <div id="mc_embed_signup">
-                <form action="https://gmail.us18.list-manage.com/subscribe/post?u=e45d46138093844d88767df27&amp;id=1440e8d9e1&amp;f_id=00c3b2e6f0" method="post" target="_blank">
-                    <div id="mc_embed_signup_scroll">
-                        <h2>Subscribe</h2>
-                        <div class="mc-field-group">
-                            <label for="mce-EMAIL">Email Address *</label>
-                            <input type="email" name="EMAIL" class="required email" id="mce-EMAIL" required>
-                        </div>
-                        <div aria-hidden="true" style="position:absolute; left:-5000px;">
-                            <input type="text" name="b_e45d46138093844d88767df27_1440e8d9e1" tabindex="-1" value="">
-                        </div>
-                        <div class="clear">
-                            <input type="submit" value="Subscribe" class="button">
-                        </div>
-                    </div>
-                </form>
+      <!-- Mailchimp embed (kept functional but restyled) -->
+      <div id="mc_embed_signup">
+        <form action="https://gmail.us18.list-manage.com/subscribe/post?u=e45d46138093844d88767df27&amp;id=1440e8d9e1&amp;f_id=00c3b2e6f0" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" target="_blank" novalidate>
+          <div id="mc_embed_signup_scroll">
+            <div class="mc-field-group">
+              <label for="mce-EMAIL">Email Address *</label>
+              <input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL">
             </div>
-        </div>
+
+            <div aria-hidden="true" style="position:absolute; left:-5000px;"><input type="text" name="b_e45d46138093844d88767df27_1440e8d9e1" tabindex="-1" value=""></div>
+
+            <div class="clear" style="margin-top:12px;">
+              <input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button">
+            </div>
+
+          </div>
+        </form>
+      </div>
 
     </div>
 
-</div>
+  </main>
 
-<footer>
+  <footer>
     <p>&copy; 2025 Goldwire Games. All rights reserved.</p>
     <p>Instagram: <a href="https://instagram.com/goldwiregames" target="_blank">@goldwiregames</a></p>
     <p><a href="mailto:goldwiregames.studio@gmail.com">Contact Us</a></p>
-</footer>
+  </footer>
 
 <script>
-    // Nocturnal mode toggle
-    const toggle = document.getElementById("moon-toggle");
-    toggle.addEventListener("click", () => {
-        document.body.classList.toggle("night");
-        toggle.textContent = document.body.classList.contains("night") ? "🌕" : "🌙";
+  // moon toggle + stars
+  const moon = document.getElementById('moon-toggle');
+  moon.addEventListener('click', () => {
+    document.body.classList.toggle('night');
+    moon.textContent = document.body.classList.contains('night') ? '🌕' : '🌙';
+  });
+
+  // Flip handling without layout shift:
+  // Use click to toggle .flipped on the .card; inner rotates in-place.
+  document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('click', (e) => {
+      // prevent clicks on learn links from flipping
+      if (e.target.closest('.learn-link')) return;
+      card.classList.toggle('flipped');
+      // set aria-hidden for accessibility
+      const front = card.querySelector('.front');
+      const back  = card.querySelector('.back');
+      if (card.classList.contains('flipped')) {
+        front.setAttribute('aria-hidden','true');
+        back.setAttribute('aria-hidden','false');
+      } else {
+        front.setAttribute('aria-hidden','false');
+        back.setAttribute('aria-hidden','true');
+      }
     });
+  });
+
+  // Ensure mailchimp styles adapt to dark mode by toggling a class on #mc_embed_signup nodes
+  const updateMailchimpForMode = () => {
+    const mc = document.getElementById('mc_embed_signup');
+    if (!mc) return;
+    if (document.body.classList.contains('night')) {
+      mc.classList.add('night');
+    } else {
+      mc.classList.remove('night');
+    }
+  };
+  // run on load and on night toggle
+  updateMailchimpForMode();
+  moon.addEventListener('click', updateMailchimpForMode);
+
+  // Load fallback images gracefully (if not uploaded, show soft gradient)
+  document.querySelectorAll('.card .bg').forEach(bg => {
+    const url = bg.style.backgroundImage.replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
+    // test by creating an Image object
+    const img = new Image();
+    img.onload = () => { /* ok */ };
+    img.onerror = () => {
+      // fallback: soft gradient
+      bg.style.backgroundImage = 'linear-gradient(180deg, rgba(200,220,200,0.6), rgba(150,180,150,0.4))';
+      bg.style.filter = 'brightness(0.9)';
+    };
+    img.src = url;
+  });
+
 </script>
 
 </body>
 </html>
-
 
