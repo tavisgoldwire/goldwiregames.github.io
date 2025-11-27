@@ -153,30 +153,31 @@
 
 <nav>
   <a href="index.html">Home</a>
-  <a href="learn.html">Learn</a>
+  <a href="learn.html" style="color:var(--accent-orange)">Learn</a>
   <a href="about.html">About</a>
   <a href="shop.html">Shop</a>
   <a href="contact.html">Contact</a>
+
+  <div class="dropdown" style="position:relative; display:inline-block;">
+      <a href="#" class="dropbtn" style="cursor:pointer; color:var(--accent-gold); text-decoration:none; font-weight:700;">More ▾</a>
+      <div class="dropdown-content" style="display:none; position:absolute; top:100%; left:50%; transform:translateX(-50%); background:var(--card-bg); min-width:160px; box-shadow:0 8px 16px rgba(0,0,0,0.2); border-radius:8px; z-index:50; border:1px solid rgba(77,123,72,0.2);">
+        <a href="calculator.html" style="display:block; padding:12px 16px; color:var(--text-color); text-decoration:none;">Score Calculator</a>
+        <a href="deckbuilder.html" style="display:block; padding:12px 16px; color:var(--text-color); text-decoration:none;">Deck Builder</a>
+        <a href="#" style="display:block; padding:12px 16px; color:var(--text-color); text-decoration:none;">Rulebook</a>
+        <a href="#" style="display:block; padding:12px 16px; color:var(--text-color); text-decoration:none;">Kickstarter</a>
+      </div>
+  </div>
+
   <div id="moon-toggle" aria-hidden="true">🌙</div>
 </nav>
 
-<main class="container">
-  <h1>The Living World</h1>
-  <p style="text-align:center; max-width:600px; margin:0 auto 30px;">Filter species by habitat to learn about their roles in the ecosystem.</p>
-
-  <!-- Filter Controls -->
-  <div class="filter-bar" id="filters">
-    <button class="filter-btn active" data-filter="all">All</button>
-    <button class="filter-btn" data-filter="savannah">Savannah</button>
-    <button class="filter-btn" data-filter="arctic">Arctic</button>
-    <button class="filter-btn" data-filter="rainforest">Rainforest</button>
-    <button class="filter-btn" data-filter="temperate">Temperate</button>
-  </div>
-
-  <div class="species-grid" id="grid">
-    
-    <!-- ================= SAVANNAH ================= -->
-    <div class="species-card" data-habitat="savannah">
+<style>
+    /* Add logic here since we are editing the existing file without the full CSS block reset */
+    .dropdown:hover .dropdown-content { display:block !important; }
+    .dropdown-content a:hover { background: rgba(77,123,72,0.1); color: var(--accent-green) !important; }
+    body.night .dropdown-content { background: var(--card-night); border-color:#444; }
+    body.night .dropdown-content a { color: var(--text-night) !important; }
+</style>
       <div class="species-img" style="background-color: #E8D5B5;"><span class="species-type">Decomposer</span></div>
       <div class="card-body">
         <div class="scientific-name">Macrotermes bellicosus</div>
@@ -727,8 +728,9 @@
 </main>
 
 <footer>
-    <p>&copy; 2025 Goldwire Games. All rights reserved.</p>
-    <p>Instagram: <a href="https://instagram.com/goldwiregames" target="_blank" rel="noopener noreferrer">@goldwiregames</a> | X: <a href="https://x.com/GoldwireGames" target="_blank" rel="noopener noreferrer">@GoldwireGames</a> </p>
+  <p>&copy; 2025 Goldwire Games. All rights reserved.</p>
+  <p>Instagram: <a href="https://instagram.com/goldwiregames" target="_blank" rel="noopener noreferrer">@goldwiregames</a> | X: <a href="https://x.com/GoldwireGames" target="_blank" rel="noopener noreferrer">@GoldwireGames</a> </p>
+  <p><a href="mailto:goldwiregames.studio@gmail.com">Contact Us</a></p>
 </footer>
 
 <script>
