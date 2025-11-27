@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>About | Goldwire Games</title>
+  <meta name="description" content="Meet Tavis Goldwire, the zoologist and designer behind Trophic.">
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Cabin:wght@400;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root{
+      --bg-color: #f7f3e9;
+      --text-color: #2a2a2a;
+      --accent-green: #4d7b48;
+      --accent-orange: #d08a43;
+      --accent-gold: #b8913b;
+      --card-bg: #ffffff;
+      --nav-bg: rgba(241,236,223,0.85);
+
+      --bg-night: #0d0f11;
+      --text-night: #e8e8e8;
+      --card-night: #141619;
+    }
+
+    *{box-sizing:border-box; transition: all 0.22s ease;}
+    body{
+      margin:0;
+      font-family: 'Cabin', system-ui, -apple-system, sans-serif;
+      background: var(--bg-color) url('paper-texture.png'); /* Assumed texture */
+      background-size: 350px;
+      color:var(--text-color);
+    }
+    body.night{
+      background: var(--bg-night);
+      color:var(--text-night);
+    }
+
+    /* Stars layer (Shared) */
+    #stars{
+      pointer-events:none; position:fixed; inset:0; z-index:0; opacity:0; transition:opacity 0.9s ease-in-out;
+    }
+    body.night #stars{ opacity:1; }
+    #stars::after{
+      content:""; position:absolute; inset:0;
+      background-image:
+        radial-gradient(circle at 20% 30%, rgba(255,255,255,0.95) 0.5px, transparent 2px),
+        radial-gradient(circle at 70% 18%, rgba(255,255,255,0.9) 0.6px, transparent 2px);
+      filter: blur(0.6px);
+      animation: twinkle 3.8s infinite;
+    }
+    @keyframes twinkle{
+      0%, 100%{ opacity:0.8; } 50%{ opacity:1; }
+    }
+
+    /* NAV (Shared) */
+    nav{
+      position: sticky; top:0; z-index: 40;
+      display:flex; justify-content:center; gap:40px;
+      padding:14px 18px;
+      background: var(--nav-bg); backdrop-filter: blur(4px);
+      border-bottom: 1px solid rgba(77,123,72,0.18);
+      border-radius: 0 0 12px 12px;
+    }
+    nav a{
+      color: var(--accent-gold); text-decoration:none; font-weight:700; letter-spacing:0.4px;
+    }
+    nav a:hover{ color: var(--accent-orange); }
+    #moon-toggle{
+      position:absolute; right:16px; top:10px; font-size:1.5rem; cursor:pointer; user-select:none;
+    }
+
+    .container{ max-width:900px; margin:0 auto; padding:40px 20px; position:relative; z-index:10; }
+
+    h1, h2, h3{ font-family:'Merriweather', serif; color:var(--accent-green); }
+    h1 { text-align: center; font-size: 2.5rem; margin-bottom: 10px; }
+    
+    /* BIO SECTION */
+    .bio-section {
+      display: flex; gap: 40px; align-items: center; margin: 50px 0;
+    }
+    @media(max-width: 700px) { .bio-section { flex-direction: column; } }
+
+    /* Interactive Creator Card */
+    .creator-card {
+      width: 300px; height: 380px; flex-shrink: 0;
+      position: relative; perspective: 1000px;
+    }
+    .creator-inner {
+      width: 100%; height: 100%;
+      background: var(--card-bg);
+      border: 1px solid rgba(77,123,72,0.2);
+      border-radius: 16px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      transition: transform 0.1s; /* Quick response for tilt effect */
+    }
+    body.night .creator-inner { background: var(--card-night); border-color: #333; }
+
+    .creator-img {
+      width: 150px; height: 150px;
+      background: #ddd; border-radius: 50%;
+      margin: 0 auto 20px;
+      border: 4px solid var(--accent-gold);
+      background-size: cover; background-position: center;
+    }
+
+    .creator-role {
+      color: var(--accent-gold); font-weight: 700; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;
+    }
+
+    /* TEXT CONTENT */
+    .bio-text { line-height: 1.8; font-size: 1.1rem; }
+    .highlight { color: var(--accent-green); font-weight: bold; }
+
+    /* PASSION GRID */
+    .passion-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 40px;
+    }
+    .passion-card {
+      background: var(--card-bg); padding: 25px; border-radius: 12px;
+      border-top: 4px solid var(--accent-gold);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+    body.night .passion-card { background: var(--card-night); }
+
+    /* FAQ ACCORDION */
+    .faq-item {
+      background: var(--card-bg); margin-bottom: 15px; border-radius: 8px; overflow: hidden;
+      border: 1px solid rgba(0,0,0,0.05);
+    }
+    body.night .faq-item { background: var(--card-night); border-color: #333; }
+    
+    .faq-question {
+      padding: 20px; font-weight: 700; cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+    }
+    .faq-question:hover { color: var(--accent-gold); }
+    .faq-answer {
+      padding: 0 20px; max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s ease;
+      color: #666; font-size: 0.95rem; line-height: 1.6;
+    }
+    body.night .faq-answer { color: #aaa; }
+    .faq-item.active .faq-answer { padding-bottom: 20px; max-height: 200px; }
+    .arrow { transition: transform 0.3s; }
+    .faq-item.active .arrow { transform: rotate(180deg); }
+
+    footer{ text-align:center; margin-top:40px; padding:30px 10px; color:#666; font-size:0.95rem; }
+    body.night footer{ color:#aaa; }
+
+  </style>
+</head>
+<body>
+
+<div id="stars" aria-hidden="true"></div>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="learn.html">Learn</a>
+  <a href="about.html" style="color:var(--accent-orange)">About</a>
+  <a href="#">Shop</a>
+  <a href="#">Contact</a>
+  <div id="moon-toggle" aria-hidden="true">🌙</div>
+</nav>
+
+<main class="container">
+
+  <h1>The Scientist Behind the Game</h1>
+  <p style="text-align:center; max-width:600px; margin:0 auto 40px;">Merging biological accuracy with strategic gameplay.</p>
+
+  <section class="bio-section">
+    <!-- Interactive Tilt Card -->
+    <div class="creator-card" id="tiltCard">
+      <div class="creator-inner">
+        <!-- Placeholder for your photo -->
+        <div class="creator-img" style="background-image: url('tavis-profile.jpg');" title="Tavis Goldwire"></div>
+        <h2>Tavis Goldwire</h2>
+        <div class="creator-role">Founder & Game Designer</div>
+        <p style="margin-top:15px; font-size:0.9rem;">Master's Student in Zoology<br>University of Florida</p>
+        <div style="margin-top:20px; font-size:1.5rem;">🐊 🧬 🎲</div>
+      </div>
+    </div>
+
+    <div class="bio-text">
+      <p>Hello! I'm Tavis. I am currently pursuing my Master's in <span class="highlight">Zoology at the University of Florida</span>, where my research focuses on the complex, invisible world of <span class="highlight">microbiomes</span>.</p>
+      <p>I started <strong>Goldwire Games</strong> with a simple hypothesis: Board games are the perfect medium to teach systems thinking. In nature, nothing exists in isolation. Trophic cascades—where a change in the top predator affects the soil chemistry at the bottom—are the ultimate puzzle.</p>
+      <p>With <strong>TROPHIC</strong>, I wanted to move beyond "cute animal games" and build something that simulates the ruthless, beautiful balance of real ecosystems.</p>
+    </div>
+  </section>
+
+  <h2 style="text-align:center; margin-top:60px;">What Drives Us</h2>
+  <div class="passion-grid">
+    <div class="passion-card">
+      <h3>Scientific Accuracy</h3>
+      <p>No made-up stats. Every species ability in Trophic is derived from its actual biological niche and behavioral ecology.</p>
+    </div>
+    <div class="passion-card">
+      <h3>Conservation</h3>
+      <p>We put our money where our mouth is. <strong>10% of all profits</strong> go directly to preserving the habitats you play on the board.</p>
+    </div>
+    <div class="passion-card">
+      <h3>Education</h3>
+      <p>Designed to be accessible for families but deep enough for classrooms. We are building curriculum guides to accompany the game.</p>
+    </div>
+  </div>
+
+  <h2 style="text-align:center; margin-top:60px;">Frequently Asked Questions</h2>
+  <div class="faq-section">
+    <div class="faq-item">
+      <div class="faq-question">
+        <span>Is this game suitable for kids?</span>
+        <span class="arrow">▼</span>
+      </div>
+      <div class="faq-answer">
+        Absolutely. While the strategy runs deep, the core mechanics are intuitive. We recommend it for ages 10+, but younger nature lovers often catch on quickly!
+      </div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question">
+        <span>When is the Kickstarter launching?</span>
+        <span class="arrow">▼</span>
+      </div>
+      <div class="faq-answer">
+        We are finalizing the artwork for the Rainforest expansion now. Sign up on the Home page to get the exact launch date alert.
+      </div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-question">
+        <span>Does the game feature microorganisms?</span>
+        <span class="arrow">▼</span>
+      </div>
+      <div class="faq-answer">
+        Yes! Given Tavis's background in microbiomes, we include "Decomposer" and "Microbe" cards that are essential for nutrient cycling in the game.
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+    <p>&copy; 2025 Goldwire Games. All rights reserved.</p>
+    <p>Instagram: <a href="https://instagram.com/goldwiregames" target="_blank" rel="noopener noreferrer">@goldwiregames</a> | X: <a href="https://x.com/GoldwireGames" target="_blank" rel="noopener noreferrer">@GoldwireGames</a> </p>
+</footer>
+
+<script>
+  // Night Mode Logic
+  const moon = document.getElementById('moon-toggle');
+  const toggleNight = () => {
+    document.body.classList.toggle('night');
+    moon.textContent = document.body.classList.contains('night') ? '🌕' : '🌙';
+  };
+  moon.addEventListener('click', toggleNight);
+
+  // 3D Tilt Effect for Creator Card
+  const card = document.getElementById('tiltCard');
+  const inner = card.querySelector('.creator-inner');
+
+  card.addEventListener('mousemove', (e) => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    // Calculate rotation (max 15deg)
+    const xRot = -((y - rect.height/2) / rect.height) * 20; 
+    const yRot = ((x - rect.width/2) / rect.width) * 20;
+
+    inner.style.transform = `rotateX(${xRot}deg) rotateY(${yRot}deg)`;
+  });
+
+  card.addEventListener('mouseleave', () => {
+    inner.style.transform = `rotateX(0deg) rotateY(0deg)`;
+  });
+
+  // FAQ Accordion
+  document.querySelectorAll('.faq-question').forEach(q => {
+    q.addEventListener('click', () => {
+      const item = q.parentElement;
+      item.classList.toggle('active');
+    });
+  });
+</script>
+
+</body>
+</html>
