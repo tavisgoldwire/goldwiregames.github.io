@@ -149,15 +149,51 @@
     .learn-link{ margin-top:12px; display:inline-block; color:var(--accent-gold); font-weight:700; text-decoration:none; }
     body.night .learn-link{ color:var(--accent-gold); }
 
-    /* Mailchimp overrides so it looks consistent and supports dark mode */
-    /* keep selectors specific to avoid breaking MC functionality */
-    #mc_embed_signup{ max-width:100%; }
-    #mc_embed_signup .mc-field-group label{ font-weight:600; color:var(--text-color); display:block; margin-bottom:6px; }
-    body.night #mc_embed_signup .mc-field-group label{ color:var(--text-night); }
-    #mc_embed_signup input.email{ width:100%; padding:10px 12px; border-radius:8px; border:1px solid rgba(0,0,0,0.08); margin-bottom:8px; }
-    body.night #mc_embed_signup input.email{ background:#0f1412; color:var(--text-night); border:1px solid rgba(255,255,255,0.06); }
-    #mc_embed_signup input.button{ background:var(--accent-gold); color:#fff; border:none; padding:10px 16px; border-radius:8px; cursor:pointer; font-weight:700; }
-    #mc_embed_signup input.button:hover{ background: #d6a850; }
+    /* === UPDATED SIGNUP BOX (POPS MORE) === */
+    .signup-box {
+        background: linear-gradient(135deg, var(--card-bg), #fffaf0);
+        border: 2px solid var(--accent-gold);
+        border-radius: 16px;
+        padding: 40px;
+        margin: 60px 0;
+        text-align: center;
+        box-shadow: 0 0 25px rgba(184, 145, 59, 0.25);
+        position: relative;
+        overflow: hidden;
+    }
+    body.night .signup-box {
+        background: linear-gradient(135deg, var(--card-night), #1a1d21);
+        box-shadow: 0 0 25px rgba(184, 145, 59, 0.15);
+    }
+    
+    /* Decorative ribbon effect */
+    .signup-box::before {
+        content: "";
+        position: absolute; top: 0; left: 0; right: 0; height: 6px;
+        background: var(--accent-gold);
+    }
+
+    /* Mailchimp overrides */
+    #mc_embed_signup{ max-width:100%; margin-top: 20px; }
+    #mc_embed_signup .mc-field-group label{ font-weight:700; color:var(--accent-green); display:block; margin-bottom:8px; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px; }
+    body.night #mc_embed_signup .mc-field-group label{ color:var(--accent-green); }
+    
+    #mc_embed_signup input.email{ 
+        width:100%; max-width: 400px; 
+        padding:14px 16px; border-radius:30px; 
+        border:2px solid rgba(0,0,0,0.1); 
+        margin-bottom:15px; font-size: 1rem; text-align: center;
+    }
+    body.night #mc_embed_signup input.email{ background:#0f1412; color:var(--text-night); border:2px solid rgba(255,255,255,0.1); }
+    
+    #mc_embed_signup input.button{ 
+        background:var(--accent-gold); color:#fff; border:none; 
+        padding:14px 32px; border-radius:30px; cursor:pointer; 
+        font-weight:700; font-size: 1.1rem; letter-spacing: 0.5px;
+        transition: transform 0.2s, background 0.2s;
+        box-shadow: 0 4px 10px rgba(184, 145, 59, 0.3);
+    }
+    #mc_embed_signup input.button:hover{ background: #d6a850; transform: translateY(-2px); }
     body.night #mc_embed_signup input.button{ box-shadow:none; }
 
     footer{ text-align:center; margin-top:40px; padding:30px 10px; color:#666; font-size:0.95rem; }
@@ -169,12 +205,13 @@
 
   <div id="stars" aria-hidden="true"></div>
 
+  <!-- FIXED NAVIGATION LINKS HERE -->
   <nav>
     <a href="index.html">Home</a>
     <a href="learn.html">Learn</a>
-    <a href="#">About</a>
-    <a href="#">Shop</a>
-    <a href="#">Contact</a>
+    <a href="about.html">About</a>
+    <a href="shop.html">Shop</a>
+    <a href="contact.html">Contact</a>
     <div id="moon-toggle" aria-hidden="true">🌙</div>
   </nav>
 
@@ -252,34 +289,37 @@
 
     <img class="divider" src="leaves-divider.png" alt="leaf divider">
 
-    <section>
-      <h2>What is Trophic?</h2>
-      <p>We are currently developing <strong>TROPHIC</strong>, a strategic board game where you guide the evolution of a living food web.</p>
-      <p>From the producers at the bottom to the apex predators at the top, every card you play triggers a cascade of life.</p>
+    <section id="about-preview">
+      <h2>The Science Behind the Game</h2>
+      <p>Trophic is designed by Tavis Goldwire, a biologist and Master's student in Zoology. Drawing from real research on trophic cascades and microbial ecology, this game isn't just a simulation—it's built on the rules of nature.</p>
+      <div style="text-align:center; margin-top:20px;">
+        <a href="about.html" class="learn-link" style="font-size:1.1rem;">Meet the Creator →</a>
+      </div>
     </section>
 
     <section>
       <h2>Our Mission</h2>
-      <p>We believe games can make a difference. That is why we have pledged to donate <strong>20% of all profits</strong> directly to wildlife conservation funds protecting the habitats featured in the game.</p>
+      <p>We believe games can make a difference. That is why we have pledged to donate <strong>10% of all profits</strong> directly to wildlife conservation funds protecting the habitats featured in the game.</p>
     </section>
 
+    <!-- REDESIGNED SIGNUP BOX -->
     <div class="signup-box" id="signup">
-      <h2 style="text-align:center; color:var(--accent-green); font-family:'Merriweather', serif;">Join the Movement</h2>
-      <p style="text-align:center;">Sign up to see exclusive art, follow the design process, and get notified when we launch on Kickstarter.</p>
+      <h2 style="text-align:center; color:var(--accent-gold); font-family:'Merriweather', serif; font-size: 2rem;">Join the Ecosystem</h2>
+      <p style="text-align:center; max-width: 600px; margin: 0 auto;">Don't miss the launch. Sign up to get notified when our <strong>Kickstarter campaign goes live</strong> and receive exclusive "Early Bird" backer rewards.</p>
 
-      <!-- Mailchimp embed (kept functional but restyled) -->
+      <!-- Mailchimp embed -->
       <div id="mc_embed_signup">
         <form action="https://gmail.us18.list-manage.com/subscribe/post?u=e45d46138093844d88767df27&amp;id=1440e8d9e1&amp;f_id=00c3b2e6f0" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" target="_blank" novalidate>
           <div id="mc_embed_signup_scroll">
             <div class="mc-field-group">
-              <label for="mce-EMAIL">Email Address *</label>
-              <input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL">
+              <label for="mce-EMAIL">Email Address</label>
+              <input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL" placeholder="Enter your email...">
             </div>
 
             <div aria-hidden="true" style="position:absolute; left:-5000px;"><input type="text" name="b_e45d46138093844d88767df27_1440e8d9e1" tabindex="-1" value=""></div>
 
-            <div class="clear" style="margin-top:12px;">
-              <input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button">
+            <div class="clear" style="text-align:center;">
+              <input type="submit" value="Notify Me on Launch" name="subscribe" id="mc-embedded-subscribe" class="button">
             </div>
 
           </div>
@@ -292,26 +332,24 @@
 
   <footer>
     <p>&copy; 2025 Goldwire Games. All rights reserved.</p>
-    <p>Instagram: <a href="https://instagram.com/goldwiregames" target="_blank">@goldwiregames</a> or X: <a href="https://x.com/GoldwireGames" target="_blank">@GoldwireGames</a> </p>
+    <p>Instagram: <a href="https://instagram.com/goldwiregames" target="_blank" rel="noopener noreferrer">@goldwiregames</a> | X: <a href="https://x.com/GoldwireGames" target="_blank" rel="noopener noreferrer">@GoldwireGames</a> </p>
     <p><a href="mailto:goldwiregames.studio@gmail.com">Contact Us</a></p>
   </footer>
 
 <script>
   // moon toggle + stars
   const moon = document.getElementById('moon-toggle');
-  moon.addEventListener('click', () => {
+  const toggleNight = () => {
     document.body.classList.toggle('night');
     moon.textContent = document.body.classList.contains('night') ? '🌕' : '🌙';
-  });
+  };
+  moon.addEventListener('click', toggleNight);
 
-  // Flip handling without layout shift:
-  // Use click to toggle .flipped on the .card; inner rotates in-place.
+  // Flip handling
   document.querySelectorAll('.card').forEach(card => {
     card.addEventListener('click', (e) => {
-      // prevent clicks on learn links from flipping
       if (e.target.closest('.learn-link')) return;
       card.classList.toggle('flipped');
-      // set aria-hidden for accessibility
       const front = card.querySelector('.front');
       const back  = card.querySelector('.back');
       if (card.classList.contains('flipped')) {
@@ -324,28 +362,12 @@
     });
   });
 
-  // Ensure mailchimp styles adapt to dark mode by toggling a class on #mc_embed_signup nodes
-  const updateMailchimpForMode = () => {
-    const mc = document.getElementById('mc_embed_signup');
-    if (!mc) return;
-    if (document.body.classList.contains('night')) {
-      mc.classList.add('night');
-    } else {
-      mc.classList.remove('night');
-    }
-  };
-  // run on load and on night toggle
-  updateMailchimpForMode();
-  moon.addEventListener('click', updateMailchimpForMode);
-
-  // Load fallback images gracefully (if not uploaded, show soft gradient)
+  // Load fallback images
   document.querySelectorAll('.card .bg').forEach(bg => {
     const url = bg.style.backgroundImage.replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
-    // test by creating an Image object
     const img = new Image();
     img.onload = () => { /* ok */ };
     img.onerror = () => {
-      // fallback: soft gradient
       bg.style.backgroundImage = 'linear-gradient(180deg, rgba(200,220,200,0.6), rgba(150,180,150,0.4))';
       bg.style.filter = 'brightness(0.9)';
     };
