@@ -53,7 +53,7 @@
     nav a:hover{ color: var(--accent-orange); }
     #moon-toggle{ position:absolute; right:16px; top:10px; font-size:1.5rem; cursor:pointer; }
 
-    .container{ max-width:1000px; margin:0 auto; padding:40px 20px; position:relative; z-index:10; }
+    .container{ max-width:1200px; margin:0 auto; padding:40px 20px; position:relative; z-index:10; }
 
     h1, h2{ font-family:'Merriweather', serif; text-align:center; color:var(--accent-green); }
 
@@ -72,7 +72,7 @@
 
     /* SPECIES GRID */
     .species-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px;
     }
 
     /* SPECIES CARD */
@@ -86,7 +86,7 @@
     body.night .species-card { background: var(--card-night); border-color: #333; }
 
     .species-img {
-      height: 180px; background-color: #ccc; background-size: cover; background-position: center; position: relative;
+      height: 160px; background-color: #ccc; background-size: cover; background-position: center; position: relative;
     }
     .species-type {
       position: absolute; top: 10px; left: 10px;
@@ -94,18 +94,18 @@
       font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;
     }
 
-    .card-body { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
-    .scientific-name { font-style: italic; color: #888; font-size: 0.9rem; margin-bottom: 4px; }
-    .common-name { font-family: 'Merriweather', serif; font-size: 1.4rem; font-weight: 700; margin: 0 0 10px; color: var(--text-color); }
+    .card-body { padding: 16px; flex-grow: 1; display: flex; flex-direction: column; }
+    .scientific-name { font-style: italic; color: #888; font-size: 0.85rem; margin-bottom: 4px; }
+    .common-name { font-family: 'Merriweather', serif; font-size: 1.25rem; font-weight: 700; margin: 0 0 8px; color: var(--text-color); }
     body.night .common-name { color: var(--text-night); }
 
     /* Range Map Visualization (CSS Placeholder) */
     .range-map {
-      height: 60px; width: 100%; background: #eee; margin: 10px 0; border-radius: 6px;
+      height: 50px; width: 100%; background: #eee; margin: 8px 0; border-radius: 6px;
       position: relative; overflow: hidden;
     }
     .range-map::after {
-      content: "Global Range"; position: absolute; bottom: 2px; right: 4px; font-size: 0.6rem; color: #555;
+      content: "Global Range"; position: absolute; bottom: 2px; right: 4px; font-size: 0.55rem; color: #555;
     }
     /* Simple stylized world map via CSS gradients */
     .range-map-bg {
@@ -122,16 +122,18 @@
 
     /* Status Badge */
     .status-badge {
-      display: inline-block; padding: 4px 8px; border-radius: 12px; font-size: 0.8rem; font-weight: bold; margin-bottom: 12px;
+      display: inline-block; padding: 3px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: bold; margin-bottom: 10px;
     }
     .status-en { background: #ffebee; color: #c62828; border: 1px solid #ffcdd2; } /* Endangered */
     .status-vu { background: #fff3e0; color: #ef6c00; border: 1px solid #ffe0b2; } /* Vulnerable */
+    .status-nt { background: #fff8e1; color: #f57f17; border: 1px solid #ffecb3; } /* Near Threatened */
     .status-lc { background: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; } /* Least Concern */
+    .status-dd { background: #f5f5f5; color: #616161; border: 1px solid #e0e0e0; } /* Data Deficient / Other */
 
     /* Fact Reveal */
     .fact-box {
       margin-top: auto; background: rgba(77,123,72,0.1); padding: 10px; border-radius: 8px;
-      font-size: 0.9rem; position: relative;
+      font-size: 0.85rem; position: relative;
     }
     .fact-content { display: none; }
     .fact-content.visible { display: block; animation: fadeIn 0.4s; }
@@ -173,124 +175,551 @@
 
   <div class="species-grid" id="grid">
     
-    <!-- CARD 1: Savannah Lion -->
+    <!-- ================= SAVANNAH ================= -->
     <div class="species-card" data-habitat="savannah">
-      <div class="species-img" style="background-image: url('lion-placeholder.jpg'); background-color: #deb887;">
-        <span class="species-type">Apex Predator</span>
-      </div>
+      <div class="species-img" style="background-color: #E8D5B5;"><span class="species-type">Decomposer</span></div>
       <div class="card-body">
-        <div class="scientific-name">Panthera leo</div>
-        <h3 class="common-name">African Lion</h3>
-        <span class="status-badge status-vu">Vulnerable</span>
-        
-        <div class="range-map">
-          <div class="range-map-bg"></div>
-          <!-- range highlight -->
-          <div class="range-highlight" style="top: 55%; left: 52%; width: 20px; height: 20px;"></div>
-        </div>
-
-        <div class="fact-box">
-          <button class="fact-btn">Did you know? ▼</button>
-          <div class="fact-content">
-            Lions are the only cats that live in groups (prides). A pride's territory can span up to 100 square miles.
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- CARD 2: Arctic Bear -->
-    <div class="species-card" data-habitat="arctic">
-      <div class="species-img" style="background-image: url('bear-placeholder.jpg'); background-color: #e0f7fa;">
-        <span class="species-type">Apex Predator</span>
-      </div>
-      <div class="card-body">
-        <div class="scientific-name">Ursus maritimus</div>
-        <h3 class="common-name">Polar Bear</h3>
-        <span class="status-badge status-vu">Vulnerable</span>
-        
-        <div class="range-map">
-          <div class="range-map-bg"></div>
-          <div class="range-highlight" style="top: 10%; left: 30%; width: 40px; height: 10px; border-radius:5px;"></div>
-        </div>
-
-        <div class="fact-box">
-          <button class="fact-btn">Did you know? ▼</button>
-          <div class="fact-content">
-            Their skin is actually black to absorb heat, and their fur is transparent, not white!
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- CARD 3: Rainforest Frog -->
-    <div class="species-card" data-habitat="rainforest">
-      <div class="species-img" style="background-image: url('frog-placeholder.jpg'); background-color: #2e7d32;">
-        <span class="species-type">Secondary Consumer</span>
-      </div>
-      <div class="card-body">
-        <div class="scientific-name">Agalychnis callidryas</div>
-        <h3 class="common-name">Red-Eyed Tree Frog</h3>
+        <div class="scientific-name">Macrotermes bellicosus</div>
+        <h3 class="common-name">Termite</h3>
         <span class="status-badge status-lc">Least Concern</span>
-        
-        <div class="range-map">
-          <div class="range-map-bg"></div>
-          <div class="range-highlight" style="top: 50%; left: 25%; width: 10px; height: 10px;"></div>
-        </div>
-
-        <div class="fact-box">
-          <button class="fact-btn">Did you know? ▼</button>
-          <div class="fact-content">
-            They use their bright colors to startle predators, a tactic known as "deimatic behaviour."
-          </div>
-        </div>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">Their mounds can reach 30 feet high and have internal air conditioning.</div></div>
       </div>
     </div>
-
-    <!-- CARD 4: Temperate Wolf -->
-    <div class="species-card" data-habitat="temperate">
-      <div class="species-img" style="background-image: url('wolf-placeholder.jpg'); background-color: #78909c;">
-        <span class="species-type">Apex Predator</span>
-      </div>
-      <div class="card-body">
-        <div class="scientific-name">Canis lupus</div>
-        <h3 class="common-name">Grey Wolf</h3>
-        <span class="status-badge status-lc">Least Concern</span>
-        
-        <div class="range-map">
-          <div class="range-map-bg"></div>
-          <div class="range-highlight" style="top: 25%; left: 20%; width: 25px; height: 15px;"></div>
-        </div>
-
-        <div class="fact-box">
-          <button class="fact-btn">Did you know? ▼</button>
-          <div class="fact-content">
-            The reintroduction of wolves to Yellowstone changed the flow of rivers by controlling elk populations.
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- CARD 5: Elephant -->
     <div class="species-card" data-habitat="savannah">
-      <div class="species-img" style="background-image: url('elephant-placeholder.jpg'); background-color: #a1887f;">
-        <span class="species-type">Keystone Species</span>
+      <div class="species-img" style="background-color: #BDB76B;"><span class="species-type">Producer</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Vachellia tortilis</div>
+        <h3 class="common-name">Acacia</h3>
+        <span class="status-badge status-lc">Least Concern</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">They can warn other trees of herbivores by releasing ethylene gas.</div></div>
       </div>
+    </div>
+    <div class="species-card" data-habitat="savannah">
+      <div class="species-img" style="background-color: #8B4513;"><span class="species-type">Producer</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Adansonia digitata</div>
+        <h3 class="common-name">Baobab</h3>
+        <span class="status-badge status-lc">Least Concern</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">A single tree can store up to 32,000 gallons of water to survive drought.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="savannah">
+      <div class="species-img" style="background-color: #D2B48C;"><span class="species-type">Primary Consumer</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Eudorcas thomsonii</div>
+        <h3 class="common-name">Gazelle</h3>
+        <span class="status-badge status-lc">Least Concern</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">They "stot" (jump straight up) to show predators they are too fit to chase.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="savannah">
+      <div class="species-img" style="background-color: #F0E68C;"><span class="species-type">Primary Consumer</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Equus quagga</div>
+        <h3 class="common-name">Zebra</h3>
+        <span class="status-badge status-nt">Near Threatened</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">Their stripes may confuse biting flies like the tsetse fly.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="savannah">
+      <div class="species-img" style="background-color: #708090;"><span class="species-type">Primary Consumer</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Connochaetes taurinus</div>
+        <h3 class="common-name">Blue Wildebeest</h3>
+        <span class="status-badge status-lc">Least Concern</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">Their annual migration involves over 1.5 million animals.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="savannah">
+      <div class="species-img" style="background-color: #2F4F4F;"><span class="species-type">Primary Consumer</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Struthio camelus</div>
+        <h3 class="common-name">Ostrich</h3>
+        <span class="status-badge status-lc">Least Concern</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">They have the largest eyes of any land animal, bigger than their brains.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="savannah">
+      <div class="species-img" style="background-color: #808000;"><span class="species-type">Primary Consumer</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Phacochoerus africanus</div>
+        <h3 class="common-name">Warthog</h3>
+        <span class="status-badge status-lc">Least Concern</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">They enter their burrows backward to defend against predators with tusks.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="savannah">
+      <div class="species-img" style="background-color: #CD853F;"><span class="species-type">Primary Consumer</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Giraffa tippelskirchi</div>
+        <h3 class="common-name">Maasai Giraffe</h3>
+        <span class="status-badge status-en">Endangered</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">Their tongues are purple-black to prevent sunburn while eating.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="savannah">
+      <div class="species-img" style="background-color: #778899;"><span class="species-type">Large Herbivore</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Hippopotamus amphibius</div>
+        <h3 class="common-name">Hippo</h3>
+        <span class="status-badge status-vu">Vulnerable</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">Despite their size, they can outrun a human on land.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="savannah">
+      <div class="species-img" style="background-color: #A9A9A9;"><span class="species-type">Keystone Species</span></div>
       <div class="card-body">
         <div class="scientific-name">Loxodonta africana</div>
         <h3 class="common-name">African Elephant</h3>
         <span class="status-badge status-en">Endangered</span>
-        
-        <div class="range-map">
-          <div class="range-map-bg"></div>
-          <div class="range-highlight" style="top: 60%; left: 55%; width: 15px; height: 20px;"></div>
-        </div>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">They are "ecosystem engineers" that maintain grasslands by knocking down trees.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="savannah">
+      <div class="species-img" style="background-color: #CD5C5C;"><span class="species-type">Scavenger/Predator</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Crocuta crocuta</div>
+        <h3 class="common-name">Spotted Hyena</h3>
+        <span class="status-badge status-lc">Least Concern</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">They are more closely related to cats than dogs, despite their appearance.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="savannah">
+      <div class="species-img" style="background-color: #FFA07A;"><span class="species-type">Predator</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Panthera pardus</div>
+        <h3 class="common-name">Leopard</h3>
+        <span class="status-badge status-vu">Vulnerable</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">Strong enough to drag prey heavier than themselves up into trees.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="savannah">
+      <div class="species-img" style="background-color: #FFD700;"><span class="species-type">Predator</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Acinonyx jubatus</div>
+        <h3 class="common-name">Cheetah</h3>
+        <span class="status-badge status-vu">Vulnerable</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">The fastest land animal, capable of reaching 60-70 mph in seconds.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="savannah">
+      <div class="species-img" style="background-color: #DEB887;"><span class="species-type">Apex Predator</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Panthera leo</div>
+        <h3 class="common-name">Lion</h3>
+        <span class="status-badge status-vu">Vulnerable</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">A lion's roar can be heard from 5 miles away.</div></div>
+      </div>
+    </div>
 
-        <div class="fact-box">
-          <button class="fact-btn">Did you know? ▼</button>
-          <div class="fact-content">
-            They are "ecosystem engineers." By knocking down trees, they maintain the savannah grasslands for other species.
-          </div>
-        </div>
+    <!-- ================= ARCTIC ================= -->
+    <div class="species-card" data-habitat="arctic">
+      <div class="species-img" style="background-color: #E0FFFF;"><span class="species-type">Producer</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Various spp.</div>
+        <h3 class="common-name">Zooplankton</h3>
+        <span class="status-badge status-dd">Data Deficient</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">These microscopic drifters are the foundation of the entire ocean food web.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="arctic">
+      <div class="species-img" style="background-color: #AFEEEE;"><span class="species-type">Producer</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Melosira arctica</div>
+        <h3 class="common-name">Ice Algae</h3>
+        <span class="status-badge status-lc">Least Concern</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">It grows on the underside of sea ice, feeding krill during winter.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="arctic">
+      <div class="species-img" style="background-color: #008B8B;"><span class="species-type">Producer</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Laminaria hyperborea</div>
+        <h3 class="common-name">Kelp</h3>
+        <span class="status-badge status-lc">Least Concern</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">Kelp forests can grow up to 18 inches in a single day.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="arctic">
+      <div class="species-img" style="background-color: #FF69B4;"><span class="species-type">Consumer</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Gonatus fabricii</div>
+        <h3 class="common-name">Gonatus Squid</h3>
+        <span class="status-badge status-lc">Least Concern</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">The most abundant squid in the Arctic, a key food source for whales.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="arctic">
+      <div class="species-img" style="background-color: #FFB6C1;"><span class="species-type">Primary Consumer</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Euphausia superba</div>
+        <h3 class="common-name">Krill</h3>
+        <span class="status-badge status-lc">Least Concern</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">A blue whale can eat up to 4 tons of krill in a single day.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="arctic">
+      <div class="species-img" style="background-color: #B0C4DE;"><span class="species-type">Consumer</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Boreogadus saida</div>
+        <h3 class="common-name">Arctic Cod</h3>
+        <span class="status-badge status-lc">Least Concern</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">They have antifreeze proteins in their blood to survive sub-zero water.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="arctic">
+      <div class="species-img" style="background-color: #F5DEB3;"><span class="species-type">Filter Feeder</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Mya truncata</div>
+        <h3 class="common-name">Clams</h3>
+        <span class="status-badge status-lc">Least Concern</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">A favorite food of walruses, who suck them right out of their shells.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="arctic">
+      <div class="species-img" style="background-color: #4682B4;"><span class="species-type">Consumer</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Balaena mysticetus</div>
+        <h3 class="common-name">Bowhead Whale</h3>
+        <span class="status-badge status-lc">Least Concern</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">They can live for over 200 years, the longest of any mammal.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="arctic">
+      <div class="species-img" style="background-color: #708090;"><span class="species-type">Consumer</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Monodon monoceros</div>
+        <h3 class="common-name">Narwhal</h3>
+        <span class="status-badge status-lc">Least Concern</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">The "tusk" is actually an elongated tooth with millions of nerve endings.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="arctic">
+      <div class="species-img" style="background-color: #D3D3D3;"><span class="species-type">Consumer</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Pusa hispida</div>
+        <h3 class="common-name">Ringed Seal</h3>
+        <span class="status-badge status-lc">Least Concern</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">They maintain breathing holes in the ice by clawing at them constantly.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="arctic">
+      <div class="species-img" style="background-color: #ADD8E6;"><span class="species-type">Consumer</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Sterna paradisaea</div>
+        <h3 class="common-name">Arctic Tern</h3>
+        <span class="status-badge status-lc">Least Concern</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">They migrate pole-to-pole every year, covering 44,000 miles.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="arctic">
+      <div class="species-img" style="background-color: #8B4513;"><span class="species-type">Consumer</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Odobenus rosmarus</div>
+        <h3 class="common-name">Walrus</h3>
+        <span class="status-badge status-vu">Vulnerable</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">They can sleep while floating in water by inflating air sacs in their necks.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="arctic">
+      <div class="species-img" style="background-color: #2F4F4F;"><span class="species-type">Predator</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Somniosus microcephalus</div>
+        <h3 class="common-name">Greenland Shark</h3>
+        <span class="status-badge status-vu">Vulnerable</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">They have the slowest metabolism and can live up to 500 years.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="arctic">
+      <div class="species-img" style="background-color: #000000;"><span class="species-type">Apex Predator</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Orcinus orca</div>
+        <h3 class="common-name">Killer Whale</h3>
+        <span class="status-badge status-dd">Data Deficient</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">They hunt in packs like wolves and have distinct dialects.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="arctic">
+      <div class="species-img" style="background-color: #F0F8FF;"><span class="species-type">Apex Predator</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Ursus maritimus</div>
+        <h3 class="common-name">Polar Bear</h3>
+        <span class="status-badge status-vu">Vulnerable</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">They are classified as marine mammals because they spend most of their life on sea ice.</div></div>
+      </div>
+    </div>
+
+    <!-- ================= RAINFOREST ================= -->
+    <div class="species-card" data-habitat="rainforest">
+      <div class="species-img" style="background-color: #556B2F;"><span class="species-type">Decomposer</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Fungi spp.</div>
+        <h3 class="common-name">Mycelium</h3>
+        <span class="status-badge status-lc">Least Concern</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">The "Wood Wide Web" connects trees underground, sharing nutrients.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="rainforest">
+      <div class="species-img" style="background-color: #228B22;"><span class="species-type">Producer</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Bertholletia excelsa</div>
+        <h3 class="common-name">Brazil Nut Tree</h3>
+        <span class="status-badge status-vu">Vulnerable</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">It relies entirely on the Agouti (a rodent) to crack its hard shell and spread seeds.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="rainforest">
+      <div class="species-img" style="background-color: #8B4513;"><span class="species-type">Producer</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Theobroma cacao</div>
+        <h3 class="common-name">Cocoa Tree</h3>
+        <span class="status-badge status-lc">Least Concern</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">Its flowers are pollinated by tiny midges, not bees.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="rainforest">
+      <div class="species-img" style="background-color: #A0522D;"><span class="species-type">Primary Consumer</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Atta spp.</div>
+        <h3 class="common-name">Leaf Cutter Ant</h3>
+        <span class="status-badge status-lc">Least Concern</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">They don't eat leaves; they farm a fungus on the leaves they cut.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="rainforest">
+      <div class="species-img" style="background-color: #FFA500;"><span class="species-type">Consumer</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Ramphastos toco</div>
+        <h3 class="common-name">Toco Toucan</h3>
+        <span class="status-badge status-lc">Least Concern</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">Their huge bill helps regulate body temperature by releasing heat.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="rainforest">
+      <div class="species-img" style="background-color: #FF4500;"><span class="species-type">Consumer</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Dendrobates tinctorius</div>
+        <h3 class="common-name">Poison Dart Frog</h3>
+        <span class="status-badge status-lc">Least Concern</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">Their poison comes from the ants and termites they eat in the wild.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="rainforest">
+      <div class="species-img" style="background-color: #696969;"><span class="species-type">Insectivore</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Myrmecophaga tridactyla</div>
+        <h3 class="common-name">Giant Anteater</h3>
+        <span class="status-badge status-vu">Vulnerable</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">It has no teeth but a 2-foot long sticky tongue.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="rainforest">
+      <div class="species-img" style="background-color: #8FBC8F;"><span class="species-type">Consumer</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Bradypus variegatus</div>
+        <h3 class="common-name">Three-Toed Sloth</h3>
+        <span class="status-badge status-lc">Least Concern</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">They move so slowly that algae grows on their fur, camouflaging them.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="rainforest">
+      <div class="species-img" style="background-color: #000000;"><span class="species-type">Consumer</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Alouatta spp.</div>
+        <h3 class="common-name">Howler Monkey</h3>
+        <span class="status-badge status-lc">Least Concern</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">Their call is the loudest of any land animal and can be heard 3 miles away.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="rainforest">
+      <div class="species-img" style="background-color: #DAA520;"><span class="species-type">Consumer</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Hydrochoerus hydrochaeris</div>
+        <h3 class="common-name">Capybara</h3>
+        <span class="status-badge status-lc">Least Concern</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">The world's largest rodent, they are excellent swimmers.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="rainforest">
+      <div class="species-img" style="background-color: #FFC0CB;"><span class="species-type">Predator</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Inia geoffrensis</div>
+        <h3 class="common-name">Amazon River Dolphin</h3>
+        <span class="status-badge status-en">Endangered</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">Their neck vertebrae aren't fused, allowing them to turn their heads 90 degrees.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="rainforest">
+      <div class="species-img" style="background-color: #006400;"><span class="species-type">Apex Predator</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Eunectes murinus</div>
+        <h3 class="common-name">Green Anaconda</h3>
+        <span class="status-badge status-lc">Least Concern</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">The heaviest snake in the world, capable of eating caimans whole.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="rainforest">
+      <div class="species-img" style="background-color: #F4A460;"><span class="species-type">Predator</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Leopardus pardalis</div>
+        <h3 class="common-name">Ocelot</h3>
+        <span class="status-badge status-lc">Least Concern</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">No two ocelots have the same coat pattern; it's like a fingerprint.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="rainforest">
+      <div class="species-img" style="background-color: #2F4F4F;"><span class="species-type">Predator</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Melanosuchus niger</div>
+        <h3 class="common-name">Black Caiman</h3>
+        <span class="status-badge status-lc">Least Concern</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">The largest predator in the Amazon basin, reaching up to 16 feet.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="rainforest">
+      <div class="species-img" style="background-color: #FFD700;"><span class="species-type">Apex Predator</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Panthera onca</div>
+        <h3 class="common-name">Jaguar</h3>
+        <span class="status-badge status-nt">Near Threatened</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">They have the strongest bite of any cat, able to pierce turtle shells.</div></div>
+      </div>
+    </div>
+
+    <!-- ================= TEMPERATE FOREST ================= -->
+    <div class="species-card" data-habitat="temperate">
+      <div class="species-img" style="background-color: #228B22;"><span class="species-type">Producer</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Pinus spp.</div>
+        <h3 class="common-name">Pine Tree</h3>
+        <span class="status-badge status-lc">Least Concern</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">Some pine cones only open to release seeds during the heat of a forest fire.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="temperate">
+      <div class="species-img" style="background-color: #006400;"><span class="species-type">Producer</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Picea spp.</div>
+        <h3 class="common-name">Spruce Tree</h3>
+        <span class="status-badge status-lc">Least Concern</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">Spruce wood is known for its resonance, making it ideal for violins.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="temperate">
+      <div class="species-img" style="background-color: #800080;"><span class="species-type">Producer</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Vaccinium spp.</div>
+        <h3 class="common-name">Huckleberry</h3>
+        <span class="status-badge status-lc">Least Concern</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">A critical food source for grizzly bears in late summer.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="temperate">
+      <div class="species-img" style="background-color: #696969;"><span class="species-type">Consumer</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Erethizon dorsatum</div>
+        <h3 class="common-name">Porcupine</h3>
+        <span class="status-badge status-lc">Least Concern</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">They cannot shoot their quills, but the quills have barbs that make them hard to remove.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="temperate">
+      <div class="species-img" style="background-color: #CD5C5C;"><span class="species-type">Insectivore</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Picidae spp.</div>
+        <h3 class="common-name">Woodpecker</h3>
+        <span class="status-badge status-lc">Least Concern</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">Their tongues wrap around their skulls to cushion their brains from impact.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="temperate">
+      <div class="species-img" style="background-color: #000000;"><span class="species-type">Omnivore</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Mephitis mephitis</div>
+        <h3 class="common-name">Striped Skunk</h3>
+        <span class="status-badge status-lc">Least Concern</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">They can spray their musk accurately up to 10 feet away.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="temperate">
+      <div class="species-img" style="background-color: #A9A9A9;"><span class="species-type">Omnivore</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Procyon lotor</div>
+        <h3 class="common-name">Raccoon</h3>
+        <span class="status-badge status-lc">Least Concern</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">Their front paws are extremely sensitive, especially when wet, helping them identify food.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="temperate">
+      <div class="species-img" style="background-color: #8B4513;"><span class="species-type">Keystone Species</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Castor canadensis</div>
+        <h3 class="common-name">Beaver</h3>
+        <span class="status-badge status-lc">Least Concern</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">Their dams create wetlands that support thousands of other species.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="temperate">
+      <div class="species-img" style="background-color: #5F9EA0;"><span class="species-type">Consumer</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Alces alces</div>
+        <h3 class="common-name">Moose</h3>
+        <span class="status-badge status-lc">Least Concern</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">They can dive underwater up to 20 feet to eat aquatic plants.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="temperate">
+      <div class="species-img" style="background-color: #D2B48C;"><span class="species-type">Consumer</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Cervus canadensis</div>
+        <h3 class="common-name">Elk</h3>
+        <span class="status-badge status-lc">Least Concern</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">Bull elks bugle to attract mates, a sound that carries for miles.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="temperate">
+      <div class="species-img" style="background-color: #FF8C00;"><span class="species-type">Omnivore</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Vulpes vulpes</div>
+        <h3 class="common-name">Red Fox</h3>
+        <span class="status-badge status-lc">Least Concern</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">They use Earth's magnetic field to judge distance when pouncing on prey in snow.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="temperate">
+      <div class="species-img" style="background-color: #4B0082;"><span class="species-type">Predator</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Bubo virginianus</div>
+        <h3 class="common-name">Great Horned Owl</h3>
+        <span class="status-badge status-lc">Least Concern</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">Their grip strength is 500 psi—stronger than a human hand.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="temperate">
+      <div class="species-img" style="background-color: #F4A460;"><span class="species-type">Predator</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Canis latrans</div>
+        <h3 class="common-name">Coyote</h3>
+        <span class="status-badge status-lc">Least Concern</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">Highly adaptable, they have expanded their range to include every state except Hawaii.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="temperate">
+      <div class="species-img" style="background-color: #DEB887;"><span class="species-type">Predator</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Puma concolor</div>
+        <h3 class="common-name">Cougar</h3>
+        <span class="status-badge status-lc">Least Concern</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">They cannot roar, but they can purr like a house cat.</div></div>
+      </div>
+    </div>
+    <div class="species-card" data-habitat="temperate">
+      <div class="species-img" style="background-color: #8B0000;"><span class="species-type">Apex Predator</span></div>
+      <div class="card-body">
+        <div class="scientific-name">Ursus arctos horribilis</div>
+        <h3 class="common-name">Grizzly Bear</h3>
+        <span class="status-badge status-vu">Vulnerable</span>
+        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">Despite their weight (up to 800 lbs), they can run at 35 mph.</div></div>
       </div>
     </div>
 
