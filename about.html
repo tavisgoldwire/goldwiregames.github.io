@@ -55,19 +55,29 @@
     /* NAV (Shared) */
     nav{
       position: sticky; top:0; z-index: 40;
-      display:flex; justify-content:center; gap:40px;
+      display:flex; justify-content:center; gap:30px;
       padding:14px 18px;
       background: var(--nav-bg); backdrop-filter: blur(4px);
       border-bottom: 1px solid rgba(77,123,72,0.18);
       border-radius: 0 0 12px 12px;
     }
-    nav a{
-      color: var(--accent-gold); text-decoration:none; font-weight:700; letter-spacing:0.4px;
+    nav a, .dropbtn { color: var(--accent-gold); text-decoration:none; font-weight:700; cursor: pointer; font-size: 1rem; font-family: 'Cabin', sans-serif; }
+    nav a:hover, .dropbtn:hover { color: var(--accent-orange); }
+    #moon-toggle{ position:absolute; right:16px; top:10px; font-size:1.5rem; cursor:pointer; }
+
+    /* Dropdown CSS */
+    .dropdown { position: relative; display: inline-block; }
+    .dropdown-content {
+      display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+      background-color: var(--card-bg); min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); border-radius: 8px; z-index: 50;
+      border: 1px solid rgba(77,123,72,0.2); overflow: hidden;
     }
-    nav a:hover{ color: var(--accent-orange); }
-    #moon-toggle{
-      position:absolute; right:16px; top:10px; font-size:1.5rem; cursor:pointer; user-select:none;
-    }
+    body.night .dropdown-content { background-color: var(--card-night); border-color: #444; }
+    .dropdown-content a { color: var(--text-color); padding: 12px 16px; text-decoration: none; display: block; text-align: center; }
+    body.night .dropdown-content a { color: var(--text-night); }
+    .dropdown-content a:hover { background-color: rgba(77,123,72,0.1); color: var(--accent-green); }
+    .dropdown:hover .dropdown-content { display: block; }
 
     .container{ max-width:900px; margin:0 auto; padding:40px 20px; position:relative; z-index:10; }
 
@@ -83,7 +93,7 @@
     /* Interactive Creator Card */
     .creator-card {
       width: 300px; height: 380px; flex-shrink: 0;
-      position: relative; perspective: 1000px;
+      position: relative; perspective: 1000px; margin: 0 auto;
     }
     .creator-inner {
       width: 100%; height: 100%;
@@ -144,6 +154,8 @@
     .arrow { transition: transform 0.3s; }
     .faq-item.active .arrow { transform: rotate(180deg); }
 
+    #loading { text-align: center; color: #888; margin-top: 20px; font-style: italic; }
+
     footer{ text-align:center; margin-top:40px; padding:30px 10px; color:#666; font-size:0.95rem; }
     body.night footer{ color:#aaa; }
 
@@ -159,6 +171,17 @@
   <a href="about.html" style="color:var(--accent-orange)">About</a>
   <a href="shop.html">Shop</a>
   <a href="contact.html">Contact</a>
+
+  <div class="dropdown">
+    <span class="dropbtn">More ▾</span>
+    <div class="dropdown-content">
+      <a href="calculator.html">Score Calculator</a>
+      <a href="deckbuilder.html">Deck Builder</a>
+      <a href="#">Rulebook (PDF)</a>
+      <a href="#">Kickstarter</a>
+    </div>
+  </div>
+
   <div id="moon-toggle" aria-hidden="true">🌙</div>
 </nav>
 
@@ -167,71 +190,33 @@
   <h1>The Scientist Behind the Game</h1>
   <p style="text-align:center; max-width:600px; margin:0 auto 40px;">Merging biological accuracy with strategic gameplay.</p>
 
-  <section class="bio-section">
+  <div id="loading">Loading creator profile...</div>
+
+  <section class="bio-section" id="bioSection" style="display:none;">
     <!-- Interactive Tilt Card -->
     <div class="creator-card" id="tiltCard">
       <div class="creator-inner">
-        <!-- Placeholder for your photo -->
-        <div class="creator-img" style="background-image: url('tavis-profile.jpg');" title="Tavis Goldwire"></div>
-        <h2>Tavis Goldwire</h2>
+        <div class="creator-img" id="creatorImg"></div>
+        <h2 id="creatorName"></h2>
         <div class="creator-role">Founder & Game Designer</div>
         <p style="margin-top:15px; font-size:0.9rem;">Master's Student in Zoology<br>University of Florida</p>
-        <div style="margin-top:20px; font-size:1.5rem;">🐊 🧬 🎲</div>
+        <div style="margin-top:20px; font-size:1.5rem;" id="creatorIcon"></div>
       </div>
     </div>
 
-    <div class="bio-text">
-      <p>Hello! I'm Tavis. I am currently pursuing my Master's in <span class="highlight">Zoology at the University of Florida</span>, where my research focuses on the complex, invisible world of <span class="highlight">microbiomes</span>.</p>
-      <p>I started <strong>Goldwire Games</strong> with a simple hypothesis: Board games are the perfect medium to teach systems thinking. In nature, nothing exists in isolation. Trophic cascades—where a change in the top predator affects the soil chemistry at the bottom—are the ultimate puzzle.</p>
-      <p>With <strong>TROPHIC</strong>, I wanted to move beyond "cute animal games" and build something that simulates the ruthless, beautiful balance of real ecosystems.</p>
+    <div class="bio-text" id="bioText">
+      <!-- Bio populated via JS -->
     </div>
   </section>
 
   <h2 style="text-align:center; margin-top:60px;">What Drives Us</h2>
-  <div class="passion-grid">
-    <div class="passion-card">
-      <h3>Scientific Accuracy</h3>
-      <p>No made-up stats. Every species ability in Trophic is derived from its actual biological niche and behavioral ecology.</p>
-    </div>
-    <div class="passion-card">
-      <h3>Conservation</h3>
-      <p>We put our money where our mouth is. <strong>10% of all profits</strong> go directly to preserving the habitats you play on the board.</p>
-    </div>
-    <div class="passion-card">
-      <h3>Education</h3>
-      <p>Designed to be accessible for families but deep enough for classrooms. We are building curriculum guides to accompany the game.</p>
-    </div>
+  <div class="passion-grid" id="passionGrid">
+    <!-- Passions populated via JS -->
   </div>
 
   <h2 style="text-align:center; margin-top:60px;">Frequently Asked Questions</h2>
-  <div class="faq-section">
-    <div class="faq-item">
-      <div class="faq-question">
-        <span>Is this game suitable for kids?</span>
-        <span class="arrow">▼</span>
-      </div>
-      <div class="faq-answer">
-        Absolutely. While the strategy runs deep, the core mechanics are intuitive. We recommend it for ages 10+, but younger nature lovers often catch on quickly!
-      </div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-question">
-        <span>When is the Kickstarter launching?</span>
-        <span class="arrow">▼</span>
-      </div>
-      <div class="faq-answer">
-        We are finalizing the artwork for the Rainforest expansion now. Sign up on the Home page to get the exact launch date alert.
-      </div>
-    </div>
-    <div class="faq-item">
-      <div class="faq-question">
-        <span>Does the game feature microorganisms?</span>
-        <span class="arrow">▼</span>
-      </div>
-      <div class="faq-answer">
-        Yes! Given Tavis's background in microbiomes, we include "Decomposer" and "Microbe" cards that are essential for nutrient cycling in the game.
-      </div>
-    </div>
+  <div class="faq-section" id="faqSection">
+    <!-- FAQs populated via JS -->
   </div>
 
 </main>
@@ -251,33 +236,111 @@
   };
   moon.addEventListener('click', toggleNight);
 
-  // 3D Tilt Effect for Creator Card
-  const card = document.getElementById('tiltCard');
-  const inner = card.querySelector('.creator-inner');
-
-  card.addEventListener('mousemove', (e) => {
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    
-    // Calculate rotation (max 15deg)
-    const xRot = -((y - rect.height/2) / rect.height) * 20; 
-    const yRot = ((x - rect.width/2) / rect.width) * 20;
-
-    inner.style.transform = `rotateX(${xRot}deg) rotateY(${yRot}deg)`;
+  // --- CSV Loading Logic ---
+  window.addEventListener('DOMContentLoaded', async () => {
+      try {
+          const response = await fetch('creator.csv');
+          if (!response.ok) throw new Error("Could not find creator.csv");
+          const text = await response.text();
+          renderContentFromCSV(text);
+      } catch (err) {
+          document.getElementById('loading').innerHTML = `Error: ${err.message}<br>Make sure 'creator.csv' is uploaded.`;
+      }
   });
 
-  card.addEventListener('mouseleave', () => {
-    inner.style.transform = `rotateX(0deg) rotateY(0deg)`;
-  });
+  function renderContentFromCSV(csvText) {
+      const rows = csvText.trim().split('\n');
+      const bioSection = document.getElementById('bioSection');
+      const passionGrid = document.getElementById('passionGrid');
+      const faqSection = document.getElementById('faqSection');
+      
+      document.getElementById('loading').style.display = 'none';
+      bioSection.style.display = 'flex';
 
-  // FAQ Accordion
-  document.querySelectorAll('.faq-question').forEach(q => {
-    q.addEventListener('click', () => {
-      const item = q.parentElement;
-      item.classList.toggle('active');
-    });
-  });
+      // CSV Parser (simple)
+      const parseLine = (line) => {
+          const result = [];
+          let current = '';
+          let inQuotes = false;
+          for (let char of line) {
+              if (char === '"') { inQuotes = !inQuotes; }
+              else if (char === ',' && !inQuotes) { result.push(current.trim()); current = ''; }
+              else { current += char; }
+          }
+          result.push(current.trim());
+          return result;
+      };
+
+      // Skip header
+      for (let i = 1; i < rows.length; i++) {
+          const cols = parseLine(rows[i]);
+          if (cols.length < 4) continue;
+
+          // Mapping: Section(0), Key(1), Title(2), Content(3), Image(4), Icon(5)
+          const section = cols[0];
+          const title = cols[2];
+          // Handle potential double quotes from CSV
+          const content = cols[3].replace(/""/g, '"'); 
+          const image = cols[4];
+          const icon = cols[5];
+
+          if (section === 'Bio') {
+              document.getElementById('creatorName').innerText = title;
+              document.getElementById('creatorImg').style.backgroundImage = `url('${image || "tavis-profile.jpg"}')`;
+              document.getElementById('creatorIcon').innerText = icon || "🐊 🧬 🎲";
+              document.getElementById('bioText').innerHTML = `<p>${content}</p>`;
+          } else if (section === 'Passion') {
+              const card = document.createElement('div');
+              card.className = 'passion-card';
+              card.innerHTML = `<h3>${title}</h3><p>${content}</p>`;
+              passionGrid.appendChild(card);
+          } else if (section === 'FAQ') {
+              const item = document.createElement('div');
+              item.className = 'faq-item';
+              item.innerHTML = `
+                <div class="faq-question">
+                  <span>${title}</span>
+                  <span class="arrow">▼</span>
+                </div>
+                <div class="faq-answer">${content}</div>
+              `;
+              faqSection.appendChild(item);
+          }
+      }
+
+      // Re-initialize interactive elements after DOM update
+      setupAccordions();
+      setupTilt();
+  }
+
+  function setupAccordions() {
+      document.querySelectorAll('.faq-question').forEach(q => {
+        q.addEventListener('click', () => {
+          const item = q.parentElement;
+          item.classList.toggle('active');
+        });
+      });
+  }
+
+  function setupTilt() {
+      const card = document.getElementById('tiltCard');
+      const inner = card.querySelector('.creator-inner');
+
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        const xRot = -((y - rect.height/2) / rect.height) * 20; 
+        const yRot = ((x - rect.width/2) / rect.width) * 20;
+
+        inner.style.transform = `rotateX(${xRot}deg) rotateY(${yRot}deg)`;
+      });
+
+      card.addEventListener('mouseleave', () => {
+        inner.style.transform = `rotateX(0deg) rotateY(0deg)`;
+      });
+  }
 </script>
 
 </body>
