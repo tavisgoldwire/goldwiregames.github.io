@@ -43,15 +43,29 @@
     /* NAV */
     nav{
       position: sticky; top:0; z-index: 40;
-      display:flex; justify-content:center; gap:40px;
+      display:flex; justify-content:center; gap:30px;
       padding:14px 18px;
       background: var(--nav-bg); backdrop-filter: blur(4px);
       border-bottom: 1px solid rgba(77,123,72,0.18);
       border-radius: 0 0 12px 12px;
     }
-    nav a{ color: var(--accent-gold); text-decoration:none; font-weight:700; }
-    nav a:hover{ color: var(--accent-orange); }
+    nav a, .dropbtn { color: var(--accent-gold); text-decoration:none; font-weight:700; cursor: pointer; font-size: 1rem; font-family: 'Cabin', sans-serif; }
+    nav a:hover, .dropbtn:hover { color: var(--accent-orange); }
     #moon-toggle{ position:absolute; right:16px; top:10px; font-size:1.5rem; cursor:pointer; }
+
+    /* Dropdown CSS */
+    .dropdown { position: relative; display: inline-block; }
+    .dropdown-content {
+      display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+      background-color: var(--card-bg); min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); border-radius: 8px; z-index: 50;
+      border: 1px solid rgba(77,123,72,0.2); overflow: hidden;
+    }
+    body.night .dropdown-content { background-color: var(--card-night); border-color: #444; }
+    .dropdown-content a { color: var(--text-color); padding: 12px 16px; text-decoration: none; display: block; text-align: center; }
+    body.night .dropdown-content a { color: var(--text-night); }
+    .dropdown-content a:hover { background-color: rgba(77,123,72,0.1); color: var(--accent-green); }
+    .dropdown:hover .dropdown-content { display: block; }
 
     .container{ max-width:1200px; margin:0 auto; padding:40px 20px; position:relative; z-index:10; }
 
@@ -82,6 +96,7 @@
       border: 1px solid rgba(0,0,0,0.05);
       display: flex; flex-direction: column;
       position: relative;
+      animation: fadeIn 0.5s ease;
     }
     body.night .species-card { background: var(--card-night); border-color: #333; }
 
@@ -142,6 +157,8 @@
     }
     @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
 
+    #loading { text-align:center; font-style:italic; color:#888; margin: 40px; }
+
     footer{ text-align:center; margin-top:40px; padding:30px 10px; color:#666; font-size:0.95rem; }
     body.night footer{ color:#aaa; }
 
@@ -158,572 +175,35 @@
   <a href="shop.html">Shop</a>
   <a href="contact.html">Contact</a>
 
-  <div class="dropdown" style="position:relative; display:inline-block;">
-      <a href="#" class="dropbtn" style="cursor:pointer; color:var(--accent-gold); text-decoration:none; font-weight:700;">More ▾</a>
-      <div class="dropdown-content" style="display:none; position:absolute; top:100%; left:50%; transform:translateX(-50%); background:var(--card-bg); min-width:160px; box-shadow:0 8px 16px rgba(0,0,0,0.2); border-radius:8px; z-index:50; border:1px solid rgba(77,123,72,0.2);">
-        <a href="calculator.html" style="display:block; padding:12px 16px; color:var(--text-color); text-decoration:none;">Score Calculator</a>
-        <a href="deckbuilder.html" style="display:block; padding:12px 16px; color:var(--text-color); text-decoration:none;">Deck Builder</a>
-        <a href="#" style="display:block; padding:12px 16px; color:var(--text-color); text-decoration:none;">Rulebook</a>
-        <a href="#" style="display:block; padding:12px 16px; color:var(--text-color); text-decoration:none;">Kickstarter</a>
-      </div>
+  <div class="dropdown">
+    <span class="dropbtn">More ▾</span>
+    <div class="dropdown-content">
+      <a href="calculator.html">Score Calculator</a>
+      <a href="deckbuilder.html">Deck Builder</a>
+      <a href="#">Rulebook (PDF)</a>
+      <a href="#">Kickstarter</a>
+    </div>
   </div>
 
   <div id="moon-toggle" aria-hidden="true">🌙</div>
 </nav>
 
-<style>
-    /* Add logic here since we are editing the existing file without the full CSS block reset */
-    .dropdown:hover .dropdown-content { display:block !important; }
-    .dropdown-content a:hover { background: rgba(77,123,72,0.1); color: var(--accent-green) !important; }
-    body.night .dropdown-content { background: var(--card-night); border-color:#444; }
-    body.night .dropdown-content a { color: var(--text-night) !important; }
-</style>
-      <div class="species-img" style="background-color: #E8D5B5;"><span class="species-type">Decomposer</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Macrotermes bellicosus</div>
-        <h3 class="common-name">Termite</h3>
-        <span class="status-badge status-lc">Least Concern</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">Their mounds can reach 30 feet high and have internal air conditioning.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="savannah">
-      <div class="species-img" style="background-color: #BDB76B;"><span class="species-type">Producer</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Vachellia tortilis</div>
-        <h3 class="common-name">Acacia</h3>
-        <span class="status-badge status-lc">Least Concern</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">They can warn other trees of herbivores by releasing ethylene gas.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="savannah">
-      <div class="species-img" style="background-color: #8B4513;"><span class="species-type">Producer</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Adansonia digitata</div>
-        <h3 class="common-name">Baobab</h3>
-        <span class="status-badge status-lc">Least Concern</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">A single tree can store up to 32,000 gallons of water to survive drought.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="savannah">
-      <div class="species-img" style="background-color: #D2B48C;"><span class="species-type">Primary Consumer</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Eudorcas thomsonii</div>
-        <h3 class="common-name">Gazelle</h3>
-        <span class="status-badge status-lc">Least Concern</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">They "stot" (jump straight up) to show predators they are too fit to chase.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="savannah">
-      <div class="species-img" style="background-color: #F0E68C;"><span class="species-type">Primary Consumer</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Equus quagga</div>
-        <h3 class="common-name">Zebra</h3>
-        <span class="status-badge status-nt">Near Threatened</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">Their stripes may confuse biting flies like the tsetse fly.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="savannah">
-      <div class="species-img" style="background-color: #708090;"><span class="species-type">Primary Consumer</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Connochaetes taurinus</div>
-        <h3 class="common-name">Blue Wildebeest</h3>
-        <span class="status-badge status-lc">Least Concern</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">Their annual migration involves over 1.5 million animals.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="savannah">
-      <div class="species-img" style="background-color: #2F4F4F;"><span class="species-type">Primary Consumer</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Struthio camelus</div>
-        <h3 class="common-name">Ostrich</h3>
-        <span class="status-badge status-lc">Least Concern</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">They have the largest eyes of any land animal, bigger than their brains.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="savannah">
-      <div class="species-img" style="background-color: #808000;"><span class="species-type">Primary Consumer</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Phacochoerus africanus</div>
-        <h3 class="common-name">Warthog</h3>
-        <span class="status-badge status-lc">Least Concern</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">They enter their burrows backward to defend against predators with tusks.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="savannah">
-      <div class="species-img" style="background-color: #CD853F;"><span class="species-type">Primary Consumer</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Giraffa tippelskirchi</div>
-        <h3 class="common-name">Maasai Giraffe</h3>
-        <span class="status-badge status-en">Endangered</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">Their tongues are purple-black to prevent sunburn while eating.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="savannah">
-      <div class="species-img" style="background-color: #778899;"><span class="species-type">Large Herbivore</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Hippopotamus amphibius</div>
-        <h3 class="common-name">Hippo</h3>
-        <span class="status-badge status-vu">Vulnerable</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">Despite their size, they can outrun a human on land.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="savannah">
-      <div class="species-img" style="background-color: #A9A9A9;"><span class="species-type">Keystone Species</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Loxodonta africana</div>
-        <h3 class="common-name">African Elephant</h3>
-        <span class="status-badge status-en">Endangered</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">They are "ecosystem engineers" that maintain grasslands by knocking down trees.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="savannah">
-      <div class="species-img" style="background-color: #CD5C5C;"><span class="species-type">Scavenger/Predator</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Crocuta crocuta</div>
-        <h3 class="common-name">Spotted Hyena</h3>
-        <span class="status-badge status-lc">Least Concern</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">They are more closely related to cats than dogs, despite their appearance.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="savannah">
-      <div class="species-img" style="background-color: #FFA07A;"><span class="species-type">Predator</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Panthera pardus</div>
-        <h3 class="common-name">Leopard</h3>
-        <span class="status-badge status-vu">Vulnerable</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">Strong enough to drag prey heavier than themselves up into trees.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="savannah">
-      <div class="species-img" style="background-color: #FFD700;"><span class="species-type">Predator</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Acinonyx jubatus</div>
-        <h3 class="common-name">Cheetah</h3>
-        <span class="status-badge status-vu">Vulnerable</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">The fastest land animal, capable of reaching 60-70 mph in seconds.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="savannah">
-      <div class="species-img" style="background-color: #DEB887;"><span class="species-type">Apex Predator</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Panthera leo</div>
-        <h3 class="common-name">Lion</h3>
-        <span class="status-badge status-vu">Vulnerable</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">A lion's roar can be heard from 5 miles away.</div></div>
-      </div>
-    </div>
+<main class="container">
+  <h1>The Living World</h1>
+  <p style="text-align:center; max-width:600px; margin:0 auto 30px;">Filter species by habitat to learn about their roles in the ecosystem.</p>
 
-    <!-- ================= ARCTIC ================= -->
-    <div class="species-card" data-habitat="arctic">
-      <div class="species-img" style="background-color: #E0FFFF;"><span class="species-type">Producer</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Various spp.</div>
-        <h3 class="common-name">Zooplankton</h3>
-        <span class="status-badge status-dd">Data Deficient</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">These microscopic drifters are the foundation of the entire ocean food web.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="arctic">
-      <div class="species-img" style="background-color: #AFEEEE;"><span class="species-type">Producer</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Melosira arctica</div>
-        <h3 class="common-name">Ice Algae</h3>
-        <span class="status-badge status-lc">Least Concern</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">It grows on the underside of sea ice, feeding krill during winter.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="arctic">
-      <div class="species-img" style="background-color: #008B8B;"><span class="species-type">Producer</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Laminaria hyperborea</div>
-        <h3 class="common-name">Kelp</h3>
-        <span class="status-badge status-lc">Least Concern</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">Kelp forests can grow up to 18 inches in a single day.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="arctic">
-      <div class="species-img" style="background-color: #FF69B4;"><span class="species-type">Consumer</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Gonatus fabricii</div>
-        <h3 class="common-name">Gonatus Squid</h3>
-        <span class="status-badge status-lc">Least Concern</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">The most abundant squid in the Arctic, a key food source for whales.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="arctic">
-      <div class="species-img" style="background-color: #FFB6C1;"><span class="species-type">Primary Consumer</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Euphausia superba</div>
-        <h3 class="common-name">Krill</h3>
-        <span class="status-badge status-lc">Least Concern</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">A blue whale can eat up to 4 tons of krill in a single day.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="arctic">
-      <div class="species-img" style="background-color: #B0C4DE;"><span class="species-type">Consumer</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Boreogadus saida</div>
-        <h3 class="common-name">Arctic Cod</h3>
-        <span class="status-badge status-lc">Least Concern</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">They have antifreeze proteins in their blood to survive sub-zero water.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="arctic">
-      <div class="species-img" style="background-color: #F5DEB3;"><span class="species-type">Filter Feeder</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Mya truncata</div>
-        <h3 class="common-name">Clams</h3>
-        <span class="status-badge status-lc">Least Concern</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">A favorite food of walruses, who suck them right out of their shells.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="arctic">
-      <div class="species-img" style="background-color: #4682B4;"><span class="species-type">Consumer</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Balaena mysticetus</div>
-        <h3 class="common-name">Bowhead Whale</h3>
-        <span class="status-badge status-lc">Least Concern</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">They can live for over 200 years, the longest of any mammal.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="arctic">
-      <div class="species-img" style="background-color: #708090;"><span class="species-type">Consumer</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Monodon monoceros</div>
-        <h3 class="common-name">Narwhal</h3>
-        <span class="status-badge status-lc">Least Concern</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">The "tusk" is actually an elongated tooth with millions of nerve endings.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="arctic">
-      <div class="species-img" style="background-color: #D3D3D3;"><span class="species-type">Consumer</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Pusa hispida</div>
-        <h3 class="common-name">Ringed Seal</h3>
-        <span class="status-badge status-lc">Least Concern</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">They maintain breathing holes in the ice by clawing at them constantly.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="arctic">
-      <div class="species-img" style="background-color: #ADD8E6;"><span class="species-type">Consumer</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Sterna paradisaea</div>
-        <h3 class="common-name">Arctic Tern</h3>
-        <span class="status-badge status-lc">Least Concern</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">They migrate pole-to-pole every year, covering 44,000 miles.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="arctic">
-      <div class="species-img" style="background-color: #8B4513;"><span class="species-type">Consumer</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Odobenus rosmarus</div>
-        <h3 class="common-name">Walrus</h3>
-        <span class="status-badge status-vu">Vulnerable</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">They can sleep while floating in water by inflating air sacs in their necks.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="arctic">
-      <div class="species-img" style="background-color: #2F4F4F;"><span class="species-type">Predator</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Somniosus microcephalus</div>
-        <h3 class="common-name">Greenland Shark</h3>
-        <span class="status-badge status-vu">Vulnerable</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">They have the slowest metabolism and can live up to 500 years.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="arctic">
-      <div class="species-img" style="background-color: #000000;"><span class="species-type">Apex Predator</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Orcinus orca</div>
-        <h3 class="common-name">Killer Whale</h3>
-        <span class="status-badge status-dd">Data Deficient</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">They hunt in packs like wolves and have distinct dialects.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="arctic">
-      <div class="species-img" style="background-color: #F0F8FF;"><span class="species-type">Apex Predator</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Ursus maritimus</div>
-        <h3 class="common-name">Polar Bear</h3>
-        <span class="status-badge status-vu">Vulnerable</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">They are classified as marine mammals because they spend most of their life on sea ice.</div></div>
-      </div>
-    </div>
+  <!-- Filter Controls -->
+  <div class="filter-bar" id="filters">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="savannah">Savannah</button>
+    <button class="filter-btn" data-filter="arctic">Arctic</button>
+    <button class="filter-btn" data-filter="rainforest">Rainforest</button>
+    <button class="filter-btn" data-filter="temperate">Temperate</button>
+  </div>
 
-    <!-- ================= RAINFOREST ================= -->
-    <div class="species-card" data-habitat="rainforest">
-      <div class="species-img" style="background-color: #556B2F;"><span class="species-type">Decomposer</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Fungi spp.</div>
-        <h3 class="common-name">Mycelium</h3>
-        <span class="status-badge status-lc">Least Concern</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">The "Wood Wide Web" connects trees underground, sharing nutrients.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="rainforest">
-      <div class="species-img" style="background-color: #228B22;"><span class="species-type">Producer</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Bertholletia excelsa</div>
-        <h3 class="common-name">Brazil Nut Tree</h3>
-        <span class="status-badge status-vu">Vulnerable</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">It relies entirely on the Agouti (a rodent) to crack its hard shell and spread seeds.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="rainforest">
-      <div class="species-img" style="background-color: #8B4513;"><span class="species-type">Producer</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Theobroma cacao</div>
-        <h3 class="common-name">Cocoa Tree</h3>
-        <span class="status-badge status-lc">Least Concern</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">Its flowers are pollinated by tiny midges, not bees.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="rainforest">
-      <div class="species-img" style="background-color: #A0522D;"><span class="species-type">Primary Consumer</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Atta spp.</div>
-        <h3 class="common-name">Leaf Cutter Ant</h3>
-        <span class="status-badge status-lc">Least Concern</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">They don't eat leaves; they farm a fungus on the leaves they cut.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="rainforest">
-      <div class="species-img" style="background-color: #FFA500;"><span class="species-type">Consumer</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Ramphastos toco</div>
-        <h3 class="common-name">Toco Toucan</h3>
-        <span class="status-badge status-lc">Least Concern</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">Their huge bill helps regulate body temperature by releasing heat.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="rainforest">
-      <div class="species-img" style="background-color: #FF4500;"><span class="species-type">Consumer</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Dendrobates tinctorius</div>
-        <h3 class="common-name">Poison Dart Frog</h3>
-        <span class="status-badge status-lc">Least Concern</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">Their poison comes from the ants and termites they eat in the wild.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="rainforest">
-      <div class="species-img" style="background-color: #696969;"><span class="species-type">Insectivore</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Myrmecophaga tridactyla</div>
-        <h3 class="common-name">Giant Anteater</h3>
-        <span class="status-badge status-vu">Vulnerable</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">It has no teeth but a 2-foot long sticky tongue.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="rainforest">
-      <div class="species-img" style="background-color: #8FBC8F;"><span class="species-type">Consumer</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Bradypus variegatus</div>
-        <h3 class="common-name">Three-Toed Sloth</h3>
-        <span class="status-badge status-lc">Least Concern</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">They move so slowly that algae grows on their fur, camouflaging them.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="rainforest">
-      <div class="species-img" style="background-color: #000000;"><span class="species-type">Consumer</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Alouatta spp.</div>
-        <h3 class="common-name">Howler Monkey</h3>
-        <span class="status-badge status-lc">Least Concern</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">Their call is the loudest of any land animal and can be heard 3 miles away.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="rainforest">
-      <div class="species-img" style="background-color: #DAA520;"><span class="species-type">Consumer</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Hydrochoerus hydrochaeris</div>
-        <h3 class="common-name">Capybara</h3>
-        <span class="status-badge status-lc">Least Concern</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">The world's largest rodent, they are excellent swimmers.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="rainforest">
-      <div class="species-img" style="background-color: #FFC0CB;"><span class="species-type">Predator</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Inia geoffrensis</div>
-        <h3 class="common-name">Amazon River Dolphin</h3>
-        <span class="status-badge status-en">Endangered</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">Their neck vertebrae aren't fused, allowing them to turn their heads 90 degrees.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="rainforest">
-      <div class="species-img" style="background-color: #006400;"><span class="species-type">Apex Predator</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Eunectes murinus</div>
-        <h3 class="common-name">Green Anaconda</h3>
-        <span class="status-badge status-lc">Least Concern</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">The heaviest snake in the world, capable of eating caimans whole.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="rainforest">
-      <div class="species-img" style="background-color: #F4A460;"><span class="species-type">Predator</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Leopardus pardalis</div>
-        <h3 class="common-name">Ocelot</h3>
-        <span class="status-badge status-lc">Least Concern</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">No two ocelots have the same coat pattern; it's like a fingerprint.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="rainforest">
-      <div class="species-img" style="background-color: #2F4F4F;"><span class="species-type">Predator</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Melanosuchus niger</div>
-        <h3 class="common-name">Black Caiman</h3>
-        <span class="status-badge status-lc">Least Concern</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">The largest predator in the Amazon basin, reaching up to 16 feet.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="rainforest">
-      <div class="species-img" style="background-color: #FFD700;"><span class="species-type">Apex Predator</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Panthera onca</div>
-        <h3 class="common-name">Jaguar</h3>
-        <span class="status-badge status-nt">Near Threatened</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">They have the strongest bite of any cat, able to pierce turtle shells.</div></div>
-      </div>
-    </div>
-
-    <!-- ================= TEMPERATE FOREST ================= -->
-    <div class="species-card" data-habitat="temperate">
-      <div class="species-img" style="background-color: #228B22;"><span class="species-type">Producer</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Pinus spp.</div>
-        <h3 class="common-name">Pine Tree</h3>
-        <span class="status-badge status-lc">Least Concern</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">Some pine cones only open to release seeds during the heat of a forest fire.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="temperate">
-      <div class="species-img" style="background-color: #006400;"><span class="species-type">Producer</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Picea spp.</div>
-        <h3 class="common-name">Spruce Tree</h3>
-        <span class="status-badge status-lc">Least Concern</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">Spruce wood is known for its resonance, making it ideal for violins.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="temperate">
-      <div class="species-img" style="background-color: #800080;"><span class="species-type">Producer</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Vaccinium spp.</div>
-        <h3 class="common-name">Huckleberry</h3>
-        <span class="status-badge status-lc">Least Concern</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">A critical food source for grizzly bears in late summer.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="temperate">
-      <div class="species-img" style="background-color: #696969;"><span class="species-type">Consumer</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Erethizon dorsatum</div>
-        <h3 class="common-name">Porcupine</h3>
-        <span class="status-badge status-lc">Least Concern</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">They cannot shoot their quills, but the quills have barbs that make them hard to remove.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="temperate">
-      <div class="species-img" style="background-color: #CD5C5C;"><span class="species-type">Insectivore</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Picidae spp.</div>
-        <h3 class="common-name">Woodpecker</h3>
-        <span class="status-badge status-lc">Least Concern</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">Their tongues wrap around their skulls to cushion their brains from impact.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="temperate">
-      <div class="species-img" style="background-color: #000000;"><span class="species-type">Omnivore</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Mephitis mephitis</div>
-        <h3 class="common-name">Striped Skunk</h3>
-        <span class="status-badge status-lc">Least Concern</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">They can spray their musk accurately up to 10 feet away.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="temperate">
-      <div class="species-img" style="background-color: #A9A9A9;"><span class="species-type">Omnivore</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Procyon lotor</div>
-        <h3 class="common-name">Raccoon</h3>
-        <span class="status-badge status-lc">Least Concern</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">Their front paws are extremely sensitive, especially when wet, helping them identify food.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="temperate">
-      <div class="species-img" style="background-color: #8B4513;"><span class="species-type">Keystone Species</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Castor canadensis</div>
-        <h3 class="common-name">Beaver</h3>
-        <span class="status-badge status-lc">Least Concern</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">Their dams create wetlands that support thousands of other species.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="temperate">
-      <div class="species-img" style="background-color: #5F9EA0;"><span class="species-type">Consumer</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Alces alces</div>
-        <h3 class="common-name">Moose</h3>
-        <span class="status-badge status-lc">Least Concern</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">They can dive underwater up to 20 feet to eat aquatic plants.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="temperate">
-      <div class="species-img" style="background-color: #D2B48C;"><span class="species-type">Consumer</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Cervus canadensis</div>
-        <h3 class="common-name">Elk</h3>
-        <span class="status-badge status-lc">Least Concern</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">Bull elks bugle to attract mates, a sound that carries for miles.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="temperate">
-      <div class="species-img" style="background-color: #FF8C00;"><span class="species-type">Omnivore</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Vulpes vulpes</div>
-        <h3 class="common-name">Red Fox</h3>
-        <span class="status-badge status-lc">Least Concern</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">They use Earth's magnetic field to judge distance when pouncing on prey in snow.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="temperate">
-      <div class="species-img" style="background-color: #4B0082;"><span class="species-type">Predator</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Bubo virginianus</div>
-        <h3 class="common-name">Great Horned Owl</h3>
-        <span class="status-badge status-lc">Least Concern</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">Their grip strength is 500 psi—stronger than a human hand.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="temperate">
-      <div class="species-img" style="background-color: #F4A460;"><span class="species-type">Predator</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Canis latrans</div>
-        <h3 class="common-name">Coyote</h3>
-        <span class="status-badge status-lc">Least Concern</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">Highly adaptable, they have expanded their range to include every state except Hawaii.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="temperate">
-      <div class="species-img" style="background-color: #DEB887;"><span class="species-type">Predator</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Puma concolor</div>
-        <h3 class="common-name">Cougar</h3>
-        <span class="status-badge status-lc">Least Concern</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">They cannot roar, but they can purr like a house cat.</div></div>
-      </div>
-    </div>
-    <div class="species-card" data-habitat="temperate">
-      <div class="species-img" style="background-color: #8B0000;"><span class="species-type">Apex Predator</span></div>
-      <div class="card-body">
-        <div class="scientific-name">Ursus arctos horribilis</div>
-        <h3 class="common-name">Grizzly Bear</h3>
-        <span class="status-badge status-vu">Vulnerable</span>
-        <div class="fact-box"><button class="fact-btn">Did you know? ▼</button><div class="fact-content">Despite their weight (up to 800 lbs), they can run at 35 mph.</div></div>
-      </div>
-    </div>
-
+  <div class="species-grid" id="grid">
+    <div id="loading">Loading species data...</div>
+    <!-- Cards will be injected here via JS -->
   </div>
 </main>
 
@@ -742,40 +222,135 @@
   };
   moon.addEventListener('click', toggleNight);
 
-  // Filter Logic
-  const buttons = document.querySelectorAll('.filter-btn');
-  const cards = document.querySelectorAll('.species-card');
+  // --- CSV Loading Logic ---
+  window.addEventListener('DOMContentLoaded', async () => {
+      try {
+          const response = await fetch('cards.csv');
+          if (!response.ok) throw new Error("Could not find cards.csv");
+          const text = await response.text();
+          renderCardsFromCSV(text);
+      } catch (err) {
+          document.getElementById('loading').innerHTML = `Error: ${err.message}<br>Make sure 'cards.csv' is uploaded.`;
+      }
+  });
 
-  buttons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      // Remove active class from all buttons
-      buttons.forEach(b => b.classList.remove('active'));
-      // Add active to clicked
-      btn.classList.add('active');
+  function renderCardsFromCSV(csvText) {
+      const rows = csvText.trim().split('\n');
+      const grid = document.getElementById('grid');
+      grid.innerHTML = ''; // Clear loading
 
-      const filter = btn.getAttribute('data-filter');
+      // CSV Parser (simple)
+      const parseLine = (line) => {
+          const result = [];
+          let current = '';
+          let inQuotes = false;
+          for (let char of line) {
+              if (char === '"') { inQuotes = !inQuotes; }
+              else if (char === ',' && !inQuotes) { result.push(current.trim()); current = ''; }
+              else { current += char; }
+          }
+          result.push(current.trim());
+          return result;
+      };
 
-      cards.forEach(card => {
-        if (filter === 'all' || card.getAttribute('data-habitat') === filter) {
-          card.style.display = 'flex';
-          // optional fade in animation
-          card.style.opacity = '0';
-          setTimeout(() => card.style.opacity = '1', 50);
-        } else {
-          card.style.display = 'none';
-        }
+      // Skip header (row 0)
+      for (let i = 1; i < rows.length; i++) {
+          const cols = parseLine(rows[i]);
+          if (cols.length < 10) continue;
+
+          // Mapping based on your CSV structure:
+          // 0: Animal (Name)
+          // 2: Color (used for background hint)
+          // 3: Habitat (Maasai, Arctic, Rockies, Jungle, Tagia)
+          // 5: Level (used for role/tier)
+          // 6: Trait (used for pill badge or role)
+          // 7: Ability (Could be the "Fact" if no explicit fact column exists yet)
+          // 10: Game (Filter for Base if desired, or show all)
+
+          const name = cols[0];
+          const habitatRaw = cols[3] || "Unknown";
+          const level = cols[5] || "0";
+          const trait = cols[6] || "Species";
+          const abilityText = cols[7] || "No description available.";
+          
+          // Map CSV Habitat to CSS Class/Filter ID
+          let habitatClass = "unknown";
+          let habitatColor = "#ccc";
+          
+          const h = habitatRaw.toLowerCase();
+          if (h.includes("maasai")) { habitatClass = "savannah"; habitatColor = "#E8D5B5"; }
+          else if (h.includes("arctic")) { habitatClass = "arctic"; habitatColor = "#AFEEEE"; }
+          else if (h.includes("rockies") || h.includes("tagia")) { habitatClass = "temperate"; habitatColor = "#A9A9A9"; }
+          else if (h.includes("jungle") || h.includes("amazon")) { habitatClass = "rainforest"; habitatColor = "#90EE90"; }
+
+          // Create Card HTML
+          const card = document.createElement('div');
+          card.className = "species-card";
+          card.setAttribute('data-habitat', habitatClass);
+          
+          card.innerHTML = `
+            <div class="species-img" style="background-color: ${habitatColor};">
+              <span class="species-type">Level ${level}</span>
+            </div>
+            <div class="card-body">
+              <div class="scientific-name">${trait}</div>
+              <h3 class="common-name">${name}</h3>
+              <span class="status-badge status-lc">Base Set</span>
+              
+              <div class="range-map">
+                <div class="range-map-bg"></div>
+                <div class="range-highlight" style="top: 50%; left: 50%; width: 10px; height: 10px;"></div>
+              </div>
+
+              <div class="fact-box">
+                <button class="fact-btn">Ability ▼</button>
+                <div class="fact-content">
+                  ${abilityText.replace(/"/g, '')}
+                </div>
+              </div>
+            </div>
+          `;
+          
+          grid.appendChild(card);
+      }
+
+      setupFilters();
+      setupAccordions();
+  }
+
+  function setupFilters() {
+      const buttons = document.querySelectorAll('.filter-btn');
+      const cards = document.querySelectorAll('.species-card');
+
+      buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          buttons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const filter = btn.getAttribute('data-filter');
+
+          cards.forEach(card => {
+            if (filter === 'all' || card.getAttribute('data-habitat') === filter) {
+              card.style.display = 'flex';
+              card.style.animation = 'none';
+              card.offsetHeight; /* trigger reflow */
+              card.style.animation = 'fadeIn 0.5s ease';
+            } else {
+              card.style.display = 'none';
+            }
+          });
+        });
       });
-    });
-  });
+  }
 
-  // Fact Reveal Logic
-  document.querySelectorAll('.fact-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const content = btn.nextElementSibling;
-      content.classList.toggle('visible');
-      btn.textContent = content.classList.contains('visible') ? 'Hide Fact ▲' : 'Did you know? ▼';
-    });
-  });
+  function setupAccordions() {
+      document.querySelectorAll('.fact-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const content = btn.nextElementSibling;
+          content.classList.toggle('visible');
+          btn.textContent = content.classList.contains('visible') ? 'Hide Ability ▲' : 'Ability ▼';
+        });
+      });
+  }
 </script>
 
 </body>
