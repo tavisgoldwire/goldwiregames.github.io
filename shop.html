@@ -1,1 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Shop | Goldwire Games</title>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Cabin:wght@400;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root{
+      --bg-color: #f7f3e9; --text-color: #2a2a2a;
+      --accent-green: #4d7b48; --accent-gold: #b8913b; --accent-orange: #d08a43;
+      --card-bg: #ffffff; --nav-bg: rgba(241,236,223,0.85);
+      --bg-night: #0d0f11; --text-night: #e8e8e8; --card-night: #141619;
+    }
+    body{ margin:0; font-family: 'Cabin', sans-serif; background: var(--bg-color) url('paper-texture.png'); background-size: 350px; color:var(--text-color); transition: all 0.3s; }
+    body.night{ background: var(--bg-night); color:var(--text-night); }
+    
+    /* Stars */
+    #stars{ pointer-events:none; position:fixed; inset:0; z-index:0; opacity:0; transition:opacity 0.9s; }
+    body.night #stars{ opacity:1; }
+    #stars::after{ content:""; position:absolute; inset:0; background-image: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.9) 0.5px, transparent 2px); background-size: 100px 100px; opacity:0.8; }
 
+    nav{ position: sticky; top:0; z-index: 40; display:flex; justify-content:center; gap:40px; padding:14px 18px; background: var(--nav-bg); backdrop-filter: blur(4px); border-bottom: 1px solid rgba(77,123,72,0.18); border-radius: 0 0 12px 12px; }
+    nav a{ color: var(--accent-gold); text-decoration:none; font-weight:700; }
+    nav a:hover{ color: var(--accent-orange); }
+    #moon-toggle{ position:absolute; right:16px; top:10px; font-size:1.5rem; cursor:pointer; }
+
+    .container{ max-width:800px; margin:0 auto; padding:60px 20px; position:relative; z-index:10; }
+    
+    .coming-soon-card {
+        background: var(--card-bg); padding: 50px; border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-top: 5px solid var(--accent-gold);
+        text-align: center; margin-bottom: 60px;
+    }
+    body.night .coming-soon-card { background: var(--card-night); }
+
+    h1 { font-family: 'Merriweather', serif; color: var(--accent-green); margin-bottom: 10px; }
+    p { font-size: 1.1rem; line-height: 1.6; }
+
+    /* === SIGNUP BOX STYLES (MATCHING INDEX.HTML) === */
+    .signup-box {
+        background: linear-gradient(135deg, var(--card-bg), #fffaf0);
+        border: 2px solid var(--accent-gold);
+        border-radius: 16px;
+        padding: 40px;
+        margin-top: 40px;
+        text-align: center;
+        box-shadow: 0 0 25px rgba(184, 145, 59, 0.25);
+        position: relative;
+        overflow: hidden;
+    }
+    body.night .signup-box {
+        background: linear-gradient(135deg, var(--card-night), #1a1d21);
+        box-shadow: 0 0 25px rgba(184, 145, 59, 0.15);
+    }
+    .signup-box::before {
+        content: ""; position: absolute; top: 0; left: 0; right: 0; height: 6px; background: var(--accent-gold);
+    }
+
+    #mc_embed_signup{ max-width:100%; margin-top: 20px; }
+    #mc_embed_signup .mc-field-group label{ font-weight:700; color:var(--accent-green); display:block; margin-bottom:8px; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px; }
+    body.night #mc_embed_signup .mc-field-group label{ color:var(--accent-green); }
+    
+    #mc_embed_signup input.email{ 
+        width:100%; max-width: 400px; 
+        padding:14px 16px; border-radius:30px; 
+        border:2px solid rgba(0,0,0,0.1); 
+        margin-bottom:15px; font-size: 1rem; text-align: center;
+    }
+    body.night #mc_embed_signup input.email{ background:#0f1412; color:var(--text-night); border:2px solid rgba(255,255,255,0.1); }
+    
+    #mc_embed_signup input.button{ 
+        background:var(--accent-gold); color:#fff; border:none; 
+        padding:14px 32px; border-radius:30px; cursor:pointer; 
+        font-weight:700; font-size: 1.1rem; letter-spacing: 0.5px;
+        transition: transform 0.2s, background 0.2s;
+        box-shadow: 0 4px 10px rgba(184, 145, 59, 0.3);
+    }
+    #mc_embed_signup input.button:hover{ background: #d6a850; transform: translateY(-2px); }
+    body.night #mc_embed_signup input.button{ box-shadow:none; }
+
+
+    footer{ text-align:center; margin-top:40px; color:#666; font-size:0.9rem; }
+  </style>
+</head>
+<body>
+<div id="stars"></div>
+<nav>
+  <a href="index.html">Home</a>
+  <a href="learn.html">Learn</a>
+  <a href="about.html">About</a>
+  <a href="shop.html" style="color:var(--accent-orange)">Shop</a>
+  <a href="contact.html">Contact</a>
+  <div id="moon-toggle">🌙</div>
+</nav>
+<main class="container">
+  
+  <!-- Main Shop Message -->
+  <div class="coming-soon-card">
+    <div style="font-size: 3rem; margin-bottom: 20px;">🛒</div>
+    <h1>Store Opening Soon</h1>
+    <p>We are currently finalizing our manufacturing partners for the initial run of <strong>Trophic</strong>.</p>
+    <p>Backers on our Kickstarter will be the first to receive the game.</p>
+  </div>
+
+  <!-- Integrated Signup Box -->
+  <div class="signup-box" id="signup">
+      <h2 style="text-align:center; color:var(--accent-gold); font-family:'Merriweather', serif; font-size: 1.8rem;">Don't Miss the Launch</h2>
+      <p style="text-align:center; max-width: 600px; margin: 0 auto;">Sign up to get notified when our <strong>Kickstarter campaign goes live</strong> and secure your Early Bird pricing.</p>
+
+      <!-- Mailchimp embed -->
+      <div id="mc_embed_signup">
+        <form action="https://gmail.us18.list-manage.com/subscribe/post?u=e45d46138093844d88767df27&amp;id=1440e8d9e1&amp;f_id=00c3b2e6f0" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" target="_blank" novalidate>
+          <div id="mc_embed_signup_scroll">
+            <div class="mc-field-group">
+              <label for="mce-EMAIL">Email Address</label>
+              <input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL" placeholder="Enter your email...">
+            </div>
+            <div aria-hidden="true" style="position:absolute; left:-5000px;"><input type="text" name="b_e45d46138093844d88767df27_1440e8d9e1" tabindex="-1" value=""></div>
+            <div class="clear" style="text-align:center;">
+              <input type="submit" value="Notify Me on Launch" name="subscribe" id="mc-embedded-subscribe" class="button">
+            </div>
+          </div>
+        </form>
+      </div>
+
+    </div>
+
+</main>
+<footer>
+    <p>&copy; 2025 Goldwire Games.</p>
+</footer>
+<script>
+  const moon = document.getElementById('moon-toggle');
+  moon.addEventListener('click', () => {
+    document.body.classList.toggle('night');
+    moon.textContent = document.body.classList.contains('night') ? '🌕' : '🌙';
+  });
+</script>
+</body>
+</html>
