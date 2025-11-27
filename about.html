@@ -6,6 +6,8 @@
   <title>About | Goldwire Games</title>
   <meta name="description" content="Meet Tavis Goldwire, the zoologist and designer behind Trophic.">
   <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Cabin:wght@400;700&display=swap" rel="stylesheet">
+  <!-- FontAwesome for Social Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
   <style>
     :root{
@@ -63,7 +65,9 @@
     }
     nav a, .dropbtn { color: var(--accent-gold); text-decoration:none; font-weight:700; cursor: pointer; font-size: 1rem; font-family: 'Cabin', sans-serif; }
     nav a:hover, .dropbtn:hover { color: var(--accent-orange); }
-    #moon-toggle{ position:absolute; right:16px; top:10px; font-size:1.5rem; cursor:pointer; }
+    #moon-toggle{
+      position:absolute; right:16px; top:10px; font-size:1.5rem; cursor:pointer; user-select:none;
+    }
 
     /* Dropdown CSS */
     .dropdown { position: relative; display: inline-block; }
@@ -79,21 +83,20 @@
     .dropdown-content a:hover { background-color: rgba(77,123,72,0.1); color: var(--accent-green); }
     .dropdown:hover .dropdown-content { display: block; }
 
-    .container{ max-width:900px; margin:0 auto; padding:40px 20px; position:relative; z-index:10; }
+    .container{ max-width:1000px; margin:0 auto; padding:40px 20px; position:relative; z-index:10; }
 
     h1, h2, h3{ font-family:'Merriweather', serif; color:var(--accent-green); }
     h1 { text-align: center; font-size: 2.5rem; margin-bottom: 10px; }
     
-    /* BIO SECTION */
-    .bio-section {
-      display: flex; gap: 40px; align-items: center; margin: 50px 0;
+    /* TEAM SECTION */
+    .team-section {
+      display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; margin: 50px 0;
     }
-    @media(max-width: 700px) { .bio-section { flex-direction: column; } }
-
+    
     /* Interactive Creator Card */
     .creator-card {
-      width: 300px; height: 380px; flex-shrink: 0;
-      position: relative; perspective: 1000px; margin: 0 auto;
+      width: 300px; height: 440px; flex-shrink: 0;
+      position: relative; perspective: 1000px;
     }
     .creator-inner {
       width: 100%; height: 100%;
@@ -104,23 +107,42 @@
       text-align: center;
       box-shadow: 0 10px 30px rgba(0,0,0,0.1);
       transition: transform 0.1s; /* Quick response for tilt effect */
+      display: flex; flex-direction: column; justify-content: center;
     }
     body.night .creator-inner { background: var(--card-night); border-color: #333; }
 
     .creator-img {
-      width: 150px; height: 150px;
+      width: 140px; height: 140px;
       background: #ddd; border-radius: 50%;
-      margin: 0 auto 20px;
+      margin: 0 auto 15px;
       border: 4px solid var(--accent-gold);
       background-size: cover; background-position: center;
     }
 
     .creator-role {
-      color: var(--accent-gold); font-weight: 700; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;
+      color: var(--accent-gold); font-weight: 700; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; margin-bottom: 10px;
     }
 
+    /* Social Links in Card */
+    .social-links {
+      display: flex; justify-content: center; gap: 15px; margin-top: 15px;
+    }
+    .social-icon {
+      color: var(--text-color); font-size: 1.4rem; transition: color 0.2s, transform 0.2s;
+    }
+    body.night .social-icon { color: var(--text-night); }
+    .social-icon:hover { color: var(--accent-gold); transform: translateY(-2px); }
+
+    .discord-btn {
+      display: inline-block; margin-top: 20px;
+      background: #5865F2; color: white; text-decoration: none;
+      padding: 8px 16px; border-radius: 20px; font-weight: bold; font-size: 0.9rem;
+      transition: background 0.2s;
+    }
+    .discord-btn:hover { background: #4752C4; }
+
     /* TEXT CONTENT */
-    .bio-text { line-height: 1.8; font-size: 1.1rem; }
+    .bio-text { line-height: 1.8; font-size: 1.1rem; margin-top: 30px; text-align: center; max-width: 800px; margin-left: auto; margin-right: auto; }
     .highlight { color: var(--accent-green); font-weight: bold; }
 
     /* PASSION GRID */
@@ -187,27 +209,48 @@
 
 <main class="container">
 
-  <h1>The Scientist Behind the Game</h1>
+  <h1>The Team Behind the Game</h1>
   <p style="text-align:center; max-width:600px; margin:0 auto 40px;">Merging biological accuracy with strategic gameplay.</p>
 
-  <div id="loading">Loading creator profile...</div>
+  <div id="loading">Loading creator profiles...</div>
 
-  <section class="bio-section" id="bioSection" style="display:none;">
-    <!-- Interactive Tilt Card -->
-    <div class="creator-card" id="tiltCard">
+  <section class="team-section" id="bioSection" style="display:none;">
+    
+    <!-- Tavis Card -->
+    <div class="creator-card tilt-card">
       <div class="creator-inner">
         <div class="creator-img" id="creatorImg"></div>
-        <h2 id="creatorName"></h2>
+        <h2 id="creatorName" style="margin: 10px 0 5px; font-size: 1.5rem;"></h2>
         <div class="creator-role">Founder & Game Designer</div>
-        <p style="margin-top:15px; font-size:0.9rem;">Master's Student in Zoology<br>University of Florida</p>
-        <div style="margin-top:20px; font-size:1.5rem;" id="creatorIcon"></div>
+        <p style="margin:0 0 15px; font-size:0.9rem; color:#666;">Master's Student in Zoology<br>University of Florida</p>
+        
+        <div class="social-links">
+            <a href="https://instagram.com/goldwiregames" target="_blank" class="social-icon" title="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://x.com/GoldwireGames" target="_blank" class="social-icon" title="X (Twitter)"><i class="fab fa-x-twitter"></i></a>
+            <a href="mailto:goldwiregames.studio@gmail.com" class="social-icon" title="Email"><i class="fas fa-envelope"></i></a>
+        </div>
+
+        <a href="#" class="discord-btn" title="Join our Discord Community"><i class="fab fa-discord"></i> Join Discord</a>
       </div>
     </div>
 
-    <div class="bio-text" id="bioText">
-      <!-- Bio populated via JS -->
+    <!-- Artist Brother Card (Placeholder - Update in CSV or here) -->
+    <div class="creator-card tilt-card">
+      <div class="creator-inner">
+        <div class="creator-img" style="background-image: url('brother-placeholder.jpg'); border-color: var(--accent-orange);"></div>
+        <h2 style="margin: 10px 0 5px; font-size: 1.5rem;">[Brother's Name]</h2>
+        <div class="creator-role" style="color:var(--accent-orange)">Lead Artist</div>
+        <p style="margin:0 0 15px; font-size:0.9rem; color:#666;">Bringing the ecosystem to life through vivid illustration.</p>
+        
+        <div style="font-size:1.5rem; margin-top:10px;">🎨 🖌️ 🌿</div>
+      </div>
     </div>
+
   </section>
+
+  <div class="bio-text" id="bioText">
+    <!-- Bio populated via JS -->
+  </div>
 
   <h2 style="text-align:center; margin-top:60px;">What Drives Us</h2>
   <div class="passion-grid" id="passionGrid">
@@ -279,15 +322,12 @@
           // Mapping: Section(0), Key(1), Title(2), Content(3), Image(4), Icon(5)
           const section = cols[0];
           const title = cols[2];
-          // Handle potential double quotes from CSV
           const content = cols[3].replace(/""/g, '"'); 
           const image = cols[4];
-          const icon = cols[5];
-
+          
           if (section === 'Bio') {
               document.getElementById('creatorName').innerText = title;
               document.getElementById('creatorImg').style.backgroundImage = `url('${image || "tavis-profile.jpg"}')`;
-              document.getElementById('creatorIcon').innerText = icon || "🐊 🧬 🎲";
               document.getElementById('bioText').innerHTML = `<p>${content}</p>`;
           } else if (section === 'Passion') {
               const card = document.createElement('div');
@@ -308,7 +348,6 @@
           }
       }
 
-      // Re-initialize interactive elements after DOM update
       setupAccordions();
       setupTilt();
   }
@@ -323,22 +362,26 @@
   }
 
   function setupTilt() {
-      const card = document.getElementById('tiltCard');
-      const inner = card.querySelector('.creator-inner');
+      // Select all cards with class 'tilt-card'
+      const cards = document.querySelectorAll('.tilt-card');
 
-      card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        
-        const xRot = -((y - rect.height/2) / rect.height) * 20; 
-        const yRot = ((x - rect.width/2) / rect.width) * 20;
+      cards.forEach(card => {
+          const inner = card.querySelector('.creator-inner');
 
-        inner.style.transform = `rotateX(${xRot}deg) rotateY(${yRot}deg)`;
-      });
+          card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const xRot = -((y - rect.height/2) / rect.height) * 20; 
+            const yRot = ((x - rect.width/2) / rect.width) * 20;
 
-      card.addEventListener('mouseleave', () => {
-        inner.style.transform = `rotateX(0deg) rotateY(0deg)`;
+            inner.style.transform = `rotateX(${xRot}deg) rotateY(${yRot}deg)`;
+          });
+
+          card.addEventListener('mouseleave', () => {
+            inner.style.transform = `rotateX(0deg) rotateY(0deg)`;
+          });
       });
   }
 </script>
