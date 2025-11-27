@@ -3,197 +3,83 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>About | Goldwire Games</title>
-  <meta name="description" content="Meet Tavis Goldwire, the zoologist and designer behind Trophic.">
+  <title>Contact | Goldwire Games</title>
   <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Cabin:wght@400;700&display=swap" rel="stylesheet">
-  <!-- FontAwesome for Social Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Reliable FontAwesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
   <style>
     :root{
-      --bg-color: #f7f3e9;
-      --text-color: #2a2a2a;
-      --accent-green: #4d7b48;
-      --accent-orange: #d08a43;
-      --accent-gold: #b8913b;
-      --card-bg: #ffffff;
-      --nav-bg: rgba(241,236,223,0.85);
-
-      --bg-night: #0d0f11;
-      --text-night: #e8e8e8;
-      --card-night: #141619;
+      --bg-color: #f7f3e9; --text-color: #2a2a2a;
+      --accent-green: #4d7b48; --accent-gold: #b8913b; --accent-orange: #d08a43;
+      --card-bg: #ffffff; --nav-bg: rgba(241,236,223,0.85);
+      --bg-night: #0d0f11; --text-night: #e8e8e8; --card-night: #141619;
     }
-
-    *{box-sizing:border-box; transition: all 0.22s ease;}
-    body{
-      margin:0;
-      font-family: 'Cabin', system-ui, -apple-system, sans-serif;
-      background: var(--bg-color) url('paper-texture.png'); /* Assumed texture */
-      background-size: 350px;
-      color:var(--text-color);
-    }
-    body.night{
-      background: var(--bg-night);
-      color:var(--text-night);
-    }
-
-    /* Stars layer (Shared) */
-    #stars{
-      pointer-events:none; position:fixed; inset:0; z-index:0; opacity:0; transition:opacity 0.9s ease-in-out;
-    }
+    body{ margin:0; font-family: 'Cabin', sans-serif; background: var(--bg-color) url('paper-texture.png'); background-size: 350px; color:var(--text-color); transition: all 0.3s; }
+    body.night{ background: var(--bg-night); color:var(--text-night); }
+    
+    /* Stars */
+    #stars{ pointer-events:none; position:fixed; inset:0; z-index:0; opacity:0; transition:opacity 0.9s; }
     body.night #stars{ opacity:1; }
-    #stars::after{
-      content:""; position:absolute; inset:0;
-      background-image:
-        radial-gradient(circle at 20% 30%, rgba(255,255,255,0.95) 0.5px, transparent 2px),
-        radial-gradient(circle at 70% 18%, rgba(255,255,255,0.9) 0.6px, transparent 2px);
-      filter: blur(0.6px);
-      animation: twinkle 3.8s infinite;
-    }
-    @keyframes twinkle{
-      0%, 100%{ opacity:0.8; } 50%{ opacity:1; }
-    }
+    #stars::after{ content:""; position:absolute; inset:0; background-image: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.9) 0.5px, transparent 2px); background-size: 100px 100px; opacity:0.8; }
 
-    /* NAV (Shared) */
-    nav{
-      position: sticky; top:0; z-index: 40;
-      display:flex; justify-content:center; gap:30px;
-      padding:14px 18px;
-      background: var(--nav-bg); backdrop-filter: blur(4px);
-      border-bottom: 1px solid rgba(77,123,72,0.18);
-      border-radius: 0 0 12px 12px;
-    }
+    /* NAV with Dropdown */
+    nav{ position: sticky; top:0; z-index: 40; display:flex; justify-content:center; gap:30px; padding:14px 18px; background: var(--nav-bg); backdrop-filter: blur(4px); border-bottom: 1px solid rgba(77,123,72,0.18); border-radius: 0 0 12px 12px; }
     nav a, .dropbtn { color: var(--accent-gold); text-decoration:none; font-weight:700; cursor: pointer; font-size: 1rem; font-family: 'Cabin', sans-serif; }
     nav a:hover, .dropbtn:hover { color: var(--accent-orange); }
-    #moon-toggle{
-      position:absolute; right:16px; top:10px; font-size:1.5rem; cursor:pointer; user-select:none;
-    }
+    #moon-toggle{ position:absolute; right:16px; top:10px; font-size:1.5rem; cursor:pointer; }
 
     /* Dropdown CSS */
     .dropdown { position: relative; display: inline-block; }
-    .dropdown-content {
-      display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
-      background-color: var(--card-bg); min-width: 160px;
-      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); border-radius: 8px; z-index: 50;
-      border: 1px solid rgba(77,123,72,0.2); overflow: hidden;
-    }
+    .dropdown-content { display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); background-color: var(--card-bg); min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); border-radius: 8px; z-index: 50; border: 1px solid rgba(77,123,72,0.2); overflow: hidden; }
     body.night .dropdown-content { background-color: var(--card-night); border-color: #444; }
     .dropdown-content a { color: var(--text-color); padding: 12px 16px; text-decoration: none; display: block; text-align: center; }
     body.night .dropdown-content a { color: var(--text-night); }
     .dropdown-content a:hover { background-color: rgba(77,123,72,0.1); color: var(--accent-green); }
     .dropdown:hover .dropdown-content { display: block; }
 
-    .container{ max-width:1000px; margin:0 auto; padding:40px 20px; position:relative; z-index:10; }
-
-    h1, h2, h3{ font-family:'Merriweather', serif; color:var(--accent-green); }
-    h1 { text-align: center; font-size: 2.5rem; margin-bottom: 10px; }
+    .container{ max-width:700px; margin:0 auto; padding:60px 20px; position:relative; z-index:10; }
     
-    /* TEAM SECTION */
-    .team-section {
-      display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; margin: 50px 0;
+    .contact-card {
+        background: var(--card-bg); padding: 40px; border-radius: 12px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.08); border-top: 4px solid var(--accent-gold);
     }
+    body.night .contact-card { background: var(--card-night); }
+
+    h1 { font-family: 'Merriweather', serif; color: var(--accent-green); text-align: center; margin-bottom: 20px; }
+    p { font-size: 1.1rem; line-height: 1.6; text-align: center; margin-bottom: 30px; color: #666; }
+    body.night p { color: #aaa; }
     
-    /* Interactive Creator Card */
-    .creator-card {
-      width: 300px; height: 440px; flex-shrink: 0;
-      position: relative; perspective: 1000px;
+    .form-group { margin-bottom: 20px; }
+    label { display: block; font-weight: bold; margin-bottom: 8px; color: var(--accent-green); }
+    input, textarea { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ccc; font-family: inherit; }
+    body.night input, body.night textarea { background: #222; color: #fff; border-color: #444; }
+    
+    button {
+        width: 100%; padding: 14px; background: var(--accent-gold); color: white; border: none;
+        border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 1rem; transition: background 0.2s;
     }
-    .creator-inner {
-      width: 100%; height: 100%;
-      background: var(--card-bg);
-      border: 1px solid rgba(77,123,72,0.2);
-      border-radius: 16px;
-      padding: 20px;
-      text-align: center;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-      transition: transform 0.1s; /* Quick response for tilt effect */
-      display: flex; flex-direction: column; justify-content: center;
-    }
-    body.night .creator-inner { background: var(--card-night); border-color: #333; }
+    button:hover { background: var(--accent-orange); }
 
-    .creator-img {
-      width: 140px; height: 140px;
-      background: #ddd; border-radius: 50%;
-      margin: 0 auto 15px;
-      border: 4px solid var(--accent-gold);
-      background-size: cover; background-position: center;
-    }
-
-    .creator-role {
-      color: var(--accent-gold); font-weight: 700; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; margin-bottom: 10px;
-    }
-
-    /* Social Links in Card */
-    .social-links {
-      display: flex; justify-content: center; gap: 15px; margin-top: 15px;
-    }
-    .social-icon {
-      color: var(--text-color); font-size: 1.4rem; transition: color 0.2s, transform 0.2s;
-    }
+    /* Social Links Row */
+    .social-row { display: flex; justify-content: center; gap: 25px; margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(0,0,0,0.1); }
+    .social-icon { color: var(--text-color); font-size: 1.8rem; transition: transform 0.2s, color 0.2s; text-decoration: none; }
+    .social-icon:hover { color: var(--accent-gold); transform: translateY(-3px); }
     body.night .social-icon { color: var(--text-night); }
-    .social-icon:hover { color: var(--accent-gold); transform: translateY(-2px); }
 
-    .discord-btn {
-      display: inline-block; margin-top: 20px;
-      background: #5865F2; color: white; text-decoration: none;
-      padding: 8px 16px; border-radius: 20px; font-weight: bold; font-size: 0.9rem;
-      transition: background 0.2s;
-    }
-    .discord-btn:hover { background: #4752C4; }
-
-    /* TEXT CONTENT */
-    .bio-text { line-height: 1.8; font-size: 1.1rem; margin-top: 30px; text-align: center; max-width: 800px; margin-left: auto; margin-right: auto; }
-    .highlight { color: var(--accent-green); font-weight: bold; }
-
-    /* PASSION GRID */
-    .passion-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 40px;
-    }
-    .passion-card {
-      background: var(--card-bg); padding: 25px; border-radius: 12px;
-      border-top: 4px solid var(--accent-gold);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    }
-    body.night .passion-card { background: var(--card-night); }
-
-    /* FAQ ACCORDION */
-    .faq-item {
-      background: var(--card-bg); margin-bottom: 15px; border-radius: 8px; overflow: hidden;
-      border: 1px solid rgba(0,0,0,0.05);
-    }
-    body.night .faq-item { background: var(--card-night); border-color: #333; }
-    
-    .faq-question {
-      padding: 20px; font-weight: 700; cursor: pointer; display: flex; justify-content: space-between; align-items: center;
-    }
-    .faq-question:hover { color: var(--accent-gold); }
-    .faq-answer {
-      padding: 0 20px; max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s ease;
-      color: #666; font-size: 0.95rem; line-height: 1.6;
-    }
-    body.night .faq-answer { color: #aaa; }
-    .faq-item.active .faq-answer { padding-bottom: 20px; max-height: 200px; }
-    .arrow { transition: transform 0.3s; }
-    .faq-item.active .arrow { transform: rotate(180deg); }
-
-    #loading { text-align: center; color: #888; margin-top: 20px; font-style: italic; }
-
-    footer{ text-align:center; margin-top:40px; padding:30px 10px; color:#666; font-size:0.95rem; }
-    body.night footer{ color:#aaa; }
-
+    footer{ text-align:center; margin-top:40px; color:#666; font-size:0.9rem; }
   </style>
 </head>
 <body>
-
-<div id="stars" aria-hidden="true"></div>
+<div id="stars"></div>
 
 <nav>
   <a href="index.html">Home</a>
   <a href="learn.html">Learn</a>
-  <a href="about.html" style="color:var(--accent-orange)">About</a>
+  <a href="about.html">About</a>
   <a href="shop.html">Shop</a>
-  <a href="contact.html">Contact</a>
-
+  <a href="contact.html" style="color:var(--accent-orange)">Contact</a>
+  
   <div class="dropdown">
     <span class="dropbtn">More ▾</span>
     <div class="dropdown-content">
@@ -204,64 +90,38 @@
     </div>
   </div>
 
-  <div id="moon-toggle" aria-hidden="true">🌙</div>
+  <div id="moon-toggle">🌙</div>
 </nav>
 
 <main class="container">
-
-  <h1>The Team Behind the Game</h1>
-  <p style="text-align:center; max-width:600px; margin:0 auto 40px;">Merging biological accuracy with strategic gameplay.</p>
-
-  <div id="loading">Loading creator profiles...</div>
-
-  <section class="team-section" id="bioSection" style="display:none;">
+  <h1>Get in Touch</h1>
+  
+  <div class="contact-card">
+    <p>Have questions about gameplay, retail inquiries, or press? Send us a message directly.</p>
     
-    <!-- Tavis Card -->
-    <div class="creator-card tilt-card">
-      <div class="creator-inner">
-        <div class="creator-img" id="creatorImg"></div>
-        <h2 id="creatorName" style="margin: 10px 0 5px; font-size: 1.5rem;"></h2>
-        <div class="creator-role">Founder & Game Designer</div>
-        <p style="margin:0 0 15px; font-size:0.9rem; color:#666;">Master's Student in Zoology<br>University of Florida</p>
-        
-        <div class="social-links">
-            <a href="https://instagram.com/goldwiregames" target="_blank" class="social-icon" title="Instagram"><i class="fab fa-instagram"></i></a>
-            <a href="https://x.com/GoldwireGames" target="_blank" class="social-icon" title="X (Twitter)"><i class="fab fa-x-twitter"></i></a>
-            <a href="mailto:goldwiregames.studio@gmail.com" class="social-icon" title="Email"><i class="fas fa-envelope"></i></a>
+    <form action="mailto:goldwiregames.studio@gmail.com" method="post" enctype="text/plain">
+        <div class="form-group">
+            <label>Name</label>
+            <input type="text" name="name" required placeholder="Jane Doe">
         </div>
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" name="mail" required placeholder="jane@example.com">
+        </div>
+        <div class="form-group">
+            <label>Message</label>
+            <textarea name="comment" rows="5" required placeholder="How can we help?"></textarea>
+        </div>
+        <button type="submit">Send Message</button>
+    </form>
 
-        <a href="#" class="discord-btn" title="Join our Discord Community"><i class="fab fa-discord"></i> Join Discord</a>
-      </div>
+    <!-- Updated Social Row with explicit X Icon -->
+    <div class="social-row">
+        <a href="https://instagram.com/goldwiregames" target="_blank" class="social-icon" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://x.com/GoldwireGames" target="_blank" class="social-icon" title="X (Twitter)"><i class="fa-brands fa-x-twitter"></i></a>
+        <a href="mailto:goldwiregames.studio@gmail.com" class="social-icon" title="Email"><i class="fa-solid fa-envelope"></i></a>
     </div>
-
-    <!-- Artist Brother Card (Placeholder - Update in CSV or here) -->
-    <div class="creator-card tilt-card">
-      <div class="creator-inner">
-        <div class="creator-img" style="background-image: url('brother-placeholder.jpg'); border-color: var(--accent-orange);"></div>
-        <h2 style="margin: 10px 0 5px; font-size: 1.5rem;">[Brother's Name]</h2>
-        <div class="creator-role" style="color:var(--accent-orange)">Lead Artist</div>
-        <p style="margin:0 0 15px; font-size:0.9rem; color:#666;">Bringing the ecosystem to life through vivid illustration.</p>
-        
-        <div style="font-size:1.5rem; margin-top:10px;">🎨 🖌️ 🌿</div>
-      </div>
-    </div>
-
-  </section>
-
-  <div class="bio-text" id="bioText">
-    <!-- Bio populated via JS -->
   </div>
-
-  <h2 style="text-align:center; margin-top:60px;">What Drives Us</h2>
-  <div class="passion-grid" id="passionGrid">
-    <!-- Passions populated via JS -->
-  </div>
-
-  <h2 style="text-align:center; margin-top:60px;">Frequently Asked Questions</h2>
-  <div class="faq-section" id="faqSection">
-    <!-- FAQs populated via JS -->
-  </div>
-
 </main>
 
 <footer>
@@ -271,120 +131,11 @@
 </footer>
 
 <script>
-  // Night Mode Logic
   const moon = document.getElementById('moon-toggle');
-  const toggleNight = () => {
+  moon.addEventListener('click', () => {
     document.body.classList.toggle('night');
     moon.textContent = document.body.classList.contains('night') ? '🌕' : '🌙';
-  };
-  moon.addEventListener('click', toggleNight);
-
-  // --- CSV Loading Logic ---
-  window.addEventListener('DOMContentLoaded', async () => {
-      try {
-          const response = await fetch('creator.csv');
-          if (!response.ok) throw new Error("Could not find creator.csv");
-          const text = await response.text();
-          renderContentFromCSV(text);
-      } catch (err) {
-          document.getElementById('loading').innerHTML = `Error: ${err.message}<br>Make sure 'creator.csv' is uploaded.`;
-      }
   });
-
-  function renderContentFromCSV(csvText) {
-      const rows = csvText.trim().split('\n');
-      const bioSection = document.getElementById('bioSection');
-      const passionGrid = document.getElementById('passionGrid');
-      const faqSection = document.getElementById('faqSection');
-      
-      document.getElementById('loading').style.display = 'none';
-      bioSection.style.display = 'flex';
-
-      // CSV Parser (simple)
-      const parseLine = (line) => {
-          const result = [];
-          let current = '';
-          let inQuotes = false;
-          for (let char of line) {
-              if (char === '"') { inQuotes = !inQuotes; }
-              else if (char === ',' && !inQuotes) { result.push(current.trim()); current = ''; }
-              else { current += char; }
-          }
-          result.push(current.trim());
-          return result;
-      };
-
-      // Skip header
-      for (let i = 1; i < rows.length; i++) {
-          const cols = parseLine(rows[i]);
-          if (cols.length < 4) continue;
-
-          // Mapping: Section(0), Key(1), Title(2), Content(3), Image(4), Icon(5)
-          const section = cols[0];
-          const title = cols[2];
-          const content = cols[3].replace(/""/g, '"'); 
-          const image = cols[4];
-          
-          if (section === 'Bio') {
-              document.getElementById('creatorName').innerText = title;
-              document.getElementById('creatorImg').style.backgroundImage = `url('${image || "tavis-profile.jpg"}')`;
-              document.getElementById('bioText').innerHTML = `<p>${content}</p>`;
-          } else if (section === 'Passion') {
-              const card = document.createElement('div');
-              card.className = 'passion-card';
-              card.innerHTML = `<h3>${title}</h3><p>${content}</p>`;
-              passionGrid.appendChild(card);
-          } else if (section === 'FAQ') {
-              const item = document.createElement('div');
-              item.className = 'faq-item';
-              item.innerHTML = `
-                <div class="faq-question">
-                  <span>${title}</span>
-                  <span class="arrow">▼</span>
-                </div>
-                <div class="faq-answer">${content}</div>
-              `;
-              faqSection.appendChild(item);
-          }
-      }
-
-      setupAccordions();
-      setupTilt();
-  }
-
-  function setupAccordions() {
-      document.querySelectorAll('.faq-question').forEach(q => {
-        q.addEventListener('click', () => {
-          const item = q.parentElement;
-          item.classList.toggle('active');
-        });
-      });
-  }
-
-  function setupTilt() {
-      // Select all cards with class 'tilt-card'
-      const cards = document.querySelectorAll('.tilt-card');
-
-      cards.forEach(card => {
-          const inner = card.querySelector('.creator-inner');
-
-          card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            
-            const xRot = -((y - rect.height/2) / rect.height) * 20; 
-            const yRot = ((x - rect.width/2) / rect.width) * 20;
-
-            inner.style.transform = `rotateX(${xRot}deg) rotateY(${yRot}deg)`;
-          });
-
-          card.addEventListener('mouseleave', () => {
-            inner.style.transform = `rotateX(0deg) rotateY(0deg)`;
-          });
-      });
-  }
 </script>
-
 </body>
 </html>
