@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Deck Builder | Goldwire Games</title>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Cabin:wght@400;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root{
+      --bg-color: #f7f3e9; --text-color: #2a2a2a;
+      --accent-green: #4d7b48; --accent-gold: #b8913b; --accent-orange: #d08a43;
+      --card-bg: #ffffff; --nav-bg: rgba(241,236,223,0.95);
+      --bg-night: #0d0f11; --text-night: #e8e8e8; --card-night: #141619;
+    }
+    *{box-sizing:border-box; transition: all 0.22s ease;}
+    body{ margin:0; font-family: 'Cabin', sans-serif; background: var(--bg-color) url('paper-texture.png'); background-size: 350px; color:var(--text-color); }
+    body.night{ background: var(--bg-night); color:var(--text-night); }
+    
+    #stars{ pointer-events:none; position:fixed; inset:0; z-index:0; opacity:0; transition:opacity 0.9s; }
+    body.night #stars{ opacity:1; }
+    #stars::after{ content:""; position:absolute; inset:0; background-image: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.9) 0.5px, transparent 2px); background-size: 100px 100px; opacity:0.8; }
+
+    nav{ position: sticky; top:0; z-index: 40; display:flex; justify-content:center; gap:30px; padding:14px 18px; background: var(--nav-bg); backdrop-filter: blur(4px); border-bottom: 1px solid rgba(77,123,72,0.18); border-radius: 0 0 12px 12px; }
+    nav a, .dropbtn { color: var(--accent-gold); text-decoration:none; font-weight:700; font-family: 'Cabin', sans-serif; cursor: pointer; font-size: 1rem; }
+    nav a:hover, .dropbtn:hover { color: var(--accent-orange); }
+    #moon-toggle{ position:absolute; right:16px; top:10px; font-size:1.5rem; cursor:pointer; }
+
+    .dropdown { position: relative; display: inline-block; }
+    .dropdown-content { display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); background-color: var(--card-bg); min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); border-radius: 8px; z-index: 50; border: 1px solid rgba(77,123,72,0.2); overflow: hidden; }
+    body.night .dropdown-content { background-color: var(--card-night); border-color: #444; }
+    .dropdown-content a { color: var(--text-color); padding: 12px 16px; text-decoration: none; display: block; text-align: center; }
+    body.night .dropdown-content a { color: var(--text-night); }
+    .dropdown-content a:hover { background-color: rgba(77,123,72,0.1); color: var(--accent-green); }
+    .dropdown:hover .dropdown-content { display: block; }
+
+    .container{ max-width:1100px; margin:0 auto; padding:40px 20px; position:relative; z-index:10; }
+
+    h1 { font-family: 'Merriweather', serif; color: var(--accent-green); text-align: center; margin-bottom: 10px; }
+    .subtitle { text-align: center; color: #666; margin-bottom: 30px; }
+    body.night .subtitle { color: #aaa; }
+
+    .controls { text-align: center; margin-bottom: 30px; display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; }
+    .color-btn { padding: 10px 24px; border: 2px solid transparent; border-radius: 25px; cursor: pointer; font-weight: 800; font-family: 'Cabin', sans-serif; opacity: 0.8; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: all 0.2s; }
+    .color-btn:hover { transform: translateY(-2px); opacity: 1; }
+    .color-btn.active { opacity: 1; border-color: #222; transform: scale(1.05); box-shadow: 0 6px 12px rgba(0,0,0,0.15); }
+    body.night .color-btn.active { border-color: #fff; }
+    
+    .btn-yellow { background: #FFD700; color: #333; }
+    .btn-blue { background: #4dabf7; color: #fff; }
+    .btn-green { background: #69db7c; color: #222; }
+    .btn-orange { background: #ff922b; color: #fff; }
+    .btn-white { background: #e9ecef; color: #212529; border: 1px solid #adb5bd; }
+    body.night .btn-white { background: #343a40; color: #f8f9fa; border: 1px solid #6c757d; }
+
+    .builder-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+    @media (max-width: 768px) { .builder-grid { grid-template-columns: 1fr; } }
+
+    .panel { background: var(--card-bg); padding: 20px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.08); display: flex; flex-direction: column; height: 70vh; }
+    body.night .panel { background: var(--card-night); }
+    .panel h2 { margin-top: 0; color: var(--accent-gold); border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+
+    .card-list { overflow-y: auto; flex-grow: 1; padding-right: 5px; }
+    .card-list::-webkit-scrollbar { width: 8px; }
+    .card-list::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); }
+    .card-list::-webkit-scrollbar-thumb { background: rgba(77,123,72,0.3); border-radius: 4px; }
+
+    .card-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 10px; border-bottom: 1px solid rgba(0,0,0,0.05); cursor: pointer; user-select: none; }
+    .card-item:hover { background: rgba(0,0,0,0.03); }
+    .card-item.disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .item-left { display: flex; flex-direction: column; }
+    .item-name { font-weight: bold; font-size: 1.05rem; }
+    .item-meta { font-size: 0.8rem; color: #666; margin-top: 2px; }
+    body.night .item-meta { color: #999; }
+    
+    .item-count { background: var(--accent-green); color: white; padding: 4px 10px; border-radius: 12px; font-size: 0.9rem; font-weight: bold; min-width: 45px; text-align: center; }
+    .item-count.maxed { background: #888; }
+
+    .deck-stats { text-align: center; margin-top: 20px; padding: 15px; background: var(--accent-green); color: white; border-radius: 8px; }
+    .progress-bar { width: 100%; height: 10px; background: rgba(0,0,0,0.2); border-radius: 5px; margin-top: 10px; overflow: hidden; }
+    .progress-fill { height: 100%; background: var(--accent-gold); width: 0%; transition: width 0.3s; }
+
+    #loading { text-align: center; font-style: italic; color: #888; padding: 20px; }
+
+    footer{ text-align:center; margin-top:40px; color:#666; font-size:0.9rem; }
+  </style>
+</head>
+<body>
+<div id="stars"></div>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="learn.html">Learn</a>
+  <a href="about.html">About</a>
+  <a href="shop.html">Shop</a>
+  <a href="contact.html">Contact</a>
+  <div class="dropdown">
+    <span class="dropbtn" style="color:var(--accent-orange);">More ▾</span>
+    <div class="dropdown-content">
+      <a href="calculator.html">Score Calculator</a>
+      <a href="deckbuilder.html">Deck Builder</a>
+      <a href="#">Rulebook (PDF)</a>
+      <a href="#">Kickstarter</a>
+    </div>
+  </div>
+  <div id="moon-toggle">🌙</div>
+</nav>
+
+<main class="container">
+  <h1>Deck Builder</h1>
+  <p class="subtitle">Select a faction color and build your 50-card ecosystem deck. (Base Set)</p>
+
+  <div class="controls">
+      <button class="color-btn btn-yellow active" onclick="setFilter('Yellow')">Yellow</button>
+      <button class="color-btn btn-blue" onclick="setFilter('Blue')">Blue</button>
+      <button class="color-btn btn-green" onclick="setFilter('Green')">Green</button>
+      <button class="color-btn btn-orange" onclick="setFilter('Orange')">Orange</button>
+      <button class="color-btn btn-white" onclick="setFilter('White')">White</button>
+  </div>
+
+  <div class="builder-grid">
+      <!-- AVAILABLE CARDS -->
+      <div class="panel">
+          <h2>Available Cards <small style="font-size:0.8rem; font-weight:400; opacity:0.8;">(Sorted by Level)</small></h2>
+          <div class="card-list" id="sourceList">
+              <div id="loading">Loading cards.csv...</div>
+          </div>
+      </div>
+
+      <!-- CURRENT DECK -->
+      <div class="panel">
+          <h2>Your Deck <span id="deckCount">0/50</span></h2>
+          <div class="card-list" id="deckList">
+              <div style="text-align:center; color:#999; margin-top:20px;">Click cards on the left to add them</div>
+          </div>
+          
+          <div class="deck-stats">
+              <div id="deckStatusText">Deck Incomplete</div>
+              <div class="progress-bar"><div class="progress-fill" id="deckProgress"></div></div>
+          </div>
+          <button onclick="resetDeck()" style="margin-top:10px; background:transparent; border:none; color:#ddd; cursor:pointer; text-decoration:underline;">Clear Deck</button>
+      </div>
+  </div>
+</main>
+
+<footer>
+    <p>&copy; 2025 Goldwire Games. All rights reserved.</p>
+</footer>
+
+<script>
+  let allCards = [];
+  let activeColor = "Yellow";
+  let deck = {}; 
+  let totalCards = 0;
+
+  // 1. Fetch CSV on Load
+  window.addEventListener('DOMContentLoaded', async () => {
+      try {
+          const response = await fetch('cards.csv');
+          if (!response.ok) throw new Error("Could not find cards.csv");
+          const text = await response.text();
+          parseCSV(text);
+      } catch (err) {
+          document.getElementById('loading').innerHTML = `Error: ${err.message}<br>Make sure 'cards.csv' is uploaded to the same folder.`;
+      }
+  });
+
+  // 2. Parse CSV Logic
+  function parseCSV(text) {
+      const lines = text.trim().split('\n');
+      const headers = lines[0].split(','); // Assuming standard headers
+      
+      // Simple CSV parser handling quotes
+      const parseLine = (line) => {
+          const result = [];
+          let current = '';
+          let inQuotes = false;
+          for (let char of line) {
+              if (char === '"') { inQuotes = !inQuotes; }
+              else if (char === ',' && !inQuotes) { result.push(current.trim()); current = ''; }
+              else { current += char; }
+          }
+          result.push(current.trim());
+          return result;
+      };
+
+      // Process lines (skip header)
+      allCards = [];
+      for (let i = 1; i < lines.length; i++) {
+          const cols = parseLine(lines[i]);
+          if (cols.length < 10) continue; // Skip empty/malformed lines
+
+          // Mapping based on your Excel structure:
+          // 0: Animal (Name)
+          // 1: Amount
+          // 2: Color (e.g. "Yellow, Blue")
+          // 3: Habitat
+          // 5: Level
+          // 10: Game (Filter for "Base")
+
+          const gameType = cols[10] || "";
+          
+          if (gameType.trim() === "Base") {
+              allCards.push({
+                  name: cols[0],
+                  amount: parseInt(cols[1]) || 0,
+                  colors: cols[2].replace(/"/g, '').split(',').map(c => c.trim()), // Handle "Yellow, Blue"
+                  level: cols[5].replace(/"/g, '') // Keep as string for now to handle "2, 3"
+              });
+          }
+      }
+      
+      // Initialize view
+      document.getElementById('loading').style.display = 'none';
+      setFilter('Yellow');
+  }
+
+  // 3. Helper for sorting levels
+  function parseLevel(lvl) {
+      if (typeof lvl === 'string') {
+          return parseFloat(lvl.split(',')[0]);
+      }
+      return lvl;
+  }
+
+  // 4. UI Logic (Same as before)
+  function setFilter(color) {
+      activeColor = color;
+      document.querySelectorAll('.color-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelector(`.btn-${color.toLowerCase()}`).classList.add('active');
+
+      // Filter existing deck if color changed? Optional.
+      // For now, let's keep invalid cards in deck but visually indicate? 
+      // Or just auto-remove non-matching. Auto-remove is cleaner for deck building rules.
+      for (let cardName in deck) {
+          const card = allCards.find(c => c.name === cardName);
+          if (!card || !card.colors.includes(activeColor)) {
+              delete deck[cardName];
+          }
+      }
+      recalcTotal();
+      render();
+  }
+
+  function addToDeck(cardName) {
+      if (totalCards >= 50) return; 
+      const card = allCards.find(c => c.name === cardName);
+      const currentQty = deck[cardName] || 0;
+      if (currentQty < card.amount) {
+          deck[cardName] = currentQty + 1;
+          recalcTotal();
+          render();
+      }
+  }
+
+  function removeFromDeck(cardName) {
+      if (deck[cardName]) {
+          deck[cardName]--;
+          if (deck[cardName] <= 0) delete deck[cardName];
+          recalcTotal();
+          render();
+      }
+  }
+
+  function recalcTotal() {
+      totalCards = Object.values(deck).reduce((sum, val) => sum + val, 0);
+      const progress = (totalCards / 50) * 100;
+      document.getElementById('deckCount').innerText = `${totalCards}/50`;
+      document.getElementById('deckProgress').style.width = `${progress}%`;
+      
+      const status = document.getElementById('deckStatusText');
+      if (totalCards === 50) {
+          status.innerText = "Deck Complete!";
+          status.parentElement.style.background = "var(--accent-gold)";
+      } else {
+          status.innerText = `${50 - totalCards} cards needed`;
+          status.parentElement.style.background = "var(--accent-green)";
+      }
+  }
+
+  function resetDeck() {
+      deck = {};
+      recalcTotal();
+      render();
+  }
+
+  function render() {
+      const sourceList = document.getElementById('sourceList');
+      const deckList = document.getElementById('deckList');
+      
+      // Clear previous list (keep loading spinner if hidden)
+      // Actually simply clearing innerHTML is fine as loading div is hidden by now
+      sourceList.innerHTML = '';
+      deckList.innerHTML = '';
+
+      // Filter & Sort
+      const filteredCards = allCards.filter(c => c.colors.includes(activeColor));
+      filteredCards.sort((a, b) => parseLevel(a.level) - parseLevel(b.level));
+
+      // Render Source
+      filteredCards.forEach(card => {
+          const inDeck = deck[card.name] || 0;
+          const remaining = card.amount - inDeck;
+          
+          const el = document.createElement('div');
+          const isMaxed = remaining === 0;
+          const isFull = totalCards >= 50;
+          
+          el.className = `card-item ${isMaxed || isFull ? 'disabled' : ''}`;
+          if (!isMaxed && !isFull) {
+              el.onclick = () => addToDeck(card.name);
+          }
+          
+          el.innerHTML = `
+              <div class="item-left">
+                  <span class="item-name">${card.name}</span>
+                  <span class="item-meta">Lvl ${card.level} | ${card.colors.join('/')}</span>
+              </div>
+              <span class="item-count ${isMaxed ? 'maxed' : ''}">${inDeck}/${card.amount}</span>
+          `;
+          sourceList.appendChild(el);
+      });
+
+      // Render Deck
+      if (Object.keys(deck).length === 0) {
+          deckList.innerHTML = '<div style="text-align:center; color:#999; margin-top:20px;">Click cards on the left to add them</div>';
+      } else {
+          const deckKeys = Object.keys(deck).sort((a,b) => {
+              const cardA = allCards.find(c => c.name === a);
+              const cardB = allCards.find(c => c.name === b);
+              if(!cardA || !cardB) return 0;
+              return parseLevel(cardA.level) - parseLevel(cardB.level);
+          });
+
+          for (let name of deckKeys) {
+              const qty = deck[name];
+              const card = allCards.find(c => c.name === name);
+              
+              const el = document.createElement('div');
+              el.className = 'card-item';
+              el.onclick = () => removeFromDeck(name);
+              el.innerHTML = `
+                  <div class="item-left">
+                      <span class="item-name">${name}</span>
+                      <span class="item-meta">Lvl ${card ? card.level : '?'}</span>
+                  </div>
+                  <span class="item-count" style="background:var(--accent-orange)">${qty}</span>
+              `;
+              deckList.appendChild(el);
+          }
+      }
+  }
+
+  // Night Mode
+  const moon = document.getElementById('moon-toggle');
+  moon.addEventListener('click', () => {
+    document.body.classList.toggle('night');
+    moon.textContent = document.body.classList.contains('night') ? '🌕' : '🌙';
+  });
+</script>
+</body>
+</html>
