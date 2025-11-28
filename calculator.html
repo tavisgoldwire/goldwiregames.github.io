@@ -178,9 +178,10 @@
       tucked: 0,
       energy: 0,
       leftover: 0,
-      cards: {}
+      cards: {} // { "Zebra": 2, "Lion": 1 }
   };
 
+  // 1. Fetch CSV on Load
   window.addEventListener('DOMContentLoaded', async () => {
       try {
           const response = await fetch('cards.csv');
@@ -192,6 +193,7 @@
       }
   });
 
+  // 2. Parse CSV & Scoring Logic
   function parseCSV(text) {
       const lines = text.trim().split('\n');
       cardDatabase = [];
@@ -223,19 +225,25 @@
           let val = 0;
           let target = null;
           let targetLvl = null;
+          let divisor = 1;
 
-          // --- FIXED LOGIC: CHECK "PER" FIRST ---
+          // --- PARSE SCORING COLUMN ---
           if (scoreRule.includes("per")) {
               const parts = scoreRule.split("per");
-              val = parseFloat(parts[0]);
+              val = parseFloat(parts[0]); // "1"
               const condition = parts[1].trim();
+
+              // Check for divisor (e.g. "2 stored")
+              // Matches start of condition string for a number
+              const divMatch = condition.match(/^(\d+)\s/);
+              if (divMatch) {
+                  divisor = parseFloat(divMatch[1]);
+              }
 
               if (condition.includes("self") || condition === name.toLowerCase()) {
                   type = "PER_SELF";
               } else if (condition.startsWith("l") || condition.startsWith("level")) {
-                  // Handle "L1" or "Level 1"
                   type = "PER_LEVEL";
-                  // Extract first number found in condition string
                   const match = condition.match(/\d+/);
                   targetLvl = match ? match[0] : "0"; 
               } else if (condition.includes("tucked")) {
@@ -244,6 +252,11 @@
               } else if (condition.includes("leftover") || condition.includes("unspent")) {
                   type = "PER_RESOURCE";
                   target = "leftover";
+              } else if (condition.includes("stored") || condition.includes("energy")) {
+                  // Catch "stored energy" or "unspent energy" logic
+                  // Note: unspent checked above. This catches "stored".
+                  type = "PER_RESOURCE";
+                  target = "energy";
               } else {
                   type = "PER_OTHER";
                   target = condition; 
@@ -255,7 +268,7 @@
 
           const primaryLevel = levelStr.includes(',') ? levelStr.split(',')[0].trim() : levelStr;
 
-          cardDatabase.push({ name, type, val, target, targetLvl, level: primaryLevel });
+          cardDatabase.push({ name, type, val, target, targetLvl, level: primaryLevel, divisor });
       }
 
       initUI();
@@ -350,15 +363,18 @@
   function calculate() {
       let score = 0;
       
-      score += state.tucked; 
-      score += state.energy; 
+      // 1. Habitat Resources
+      score += state.tucked; // 1 pt each
+      score += state.energy; // 1 pt each
 
+      // 2. Card Scores
       Object.keys(state.cards).forEach(cardName => {
           const count = state.cards[cardName];
           const rules = cardDatabase.find(c => c.name === cardName);
           if (!rules) return;
 
           let cardPoints = 0;
+          const divisor = rules.divisor || 1;
 
           if (rules.type === 'FIXED') {
               cardPoints = rules.val * count;
@@ -368,9 +384,11 @@
           }
           else if (rules.type === 'PER_RESOURCE') {
               if (rules.target === 'leftover') {
-                  cardPoints = (rules.val * state.leftover) * count;
+                  cardPoints = Math.floor((rules.val * state.leftover) / divisor) * count;
               } else if (rules.target === 'tucked') {
-                  cardPoints = (rules.val * state.tucked) * count;
+                  cardPoints = Math.floor((rules.val * state.tucked) / divisor) * count;
+              } else if (rules.target === 'energy') {
+                  cardPoints = Math.floor((rules.val * state.energy) / divisor) * count;
               }
           }
           else if (rules.type === 'PER_LEVEL') {
@@ -381,7 +399,7 @@
                      targetLevelCount += state.cards[cName];
                  }
               });
-              cardPoints = (rules.val * targetLevelCount) * count;
+              cardPoints = Math.floor((rules.val * targetLevelCount) / divisor) * count;
           }
           else if (rules.type === 'PER_OTHER') {
               let otherCount = 0;
@@ -390,7 +408,7 @@
                       otherCount += state.cards[cName];
                   }
               });
-              cardPoints = (rules.val * otherCount) * count;
+              cardPoints = Math.floor((rules.val * otherCount) / divisor) * count;
           }
 
           score += cardPoints;
@@ -409,6 +427,7 @@
       calculate();
   });
 
+  // Night Mode
   const moon = document.getElementById('moon-toggle');
   moon.addEventListener('click', () => {
     document.body.classList.toggle('night');
