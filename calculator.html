@@ -178,10 +178,9 @@
       tucked: 0,
       energy: 0,
       leftover: 0,
-      cards: {} // { "Zebra": 2, "Lion": 1 }
+      cards: {}
   };
 
-  // 1. Fetch CSV on Load
   window.addEventListener('DOMContentLoaded', async () => {
       try {
           const response = await fetch('cards.csv');
@@ -193,12 +192,8 @@
       }
   });
 
-  // 2. Parse CSV & Scoring Logic
   function parseCSV(text) {
       const lines = text.trim().split('\n');
-      // Skip header, assuming standard columns from your file:
-      // Animal(0), Amount(1), Color(2), Habitat(3), Cost(4), Level(5), Trait(6), Ability(7), Scoring(8), Strength(9), Game(10)
-
       cardDatabase = [];
       
       const parseLine = (line) => {
@@ -217,43 +212,32 @@
       for (let i = 1; i < lines.length; i++) {
           const cols = parseLine(lines[i]);
           if (cols.length < 10) continue;
-
-          // Filter for Base Game only? User asked for deck builder, likely wants scorer for Base too.
-          // Or allow all? Let's allow all for scoring since playtests might mix.
-          // Let's filter by "Base" to keep it clean if desired, or just allow everything.
-          // Allowing Base for now to match Deck Builder consistency.
           if (cols[10] !== "Base") continue;
 
           const name = cols[0];
-          const levelStr = cols[5].replace(/"/g, ''); // "2, 3"
-          const scoreRule = cols[8].toLowerCase(); // e.g. "1 per L0", "5 per seal"
-          const strength = parseInt(cols[9]) || 0; // Sometimes used for simple points?
-          // Note: In your CSV, "Strength" column seems empty or unused for most. 
-          // "Scoring" column has the logic or simple points. 
-          // If Scoring is just a number "1", it's fixed points.
+          const levelStr = cols[5].replace(/"/g, ''); 
+          const scoreRule = cols[8].toLowerCase(); 
+          const strength = parseInt(cols[9]) || 0; 
 
           let type = "FIXED";
           let val = 0;
           let target = null;
           let targetLvl = null;
 
-          // -- PARSE SCORING COLUMN --
-          if (!isNaN(parseFloat(scoreRule))) {
-              // It's just a number like "1" or "3"
-              type = "FIXED";
-              val = parseFloat(scoreRule);
-          } else if (scoreRule.includes("per")) {
-              // Complex rule
+          // --- FIXED LOGIC: CHECK "PER" FIRST ---
+          if (scoreRule.includes("per")) {
               const parts = scoreRule.split("per");
-              val = parseFloat(parts[0]); // "2" from "2 per zebra"
+              val = parseFloat(parts[0]);
               const condition = parts[1].trim();
 
               if (condition.includes("self") || condition === name.toLowerCase()) {
                   type = "PER_SELF";
-              } else if (condition.startsWith("l")) {
-                  // "L0", "L1"
+              } else if (condition.startsWith("l") || condition.startsWith("level")) {
+                  // Handle "L1" or "Level 1"
                   type = "PER_LEVEL";
-                  targetLvl = condition.replace("l", ""); // "0"
+                  // Extract first number found in condition string
+                  const match = condition.match(/\d+/);
+                  targetLvl = match ? match[0] : "0"; 
               } else if (condition.includes("tucked")) {
                   type = "PER_RESOURCE";
                   target = "tucked";
@@ -262,13 +246,13 @@
                   target = "leftover";
               } else {
                   type = "PER_OTHER";
-                  // Attempt to match card name (e.g. "seal" -> "Ringed Seal")
-                  // Simple heuristic: check if any card name contains this string
                   target = condition; 
               }
+          } else if (!isNaN(parseFloat(scoreRule))) {
+              type = "FIXED";
+              val = parseFloat(scoreRule);
           }
 
-          // Handle multi-level for logic (just take first level for reference if needed)
           const primaryLevel = levelStr.includes(',') ? levelStr.split(',')[0].trim() : levelStr;
 
           cardDatabase.push({ name, type, val, target, targetLvl, level: primaryLevel });
@@ -278,7 +262,6 @@
   }
 
   function initUI() {
-      // Populate Datalist
       const dataList = document.getElementById('cardOptions');
       dataList.innerHTML = '';
       cardDatabase.sort((a,b) => a.name.localeCompare(b.name)).forEach(card => {
@@ -291,14 +274,12 @@
       document.getElementById('emptyMsg').style.display = 'block';
   }
 
-  // --- UI References ---
   const cardInput = document.getElementById('cardSelector');
   const addBtn = document.getElementById('addCardBtn');
   const cardContainer = document.getElementById('activeCards');
   const emptyMsg = document.getElementById('emptyMsg');
   const scoreDisplay = document.getElementById('finalScore');
 
-  // --- Input Syncing ---
   const setupSync = (id1, id2, key) => {
       const el1 = document.getElementById(id1);
       const el2 = document.getElementById(id2);
@@ -316,7 +297,6 @@
   setupSync('energyInput', 'energyRange', 'energy');
   setupSync('leftoverInput', 'leftoverRange', 'leftover');
 
-  // --- Add Card Logic ---
   addBtn.addEventListener('click', () => {
       const name = cardInput.value;
       const cardData = cardDatabase.find(c => c.name === name);
@@ -367,15 +347,12 @@
       }
   }
 
-  // --- Calculation Logic ---
   function calculate() {
       let score = 0;
       
-      // 1. Habitat Resources
-      score += state.tucked; // 1 pt each
-      score += state.energy; // 1 pt each
+      score += state.tucked; 
+      score += state.energy; 
 
-      // 2. Card Scores
       Object.keys(state.cards).forEach(cardName => {
           const count = state.cards[cardName];
           const rules = cardDatabase.find(c => c.name === cardName);
@@ -387,10 +364,6 @@
               cardPoints = rules.val * count;
           } 
           else if (rules.type === 'PER_SELF') {
-              // Interpret "2 per zebra": if I have 3 zebras, do they each get 6 pts? (18 total)
-              // Or is the total bonus 6? 
-              // Standard interpretation: Card text applies to CARD.
-              // "Score 2 per Zebra". Card A sees 3 zebras -> 6 pts. Card B sees 3 -> 6 pts.
               cardPoints = (rules.val * count) * count; 
           }
           else if (rules.type === 'PER_RESOURCE') {
@@ -401,19 +374,16 @@
               }
           }
           else if (rules.type === 'PER_LEVEL') {
-              // Count cards matching target level (e.g. Hyena counts L1 cards)
               let targetLevelCount = 0;
               Object.keys(state.cards).forEach(cName => {
                  const cData = cardDatabase.find(db => db.name === cName);
-                 if (cData && cData.level == rules.targetLvl) { // loose equality for string/int mix
+                 if (cData && cData.level == rules.targetLvl) { 
                      targetLevelCount += state.cards[cName];
                  }
               });
               cardPoints = (rules.val * targetLevelCount) * count;
           }
           else if (rules.type === 'PER_OTHER') {
-              // Fuzzy match target name in active cards
-              // e.g. rules.target = "seal", active card = "Ringed Seal"
               let otherCount = 0;
               Object.keys(state.cards).forEach(cName => {
                   if (cName.toLowerCase().includes(rules.target)) {
@@ -439,7 +409,6 @@
       calculate();
   });
 
-  // Night Mode
   const moon = document.getElementById('moon-toggle');
   moon.addEventListener('click', () => {
     document.body.classList.toggle('night');
