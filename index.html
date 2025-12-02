@@ -65,9 +65,8 @@ body.night #stars { opacity: 1; }
   animation: twinkle 4s infinite;
 }
 @keyframes twinkle {
-  0% { opacity: 0.7; }
+  0%,100% { opacity: 0.7; }
   50% { opacity: 1; }
-  100% { opacity: 0.7; }
 }
 
 /* -------------------------------------------------------
@@ -92,25 +91,11 @@ nav a {
 }
 nav a:hover { color: var(--accent-orange); }
 
-/* MOBILE NAV FIX */
 @media (max-width: 650px) {
   nav { flex-wrap: wrap; gap: 16px; padding: 10px 4px; }
 }
 
-/* Moon toggle */
-#moon-toggle {
-  position: absolute;
-  right: 16px;
-  top: 10px;
-  font-size: 1.65rem;
-  cursor: pointer;
-  user-select: none;
-}
-@media (max-width: 650px) {
-  #moon-toggle { top: 4px; right: 10px; }
-}
-
-/* Dropdown */
+/* DROPDOWN */
 .dropdown { position: relative; }
 .dropbtn { color: var(--accent-gold); font-weight: 700; }
 
@@ -135,14 +120,34 @@ body.night .dropdown-content {
 .dropdown-content a {
   display: block;
   padding: 12px 16px;
-  text-decoration: none;
   color: var(--text-color);
+  text-decoration: none;
 }
 body.night .dropdown-content a {
   color: var(--text-night);
 }
 .dropdown:hover .dropdown-content {
   display: block;
+}
+
+/* -------------------------------------------------------
+   BOTTOM-RIGHT MOON BUTTON (NEW)
+-------------------------------------------------------- */
+#moon-toggle {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 200;
+  font-size: 1.8rem;
+  cursor: pointer;
+  user-select: none;
+  background: rgba(0,0,0,0.25);
+  padding: 10px 14px;
+  border-radius: 50%;
+  backdrop-filter: blur(4px);
+}
+body.night #moon-toggle {
+  background: rgba(255,255,255,0.2);
 }
 
 /* -------------------------------------------------------
@@ -192,7 +197,7 @@ section h2 {
 }
 
 /* -------------------------------------------------------
-   HABITAT FLIP CARDS
+   HABITAT FLIP CARDS — FIXED + LARGE
 -------------------------------------------------------- */
 .grid {
   display: grid;
@@ -205,56 +210,70 @@ section h2 {
 }
 
 .card {
-  height: 220px;
+  height: 290px;
+  position: relative;
   perspective: 1000px;
 }
+@media (max-width: 700px) {
+  .card { height: 310px; }
+}
+
 .card .inner {
-  position: relative;
   height: 100%;
   border-radius: 14px;
   transform-style: preserve-3d;
   transition: transform 0.7s;
+  position: relative;
 }
-.card.flipped .inner {
-  transform: rotateY(180deg);
-}
+.card.flipped .inner { transform: rotateY(180deg); }
+
 .face {
   position: absolute;
   inset: 0;
-  backface-visibility: hidden;
   border-radius: 14px;
   overflow: hidden;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 /* FRONT */
 .front {
-  background: #ddd;
-  font-family: "Merriweather", serif;
-  color: white;
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
 }
+
 .front .bg {
   position: absolute;
   inset: 0;
-  background-size: cover;
-  background-position: center;
-  filter: brightness(0.65);
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat;
+  z-index: 1;
+  filter: brightness(0.68) contrast(1.05);
 }
 body.night .front .bg {
-  filter: brightness(0.45);
+  filter: brightness(0.45) contrast(1);
 }
+
+.front::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(180deg, rgba(0,0,0,0.05), rgba(0,0,0,0.45));
+}
+
 .front .title {
   position: relative;
-  z-index: 5;
-  padding: 10px 12px;
+  z-index: 3;
+  padding: 10px 16px;
   background: rgba(0,0,0,0.35);
   border-radius: 8px;
-  font-size: 1.2rem;
+  font-size: 1.35rem;
   font-weight: 700;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.5);
 }
 
 /* BACK */
@@ -262,7 +281,7 @@ body.night .front .bg {
   transform: rotateY(180deg);
   background: var(--card-bg);
   color: var(--text-color);
-  padding: 20px;
+  padding: 26px;
 }
 body.night .back {
   background: var(--card-night);
@@ -270,7 +289,7 @@ body.night .back {
 }
 
 /* -------------------------------------------------------
-   SIGNUP BOX (IMPROVED)
+   SIGNUP BOX
 -------------------------------------------------------- */
 .signup-box {
   background: linear-gradient(135deg, var(--card-bg), #fffaf0);
@@ -343,9 +362,10 @@ footer a { color: var(--accent-gold); }
       <a href="#">Kickstarter</a>
     </div>
   </div>
-
-  <div id="moon-toggle">🌙</div>
 </nav>
+
+<!-- MOON AT BOTTOM-RIGHT -->
+<div id="moon-toggle">🌙</div>
 
 <main class="container">
 
@@ -359,7 +379,7 @@ footer a { color: var(--accent-gold); }
   <p>Explore the four major habitats featured in the game. Tap or click a panel to flip it.</p>
 
   <div class="grid">
-    <!-- SAVANNAH -->
+
     <div class="card">
       <div class="inner">
         <div class="face front">
@@ -373,7 +393,6 @@ footer a { color: var(--accent-gold); }
       </div>
     </div>
 
-    <!-- ARCTIC -->
     <div class="card">
       <div class="inner">
         <div class="face front">
@@ -387,7 +406,6 @@ footer a { color: var(--accent-gold); }
       </div>
     </div>
 
-    <!-- RAINFOREST -->
     <div class="card">
       <div class="inner">
         <div class="face front">
@@ -401,7 +419,6 @@ footer a { color: var(--accent-gold); }
       </div>
     </div>
 
-    <!-- TEMPERATE -->
     <div class="card">
       <div class="inner">
         <div class="face front">
@@ -479,3 +496,4 @@ document.querySelectorAll(".card").forEach(card => {
 
 </body>
 </html>
+
