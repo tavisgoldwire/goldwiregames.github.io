@@ -1,399 +1,480 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Goldwire Games | Trophic</title>
-  <meta name="description" content="Goldwire Games - Designing board games that fight extinction. Home of TROPHIC.">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Goldwire Games | Trophic</title>
+<meta name="description" content="Goldwire Games - Designing board games that fight extinction. Home of TROPHIC.">
 
-  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Cabin:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Cabin:wght@400;700&display=swap" rel="stylesheet">
 
-  <style>
-    :root{
-      --bg-color: #f7f3e9;
-      --text-color: #2a2a2a;
-      --accent-green: #4d7b48;
-      --accent-orange: #d08a43;
-      --accent-gold: #b8913b;
-      --card-bg: #ffffff;
-      --nav-bg: rgba(241,236,223,0.85);
+<style>
+/* -------------------------------------------------------
+   ROOT + THEME COLORS
+-------------------------------------------------------- */
+:root {
+  --bg-color: #f7f3e9;
+  --text-color: #2a2a2a;
+  --accent-green: #4d7b48;
+  --accent-orange: #d08a43;
+  --accent-gold: #b8913b;
+  --card-bg: #ffffff;
+  --nav-bg: rgba(241,236,223,0.85);
 
-      --bg-night: #0d0f11;
-      --text-night: #e8e8e8;
-      --card-night: #141619;
-    }
+  --bg-night: #0d0f11;
+  --text-night: #e8e8e8;
+  --card-night: #141619;
+}
 
-    *{box-sizing:border-box; transition: all 0.22s ease;}
-    body{
-      margin:0;
-      font-family: 'Cabin', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      background: var(--bg-color) url('paper-texture.png');
-      background-size: 350px;
-      color:var(--text-color);
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-    }
-    body.night{
-      background: var(--bg-night);
-      color:var(--text-night);
-    }
+* { box-sizing: border-box; transition: all 0.2s ease; }
 
-    /* Stars layer */
-    #stars{
-      pointer-events:none;
-      position:fixed; inset:0; z-index:0; opacity:0; transition:opacity 0.9s ease-in-out;
-    }
-    body.night #stars{ opacity:1; }
-    /* gentle twinkle with CSS animation */
-    #stars::after{
-      content:"";
-      position:absolute; inset:0;
-      background-image:
-        radial-gradient(circle at 20% 30%, rgba(255,255,255,0.95) 0.5px, transparent 2px),
-        radial-gradient(circle at 70% 18%, rgba(255,255,255,0.9) 0.6px, transparent 2px),
-        radial-gradient(circle at 40% 70%, rgba(255,255,255,0.85) 0.6px, transparent 2px);
-      filter: blur(0.6px);
-      animation: twinkle 3.8s infinite;
-      opacity:0.95;
-    }
-    @keyframes twinkle{
-      0%{ transform: translateY(0) scale(1); opacity:0.8; }
-      50%{ transform: translateY(-1px) scale(1.02); opacity:1; }
-      100%{ transform: translateY(0) scale(1); opacity:0.8; }
-    }
+body {
+  margin: 0;
+  font-family: "Cabin", system-ui, sans-serif;
+  background: var(--bg-color) url('paper-texture.png');
+  background-size: 350px;
+  color: var(--text-color);
+}
+body.night {
+  background: var(--bg-night);
+  color: var(--text-night);
+}
 
-    /* NAV */
-    nav{
-      position: sticky; top:0; z-index: 40;
-      display:flex; justify-content:center; gap:40px;
-      padding:14px 18px;
-      background: var(--nav-bg); backdrop-filter: blur(4px);
-      border-bottom: 1px solid rgba(77,123,72,0.18);
-      border-radius: 0 0 12px 12px;
-    }
-    nav a{
-      color: var(--accent-gold); /* ALWAYS gold per request */
-      text-decoration:none; font-weight:700; letter-spacing:0.4px;
-    }
-    nav a:hover{ color: var(--accent-orange); }
+/* -------------------------------------------------------
+   STARFIELD
+-------------------------------------------------------- */
+#stars {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 0.9s ease-in-out;
+}
+body.night #stars { opacity: 1; }
 
-    /* moon toggle (right side) */
-    #moon-toggle{
-      position:absolute; right:16px; top:10px; font-size:1.5rem; cursor:pointer; user-select:none;
-    }
+#stars::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(255,255,255,0.95) 1px, transparent 3px),
+    radial-gradient(circle at 70% 18%, rgba(255,255,255,0.9) 1px, transparent 3px),
+    radial-gradient(circle at 40% 70%, rgba(255,255,255,0.85) 1px, transparent 3px);
+  filter: blur(0.6px);
+  animation: twinkle 4s infinite;
+}
+@keyframes twinkle {
+  0% { opacity: 0.7; }
+  50% { opacity: 1; }
+  100% { opacity: 0.7; }
+}
 
-    .container{ max-width:900px; margin:0 auto; padding:40px 20px; position:relative; z-index:10; }
+/* -------------------------------------------------------
+   NAVIGATION
+-------------------------------------------------------- */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  background: var(--nav-bg);
+  backdrop-filter: blur(6px);
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(77,123,72,0.2);
+}
+nav a {
+  color: var(--accent-gold);
+  text-decoration: none;
+  font-weight: 700;
+}
+nav a:hover { color: var(--accent-orange); }
 
-    .hero{ text-align:center; margin-bottom:36px; }
-    .hero h1{ font-family:'Merriweather', serif; font-size:3rem; margin:0 0 6px; color:var(--accent-gold); background:linear-gradient(180deg,#caaa59,#9a7a38); -webkit-background-clip:text; -webkit-text-fill-color:transparent;}
-    .hero p{ margin:0; color:#555; font-size:1.15rem; }
+/* MOBILE NAV FIX */
+@media (max-width: 650px) {
+  nav { flex-wrap: wrap; gap: 16px; padding: 10px 4px; }
+}
 
-    /* simple divider (leaf image) */
-    .divider{ width:160px; display:block; margin:36px auto; opacity:0.95; }
+/* Moon toggle */
+#moon-toggle {
+  position: absolute;
+  right: 16px;
+  top: 10px;
+  font-size: 1.65rem;
+  cursor: pointer;
+  user-select: none;
+}
+@media (max-width: 650px) {
+  #moon-toggle { top: 4px; right: 10px; }
+}
 
-    section{
-      background: var(--card-bg); border-radius:14px; padding:28px; margin:48px 0;
-      border-left:6px solid rgba(77,123,72,0.28); box-shadow: 0 6px 20px rgba(0,0,0,0.06);
-    }
-    body.night section{ background: var(--card-night); border-left-color: rgba(180,180,180,0.18); box-shadow: 0 6px 20px rgba(0,0,0,0.16); }
+/* Dropdown */
+.dropdown { position: relative; }
+.dropbtn { color: var(--accent-gold); font-weight: 700; }
 
-    section h2{ font-family:'Merriweather', serif; margin-top:0; color:var(--accent-green); }
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 160px;
+  background: var(--card-bg);
+  border-radius: 10px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.25);
+  border: 1px solid rgba(77,123,72,0.2);
+  padding: 6px 0;
+  z-index: 100;
+}
+body.night .dropdown-content {
+  background: var(--card-night);
+  border-color: rgba(255,255,255,0.1);
+}
+.dropdown-content a {
+  display: block;
+  padding: 12px 16px;
+  text-decoration: none;
+  color: var(--text-color);
+}
+body.night .dropdown-content a {
+  color: var(--text-night);
+}
+.dropdown:hover .dropdown-content {
+  display: block;
+}
 
-    /* GRID of habitat cards */
-    .grid{ display:grid; grid-template-columns: repeat(2,1fr); gap:22px; margin-top:20px; }
-    @media (max-width:700px){ .grid{ grid-template-columns:1fr; } }
+/* -------------------------------------------------------
+   LAYOUT + HERO
+-------------------------------------------------------- */
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  position: relative;
+  z-index: 10;
+}
 
-    .card{ perspective:1000px; height:200px; position:relative; }
-    .card .inner{
-      position:absolute; inset:0; border-radius:12px; transform-style:preserve-3d; transition: transform 0.7s;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-    }
-    .card.flipped .inner{ transform: rotateY(180deg); }
+.hero { text-align: center; margin-bottom: 40px; }
+.hero h1 {
+  font-family: "Merriweather", serif;
+  font-size: 3rem;
+  background: linear-gradient(180deg,#caaa59,#9a7a38);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0;
+}
+@media (max-width: 500px) {
+  .hero h1 { font-size: 2.4rem; }
+}
 
-    .face{
-      position:absolute; inset:0; backface-visibility: hidden; border-radius:12px; overflow:hidden;
-      display:flex; align-items:center; justify-content:center; text-align:center;
-      padding:14px;
-    }
+/* -------------------------------------------------------
+   SECTIONS
+-------------------------------------------------------- */
+section {
+  background: var(--card-bg);
+  border-radius: 16px;
+  padding: 26px;
+  margin: 48px 0;
+  border-left: 6px solid rgba(77,123,72,0.28);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+}
+body.night section {
+  background: var(--card-night);
+  border-left-color: rgba(200,200,200,0.18);
+}
 
-    .front{
-      background:#ddd; color:#111; font-family:'Merriweather', serif; font-size:1.6rem;
-      border:1px solid rgba(77,123,72,0.14);
-    }
-    .front .title{
-      position:relative; z-index:5; padding:8px 12px; border-radius:8px; background:linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.05));
-      color:white; font-weight:700; font-size:1.25rem; text-shadow: 0 2px 6px rgba(0,0,0,0.45);
-    }
+section h2 {
+  font-family: "Merriweather", serif;
+  margin-top: 0;
+  color: var(--accent-green);
+}
 
-    /* background image layer for front */
-    .front .bg{
-      position:absolute; inset:0; background-size:cover; background-position:center; filter:brightness(0.68);
-      transform: translateZ(-1px);
-    }
-    body.night .front .bg{ filter:brightness(0.45) contrast(0.95); }
+/* -------------------------------------------------------
+   HABITAT FLIP CARDS
+-------------------------------------------------------- */
+.grid {
+  display: grid;
+  gap: 22px;
+  grid-template-columns: repeat(2, 1fr);
+  margin-top: 20px;
+}
+@media (max-width: 700px) {
+  .grid { grid-template-columns: 1fr; }
+}
 
-    /* overlay gradient so title is readable */
-    .front:before{
-      content:""; position:absolute; inset:0; background: linear-gradient(180deg, rgba(0,0,0,0.12), rgba(0,0,0,0.36)); pointer-events:none;
-    }
+.card {
+  height: 220px;
+  perspective: 1000px;
+}
+.card .inner {
+  position: relative;
+  height: 100%;
+  border-radius: 14px;
+  transform-style: preserve-3d;
+  transition: transform 0.7s;
+}
+.card.flipped .inner {
+  transform: rotateY(180deg);
+}
+.face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: 14px;
+  overflow: hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
 
-    /* back face */
-    .back{
-      transform: rotateY(180deg);
-      background:rgba(255,255,255,0.96); color:var(--text-color); padding:20px; display:flex; flex-direction:column; justify-content:center;
-      border:1px solid rgba(77,123,72,0.10);
-    }
-    body.night .back{ background: rgba(20,22,25,0.95); color:var(--text-night); border-color: rgba(200,200,200,0.06); }
+/* FRONT */
+.front {
+  background: #ddd;
+  font-family: "Merriweather", serif;
+  color: white;
+  position: relative;
+}
+.front .bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: brightness(0.65);
+}
+body.night .front .bg {
+  filter: brightness(0.45);
+}
+.front .title {
+  position: relative;
+  z-index: 5;
+  padding: 10px 12px;
+  background: rgba(0,0,0,0.35);
+  border-radius: 8px;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
 
-    .back p{ margin:0; font-size:0.95rem; line-height:1.4; }
-    .learn-link{ margin-top:12px; display:inline-block; color:var(--accent-gold); font-weight:700; text-decoration:none; }
-    body.night .learn-link{ color:var(--accent-gold); }
+/* BACK */
+.back {
+  transform: rotateY(180deg);
+  background: var(--card-bg);
+  color: var(--text-color);
+  padding: 20px;
+}
+body.night .back {
+  background: var(--card-night);
+  color: var(--text-night);
+}
 
-    /* === UPDATED SIGNUP BOX (POPS MORE) === */
-    .signup-box {
-        background: linear-gradient(135deg, var(--card-bg), #fffaf0);
-        border: 2px solid var(--accent-gold);
-        border-radius: 16px;
-        padding: 40px;
-        margin: 60px 0;
-        text-align: center;
-        box-shadow: 0 0 25px rgba(184, 145, 59, 0.25);
-        position: relative;
-        overflow: hidden;
-    }
-    body.night .signup-box {
-        background: linear-gradient(135deg, var(--card-night), #1a1d21);
-        box-shadow: 0 0 25px rgba(184, 145, 59, 0.15);
-    }
-    
-    /* Decorative ribbon effect */
-    .signup-box::before {
-        content: "";
-        position: absolute; top: 0; left: 0; right: 0; height: 6px;
-        background: var(--accent-gold);
-    }
+/* -------------------------------------------------------
+   SIGNUP BOX (IMPROVED)
+-------------------------------------------------------- */
+.signup-box {
+  background: linear-gradient(135deg, var(--card-bg), #fffaf0);
+  border: 2px solid var(--accent-gold);
+  border-radius: 16px;
+  padding: 40px;
+  margin: 60px 0;
+  text-align: center;
+}
+body.night .signup-box {
+  background: linear-gradient(135deg, var(--card-night), #1a1d21);
+}
 
-    /* Mailchimp overrides */
-    #mc_embed_signup{ max-width:100%; margin-top: 20px; }
-    #mc_embed_signup .mc-field-group label{ font-weight:700; color:var(--accent-green); display:block; margin-bottom:8px; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px; }
-    body.night #mc_embed_signup .mc-field-group label{ color:var(--accent-green); }
-    
-    #mc_embed_signup input.email{ 
-        width:100%; max-width: 400px; 
-        padding:14px 16px; border-radius:30px; 
-        border:2px solid rgba(0,0,0,0.1); 
-        margin-bottom:15px; font-size: 1rem; text-align: center;
-    }
-    body.night #mc_embed_signup input.email{ background:#0f1412; color:var(--text-night); border:2px solid rgba(255,255,255,0.1); }
-    
-    #mc_embed_signup input.button{ 
-        background:var(--accent-gold); color:#fff; border:none; 
-        padding:14px 32px; border-radius:30px; cursor:pointer; 
-        font-weight:700; font-size: 1.1rem; letter-spacing: 0.5px;
-        transition: transform 0.2s, background 0.2s;
-        box-shadow: 0 4px 10px rgba(184, 145, 59, 0.3);
-    }
-    #mc_embed_signup input.button:hover{ background: #d6a850; transform: translateY(-2px); }
-    body.night #mc_embed_signup input.button{ box-shadow:none; }
+/* Mailchimp */
+#mc_embed_signup input.email {
+  width: 100%;
+  max-width: 400px;
+  padding: 14px;
+  border-radius: 30px;
+  border: 2px solid rgba(0,0,0,0.1);
+  text-align: center;
+}
+body.night #mc_embed_signup input.email {
+  background: #0f1412;
+  color: var(--text-night);
+  border-color: rgba(255,255,255,0.25);
+}
 
-    footer{ text-align:center; margin-top:40px; padding:30px 10px; color:#666; font-size:0.95rem; }
-    body.night footer{ color:#aaa; }
+#mc_embed_signup input.button {
+  margin-top: 10px;
+  background: var(--accent-gold);
+  color: white;
+  padding: 12px 28px;
+  border-radius: 30px;
+  font-weight: 700;
+  cursor: pointer;
+}
 
-  </style>
+/* -------------------------------------------------------
+   FOOTER
+-------------------------------------------------------- */
+footer {
+  text-align: center;
+  padding: 30px 10px;
+  color: #666;
+  font-size: 0.95rem;
+}
+body.night footer { color: #aaa; }
+footer a { color: var(--accent-gold); }
+</style>
 </head>
+
 <body>
 
-  <div id="stars" aria-hidden="true"></div>
+<div id="stars"></div>
 
-  <!-- FIXED NAVIGATION LINKS HERE -->
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="learn.html">Learn</a>
-    <a href="about.html">About</a>
-    <a href="shop.html">Shop</a>
-    <a href="contact.html">Contact</a>
+<nav>
+  <a href="index.html">Home</a>
+  <a href="learn.html">Learn</a>
+  <a href="about.html">About</a>
+  <a href="shop.html">Shop</a>
+  <a href="contact.html">Contact</a>
 
-    <!-- NEW DROPDOWN -->
-    <div class="dropdown" style="position:relative; display:inline-block;">
-      <a href="#" class="dropbtn" style="cursor:pointer;">More ▾</a>
-      <div class="dropdown-content" style="display:none; position:absolute; top:100%; left:50%; transform:translateX(-50%); background:var(--card-bg); min-width:160px; box-shadow:0 8px 16px rgba(0,0,0,0.2); border-radius:8px; z-index:50; border:1px solid rgba(77,123,72,0.2);">
-        <a href="calculator.html" style="display:block; padding:12px 16px; color:var(--text-color); text-decoration:none;">Score Calculator</a>
-        <a href="deckbuilder.html" style="display:block; padding:12px 16px; color:var(--text-color); text-decoration:none;">Deck Builder</a>
-        <a href="#" style="display:block; padding:12px 16px; color:var(--text-color); text-decoration:none;">Rulebook</a>
-        <a href="#" style="display:block; padding:12px 16px; color:var(--text-color); text-decoration:none;">Kickstarter</a>
+  <div class="dropdown">
+    <a class="dropbtn" href="#">More ▾</a>
+    <div class="dropdown-content">
+      <a href="calculator.html">Score Calculator</a>
+      <a href="deckbuilder.html">Deck Builder</a>
+      <a href="rulebook.pdf" target="_blank">Rulebook</a>
+      <a href="#">Kickstarter</a>
+    </div>
+  </div>
+
+  <div id="moon-toggle">🌙</div>
+</nav>
+
+<main class="container">
+
+<header class="hero">
+  <h1>GOLDWIRE GAMES</h1>
+  <p>Build the Ultimate Ecosystem. Save the Real World.</p>
+</header>
+
+<section>
+  <h2>Habitats</h2>
+  <p>Explore the four major habitats featured in the game. Tap or click a panel to flip it.</p>
+
+  <div class="grid">
+    <!-- SAVANNAH -->
+    <div class="card">
+      <div class="inner">
+        <div class="face front">
+          <div class="bg" style="background-image:url('savannahbackground.png')"></div>
+          <div class="title">Savannah</div>
+        </div>
+        <div class="face back">
+          <p>Open grasslands home to large herbivores and powerful apex predators.</p>
+          <a class="learn-link" href="learn.html">Learn More →</a>
+        </div>
       </div>
     </div>
 
-    <div id="moon-toggle" aria-hidden="true">🌙</div>
-  </nav>
-  
-  <style>
-    /* Dropdown Hover Logic for Index */
-    .dropdown:hover .dropdown-content { display:block !important; }
-    .dropdown-content a:hover { background: rgba(77,123,72,0.1); color: var(--accent-green) !important; }
-    body.night .dropdown-content { background: var(--card-night); border-color:#444; }
-    body.night .dropdown-content a { color: var(--text-night) !important; }
-  </style>
-
-  <main class="container">
-    <header class="hero">
-      <h1 class="gold-text">GOLDWIRE GAMES</h1>
-      <p>Build the Ultimate Ecosystem. Save the Real World.</p>
-    </header>
-
-    <img class="divider" src="leaves-divider.png" alt="leaf divider">
-
-    <section aria-labelledby="habitats-title">
-      <h2 id="habitats-title">Habitats</h2>
-      <p>Explore the four major habitats featured in the game. Click a panel to flip it over and read a short description — or go to the full Learn page.</p>
-
-      <div class="grid" id="habitat-grid">
-        <!-- Savannah -->
-        <div class="card" data-bg="savannahbackground.png" data-title="Savannah" data-desc="Open grasslands home to large herbivores and powerful apex predators.">
-          <div class="inner">
-            <div class="face front" aria-hidden="false">
-              <div class="bg" style="background-image: url('savannahbackground.png');"></div>
-              <div class="title">Savannah</div>
-            </div>
-            <div class="face back" aria-hidden="true">
-              <p>Open grasslands home to large herbivores and powerful apex predators.</p>
-              <a class="learn-link" href="learn.html" target="_blank">Learn More →</a>
-            </div>
-          </div>
+    <!-- ARCTIC -->
+    <div class="card">
+      <div class="inner">
+        <div class="face front">
+          <div class="bg" style="background-image:url('arcticbackground.png')"></div>
+          <div class="title">Arctic</div>
         </div>
-
-        <!-- Arctic -->
-        <div class="card" data-bg="arcticbackground.png" data-title="Arctic" data-desc="A frozen world of extreme survival, specialized species, and harsh conditions.">
-          <div class="inner">
-            <div class="face front">
-              <div class="bg" style="background-image: url('arcticbackground.png');"></div>
-              <div class="title">Arctic</div>
-            </div>
-            <div class="face back">
-              <p>A frozen world of extreme survival, specialized species, and harsh conditions.</p>
-              <a class="learn-link" href="learn.html" target="_blank">Learn More →</a>
-            </div>
-          </div>
+        <div class="face back">
+          <p>A frozen world of extreme survival, specialized species, and harsh conditions.</p>
+          <a class="learn-link" href="learn.html">Learn More →</a>
         </div>
-
-        <!-- Rainforest -->
-        <div class="card" data-bg="rainforestbackground.png" data-title="Rainforest" data-desc="Dense, vibrant ecosystems filled with biodiversity and layered food webs.">
-          <div class="inner">
-            <div class="face front">
-              <div class="bg" style="background-image: url('rainforestbackground.png');"></div>
-              <div class="title">Rainforest</div>
-            </div>
-            <div class="face back">
-              <p>Dense, vibrant ecosystems filled with biodiversity and layered food webs.</p>
-              <a class="learn-link" href="learn.html" target="_blank">Learn More →</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Temperate Forest -->
-        <div class="card" data-bg="temperatebackground.png" data-title="Temperate Forest" data-desc="Seasonal forests marked by rich soils, diverse mammals, and unique decomposers.">
-          <div class="inner">
-            <div class="face front">
-              <div class="bg" style="background-image: url('temperatebackground.png');"></div>
-              <div class="title">Temperate Forest</div>
-            </div>
-            <div class="face back">
-              <p>Seasonal forests marked by rich soils, diverse mammals, and unique decomposers.</p>
-              <a class="learn-link" href="learn.html" target="_blank">Learn More →</a>
-            </div>
-          </div>
-        </div>
-
       </div>
-    </section>
-
-    <img class="divider" src="leaves-divider.png" alt="leaf divider">
-
-    <section id="about-preview">
-      <h2>The Science Behind the Game</h2>
-      <p>Trophic is designed by Tavis Goldwire, a biologist and Master's student in Zoology. Drawing from real research on trophic cascades and microbial ecology, this game isn't just a simulation—it's built on the rules of nature.</p>
-      <div style="text-align:center; margin-top:20px;">
-        <a href="about.html" class="learn-link" style="font-size:1.1rem;">Meet the Creator →</a>
-      </div>
-    </section>
-
-    <section>
-      <h2>Our Mission</h2>
-      <p>We believe games can make a difference. That is why we have pledged to donate <strong>20% of all profits</strong> directly to wildlife conservation funds protecting the habitats featured in the game.</p>
-    </section>
-
-    <!-- REDESIGNED SIGNUP BOX -->
-    <div class="signup-box" id="signup">
-      <h2 style="text-align:center; color:var(--accent-gold); font-family:'Merriweather', serif; font-size: 2rem;">Join the Ecosystem</h2>
-      <p style="text-align:center; max-width: 600px; margin: 0 auto;">Don't miss the launch. Sign up to get notified when our <strong>Kickstarter campaign goes live</strong> and receive exclusive "Early Bird" backer rewards.</p>
-
-      <!-- Mailchimp embed -->
-      <div id="mc_embed_signup">
-        <form action="https://gmail.us18.list-manage.com/subscribe/post?u=e45d46138093844d88767df27&amp;id=1440e8d9e1&amp;f_id=00c3b2e6f0" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" target="_blank" novalidate>
-          <div id="mc_embed_signup_scroll">
-            <div class="mc-field-group">
-              <label for="mce-EMAIL">Email Address</label>
-              <input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL" placeholder="Enter your email...">
-            </div>
-
-            <div aria-hidden="true" style="position:absolute; left:-5000px;"><input type="text" name="b_e45d46138093844d88767df27_1440e8d9e1" tabindex="-1" value=""></div>
-
-            <div class="clear" style="text-align:center;">
-              <input type="submit" value="Notify Me on Launch" name="subscribe" id="mc-embedded-subscribe" class="button">
-            </div>
-
-          </div>
-        </form>
-      </div>
-
     </div>
 
-  </main>
+    <!-- RAINFOREST -->
+    <div class="card">
+      <div class="inner">
+        <div class="face front">
+          <div class="bg" style="background-image:url('rainforestbackground.png')"></div>
+          <div class="title">Rainforest</div>
+        </div>
+        <div class="face back">
+          <p>Dense, vibrant ecosystems filled with biodiversity and layered food webs.</p>
+          <a class="learn-link" href="learn.html">Learn More →</a>
+        </div>
+      </div>
+    </div>
 
-  <footer>
-    <p>&copy; 2025 Goldwire Games. All rights reserved.</p>
-    <p>Instagram: <a href="https://instagram.com/goldwiregames" target="_blank" rel="noopener noreferrer">@goldwiregames</a> | X: <a href="https://x.com/GoldwireGames" target="_blank" rel="noopener noreferrer">@GoldwireGames</a> </p>
-    <p><a href="mailto:goldwiregames.studio@gmail.com">Contact Us</a></p>
-  </footer>
+    <!-- TEMPERATE -->
+    <div class="card">
+      <div class="inner">
+        <div class="face front">
+          <div class="bg" style="background-image:url('temperatebackground.png')"></div>
+          <div class="title">Temperate Forest</div>
+        </div>
+        <div class="face back">
+          <p>Seasonal forests marked by rich soils, diverse mammals, and unique decomposers.</p>
+          <a class="learn-link" href="learn.html">Learn More →</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section>
+  <h2>The Science Behind the Game</h2>
+  <p>
+    TROPHIC is designed by Tavis Goldwire, a biologist and Master's student in Zoology.
+    Drawing from real research on trophic cascades and microbial ecology, the game models
+    how energy flows through real food webs.
+  </p>
+  <div style="text-align:center;">
+    <a class="learn-link" href="about.html">Meet the Creator →</a>
+  </div>
+</section>
+
+<section>
+  <h2>Our Mission</h2>
+  <p>We donate <strong>20% of all profits</strong> directly to wildlife conservation groups protecting the habitats featured in the game.</p>
+</section>
+
+<div class="signup-box">
+  <h2 style="color:var(--accent-gold); font-family:'Merriweather';">Join the Ecosystem</h2>
+  <p>Sign up to get notified when our Kickstarter launches and receive exclusive Early Bird rewards.</p>
+
+  <div id="mc_embed_signup">
+    <form action="https://gmail.us18.list-manage.com/subscribe/post?u=e45d46138093844d88767df27&amp;id=1440e8d9e1"
+      method="post" target="_blank" novalidate>
+
+      <input type="email" name="EMAIL" class="email" placeholder="Enter your email...">
+
+      <input type="submit" value="Notify Me on Launch" class="button">
+    </form>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <p>&copy; 2025 Goldwire Games. All rights reserved.</p>
+  <p>
+    Instagram: <a href="https://instagram.com/goldwiregames" target="_blank">@goldwiregames</a> |
+    X: <a href="https://x.com/GoldwireGames" target="_blank">@GoldwireGames</a>
+  </p>
+</footer>
 
 <script>
-  // moon toggle + stars
-  const moon = document.getElementById('moon-toggle');
-  const toggleNight = () => {
-    document.body.classList.toggle('night');
-    moon.textContent = document.body.classList.contains('night') ? '🌕' : '🌙';
-  };
-  moon.addEventListener('click', toggleNight);
+// Moon toggle
+const moon = document.getElementById("moon-toggle");
+moon.onclick = () => {
+  document.body.classList.toggle("night");
+  moon.textContent = document.body.classList.contains("night") ? "🌕" : "🌙";
+};
 
-  // Flip handling
-  document.querySelectorAll('.card').forEach(card => {
-    card.addEventListener('click', (e) => {
-      if (e.target.closest('.learn-link')) return;
-      card.classList.toggle('flipped');
-      const front = card.querySelector('.front');
-      const back  = card.querySelector('.back');
-      if (card.classList.contains('flipped')) {
-        front.setAttribute('aria-hidden','true');
-        back.setAttribute('aria-hidden','false');
-      } else {
-        front.setAttribute('aria-hidden','false');
-        back.setAttribute('aria-hidden','true');
-      }
-    });
+// Card flipping
+document.querySelectorAll(".card").forEach(card => {
+  card.addEventListener("click", e => {
+    if (e.target.closest(".learn-link")) return;
+    card.classList.toggle("flipped");
   });
-
-  // Load fallback images
-  document.querySelectorAll('.card .bg').forEach(bg => {
-    const url = bg.style.backgroundImage.replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
-    const img = new Image();
-    img.onload = () => { /* ok */ };
-    img.onerror = () => {
-      bg.style.backgroundImage = 'linear-gradient(180deg, rgba(200,220,200,0.6), rgba(150,180,150,0.4))';
-      bg.style.filter = 'brightness(0.9)';
-    };
-    img.src = url;
-  });
-
+});
 </script>
 
 </body>
