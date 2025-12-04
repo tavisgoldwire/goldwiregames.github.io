@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Learn | Goldwire Games</title>
+<meta name="description" content="Learn how Mammal Mania sneaks real mammal phylogeny and taxonomy into fast, chaotic gameplay. Explore the four orders, family patterns, and wild gesture cards.">
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Cabin:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+/* -------------------------------------------------------
+   ROOT + THEME COLORS (MATCH HOMEPAGE)
+-------------------------------------------------------- */
+:root{
+  --bg-color: #f7f3e9;
+  --text-color: #2a2a2a;
+  --accent-green: #4d7b48;
+  --accent-orange: #d08a43;
+  --accent-gold: #b8913b;
+  --card-bg: #ffffff;
+  --nav-bg: rgba(241,236,223,0.85);
+
+  --bg-night: #0d0f11;
+  --text-night: #e8e8e8;
+  --card-night: #141619;
+}
+
+*{ box-sizing:border-box; transition: all 0.2s ease; }
+
+body{
+  margin:0;
+  font-family:"Cabin", system-ui, sans-serif;
+  background: var(--bg-color) url('paper-texture.png');
+  background-size:350px;
+  color:var(--text-color);
+}
+body.night{
+  background:var(--bg-night);
+  color:var(--text-night);
+}
+
+/* -------------------------------------------------------
+   STARFIELD (MATCH HOMEPAGE)
+-------------------------------------------------------- */
+#stars{
+  pointer-events:none;
+  position:fixed;
+  inset:0;
+  z-index:0;
+  opacity:0;
+  transition:opacity 0.9s;
+}
+body.night #stars{ opacity:1; }
+#stars::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(255,255,255,0.9) 1px, transparent 3px),
+    radial-gradient(circle at 70% 18%, rgba(255,255,255,0.85) 1px, transparent 3px),
+    radial-gradient(circle at 40% 70%, rgba(255,255,255,0.8) 1px, transparent 3px);
+  filter: blur(0.6px);
+  animation: twinkle 4s infinite;
+}
+@keyframes twinkle{
+  0%,100%{ opacity:0.7; }
+  50%{ opacity:1; }
+}
+
+/* -------------------------------------------------------
+   NAVIGATION (MATCH HOMEPAGE)
+-------------------------------------------------------- */
+nav{
+  position:sticky;
+  top:0;
+  z-index:40;
+  display:flex;
+  justify-content:center;
+  gap:28px;
+  padding:14px 0;
+  background:var(--nav-bg);
+  backdrop-filter:blur(6px);
+  border-bottom:1px solid rgba(77,123,72,0.2);
+}
+nav a, .dropbtn{
+  color:var(--accent-gold);
+  text-decoration:none;
+  font-weight:700;
+  cursor:pointer;
+}
+nav a:hover, .dropbtn:hover{ color:var(--accent-orange); }
+
+.dropdown{ position:relative; }
+.dropdown-content{
+  display:none;
+  position:absolute;
+  top:100%;
+  left:50%;
+  transform:translateX(-50%);
+  min-width:160px;
+  background:var(--card-bg);
+  border-radius:10px;
+  box-shadow:0 8px 16px rgba(0,0,0,0.25);
+  border:1px solid rgba(77,123,72,0.2);
+  padding:6px 0;
+  z-index:100;
+}
+body.night .dropdown-content{
+  background:var(--card-night);
+  border-color:rgba(255,255,255,0.1);
+}
+.dropdown-content a{
+  display:block;
+  padding:12px 16px;
+  text-decoration:none;
+  color:var(--text-color);
+}
+body.night .dropdown-content a{ color:var(--text-night); }
+.dropdown:hover .dropdown-content{ display:block; }
+
+/* -------------------------------------------------------
+   MOON BUTTON (MATCH HOMEPAGE)
+-------------------------------------------------------- */
+#moon-toggle{
+  position:fixed;
+  right:18px;
+  bottom:18px;
+  z-index:200;
+  font-size:1.8rem;
+  cursor:pointer;
+  user-select:none;
+  background:rgba(0,0,0,0.25);
+  padding:10px 14px;
+  border-radius:50%;
+  backdrop-filter:blur(4px);
+}
+body.night #moon-toggle{
+  background:rgba(255,255,255,0.2);
+}
+
+/* -------------------------------------------------------
+   PAGE LAYOUT + SECTIONS
+-------------------------------------------------------- */
+.container{
+  max-width:900px;
+  margin:0 auto;
+  padding:40px 20px 60px;
+  position:relative;
+  z-index:10;
+}
+
+h1,h2,h3{
+  font-family:"Merriweather", serif;
+  color:var(--accent-green);
+}
+
+.hero-intro{
+  text-align:center;
+  margin-bottom:30px;
+}
+
+section{
+  background:var(--card-bg);
+  border-radius:16px;
+  padding:24px 22px;
+  margin:32px 0;
+  border-left:6px solid rgba(77,123,72,0.28);
+  box-shadow:0 6px 20px rgba(0,0,0,0.06);
+}
+body.night section{
+  background:var(--card-night);
+  border-left-color:rgba(200,200,200,0.18);
+}
+
+/* -------------------------------------------------------
+   PHYLOGENETIC TREE
+-------------------------------------------------------- */
+.tree-wrapper{
+  margin-top:10px;
+}
+
+.tree-legend{
+  font-size:0.9rem;
+  margin-bottom:14px;
+}
+
+.tree-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:18px;
+}
+@media (max-width:800px){
+  .tree-grid{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+@media (max-width:520px){
+  .tree-grid{ grid-template-columns:1fr; }
+}
+
+.order-column{
+  border-radius:12px;
+  padding:12px 10px 14px;
+  background:rgba(77,123,72,0.04);
+  border:1px solid rgba(77,123,72,0.15);
+}
+body.night .order-column{
+  background:rgba(255,255,255,0.03);
+  border-color:rgba(255,255,255,0.1);
+}
+
+.order-column h3{
+  margin:0 0 6px;
+  font-size:1.1rem;
+}
+
+.order-sub{
+  font-size:0.8rem;
+  color:#777;
+  margin-bottom:10px;
+}
+body.night .order-sub{ color:#aaa; }
+
+.tree-nodes{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+}
+
+.tree-node{
+  border:none;
+  border-radius:999px;
+  padding:5px 10px;
+  font-size:0.8rem;
+  cursor:pointer;
+  background:#fff;
+  color:var(--text-color);
+  box-shadow:0 2px 5px rgba(0,0,0,0.08);
+}
+body.night .tree-node{
+  background:#1a1d21;
+  color:var(--text-night);
+}
+.tree-node.order{
+  font-weight:700;
+  background:var(--accent-green);
+  color:#fff;
+}
+.tree-node.family{
+  font-style:italic;
+  background:#f7f3e9;
+}
+body.night .tree-node.family{
+  background:#141619;
+}
+.tree-node.species{
+  background:#ffffff;
+}
+.tree-node.active{
+  outline:2px solid var(--accent-orange);
+  transform:translateY(-1px);
+}
+
+/* DETAILS PANEL */
+.node-details{
+  margin-top:18px;
+  padding:14px 14px 10px;
+  border-radius:12px;
+  background:rgba(77,123,72,0.06);
+  font-size:0.95rem;
+}
+body.night .node-details{
+  background:rgba(255,255,255,0.05);
+}
+.node-details h3{
+  margin-top:0;
+  margin-bottom:4px;
+}
+.node-chip{
+  display:inline-block;
+  font-size:0.75rem;
+  padding:2px 8px;
+  border-radius:999px;
+  margin-right:6px;
+  background:#fff;
+  border:1px solid rgba(0,0,0,0.08);
+}
+body.night .node-chip{
+  background:#141619;
+  border-color:#333;
+}
+
+/* -------------------------------------------------------
+   RULES + GESTURES
+-------------------------------------------------------- */
+.rules-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:18px;
+}
+@media (max-width:700px){
+  .rules-grid{ grid-template-columns:1fr; }
+}
+
+.rule-card{
+  background:rgba(255,255,255,0.9);
+  border-radius:12px;
+  padding:14px 16px;
+  border:1px solid rgba(0,0,0,0.05);
+}
+body.night .rule-card{
+  background:#141619;
+  border-color:#333;
+}
+
+.rule-card h3{
+  margin-top:0;
+  margin-bottom:6px;
+}
+
+.example{
+  font-size:0.85rem;
+  color:#666;
+}
+body.night .example{ color:#aaa; }
+
+.gesture-list{
+  list-style:none;
+  padding-left:0;
+  margin:0;
+}
+.gesture-list li{
+  margin-bottom:10px;
+}
+.gesture-name{
+  font-weight:700;
+}
+
+/* -------------------------------------------------------
+   FOOTER
+-------------------------------------------------------- */
+footer{
+  text-align:center;
+  padding:30px 10px;
+  color:#666;
+  font-size:0.95rem;
+}
+body.night footer{ color:#aaa; }
+footer a{ color:var(--accent-gold); }
+</style>
+</head>
+
+<body>
+
+<div id="stars"></div>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="learn.html" style="color:var(--accent-orange)">Learn</a>
+  <a href="about.html">About</a>
+  <a href="shop.html">Shop</a>
+  <a href="contact.html">Contact</a>
+
+  <div class="dropdown">
+    <span class="dropbtn">More ▾</span>
+    <div class="dropdown-content">
+      <a href="calculator.html">Score Calculator</a>
+      <a href="deckbuilder.html">Deck Builder</a>
+      <a href="#">Rulebook</a>
+      <a href="#">Kickstarter</a>
+    </div>
+  </div>
+</nav>
+
+<div id="moon-toggle">🌙</div>
+
+<main class="container">
+
+  <header class="hero-intro">
+    <h1>Learn Mammal Mania</h1>
+    <p>
+      Mammal Mania is built on real mammal phylogeny. This page shows how the animals in the deck
+      fit into the tree of life — and how that turns into fast, chaotic gameplay.
+    </p>
+  </header>
+
+  <!-- PHYLOGENETIC TREE SECTION -->
+  <section>
+    <h2>Phylogenetic “Tree” of Mammal Mania</h2>
+    <p>
+      This is a simplified phylogenetic map of the mammals in the game. Click an Order, Family, or
+      Species node to see how it appears in Mammal Mania.
+    </p>
+
+    <div class="tree-wrapper">
+      <div class="tree-legend">
+        <strong>Legend:</strong>
+        <span class="node-chip">Order</span>
+        <span class="node-chip" style="font-style:italic;">Family</span>
+        <span class="node-chip">Species Card</span>
+      </div>
+
+      <div class="tree-grid" id="treeGrid">
+
+        <!-- CARNIVORA -->
+        <div class="order-column" data-order="Carnivora">
+          <h3>Carnivora</h3>
+          <div class="order-sub">Dogs, cats, bears, mustelids, and the walrus.</div>
+          <div class="tree-nodes">
+            <button class="tree-node order"
+              data-type="order"
+              data-name="Carnivora"
+              data-desc="The order of primarily meat-eating mammals, including cats, dogs, bears, mustelids, and pinnipeds like the walrus.">
+              Carnivora
+            </button>
+
+            <button class="tree-node family"
+              data-type="family"
+              data-name="Felidae"
+              data-order="Carnivora"
+              data-desc="Felidae is the cat family: lions, tigers, ocelots and more — many of your classic apex predators.">
+              Felidae
+            </button>
+
+            <button class="tree-node family"
+              data-type="family"
+              data-name="Canidae"
+              data-order="Carnivora"
+              data-desc="Canidae includes wolves, wild dogs, foxes and other dog-like canids, experts at pack hunting and endurance.">
+              Canidae
+            </button>
+
+            <button class="tree-node family"
+              data-type="family"
+              data-name="Ursidae"
+              data-order="Carnivora"
+              data-desc="Ursidae is the bear family — from brown bears to polar bears and pandas.">
+              Ursidae
+            </button>
+
+            <button class="tree-node family"
+              data-type="family"
+              data-name="Mustelidae"
+              data-order="Carnivora"
+              data-desc="Mustelidae includes otters, badgers, weasels and wolverines — small, fierce carnivores.">
+              Mustelidae
+            </button>
+
+            <button class="tree-node species"
+              data-type="species"
+              data-name="Lion"
+              data-order="Carnivora"
+              data-family="Felidae"
+              data-ability="A high-level predator that can help you trigger big Family combos."
+              >
+              Lion
+            </button>
+
+            <button class="tree-node species"
+              data-type="species"
+              data-name="Tiger"
+              data-order="Carnivora"
+              data-family="Felidae"
+              data-ability="Another Felidae heavy-hitter — perfect for Family Feasts and Order Sandwiches.">
+              Tiger
+            </button>
+
+            <button class="tree-node species"
+              data-type="species"
+              data-name="Walrus"
+              data-order="Carnivora"
+              data-family="Odobenidae"
+              data-gesture="TUSKS!"
+              data-ability="A Mammal Mania wild card. Instead of slapping, everyone does the TUSKS! gesture. Last player burns a card.">
+              Walrus (Wild)
+            </button>
+
+          </div>
+        </div>
+
+        <!-- PRIMATES -->
+        <div class="order-column" data-order="Primates">
+          <h3>Primates</h3>
+          <div class="order-sub">Apes, monkeys, and lemurs — including you.</div>
+          <div class="tree-nodes">
+            <button class="tree-node order"
+              data-type="order"
+              data-name="Primates"
+              data-desc="Primates include apes, monkeys, lemurs, lorises — and humans. In Mammal Mania, they’re agile, social, and expressive.">
+              Primates
+            </button>
+
+            <button class="tree-node family"
+              data-type="family"
+              data-name="Hominidae"
+              data-order="Primates"
+              data-desc="The great apes: gorillas, chimpanzees, orangutans — large-brained, social, and often tool-using.">
+              Hominidae
+            </button>
+
+            <button class="tree-node family"
+              data-type="family"
+              data-name="Cercopithecidae"
+              data-order="Primates"
+              data-desc="Old World monkeys: mandrills, macaques, proboscis monkeys and more.">
+              Cercopithecidae
+            </button>
+
+            <button class="tree-node family"
+              data-type="family"
+              data-name="Lemuridae"
+              data-order="Primates"
+              data-desc="Lemuridae includes Madagascar’s lemurs — arboreal specialists with huge ecological roles.">
+              Lemuridae
+            </button>
+
+            <button class="tree-node species"
+              data-type="species"
+              data-name="Gorilla"
+              data-order="Primates"
+              data-family="Hominidae"
+              data-ability="A flagship Primates card that helps you memorize where great apes sit in the tree of life.">
+              Gorilla
+            </button>
+
+            <button class="tree-node species"
+              data-type="species"
+              data-name="Ring-tailed Lemur"
+              data-order="Primates"
+              data-family="Lemuridae"
+              data-ability="Part of the Lemuridae set — great for chaining Family matches.">
+              Ring-tailed Lemur
+            </button>
+
+            <button class="tree-node species"
+              data-type="species"
+              data-name="Philippine Tarsier"
+              data-order="Primates"
+              data-family="Tarsiidae"
+              data-gesture="GOGGLES!"
+              data-ability="A wild card: when it appears, don’t slap — make the GOGGLES! gesture instead.">
+              Tarsier (Wild)
+            </button>
+          </div>
+        </div>
+
+        <!-- ARTIODACTYLA -->
+        <div class="order-column" data-order="Artiodactyla">
+          <h3>Artiodactyla</h3>
+          <div class="order-sub">Even-toed hoofed mammals — plus dolphins.</div>
+          <div class="tree-nodes">
+            <button class="tree-node order"
+              data-type="order"
+              data-name="Artiodactyla"
+              data-desc="Artiodactyls include bison, cows, deer, pigs and even cetaceans like dolphins and orcas.">
+              Artiodactyla
+            </button>
+
+            <button class="tree-node family"
+              data-type="family"
+              data-name="Bovidae"
+              data-order="Artiodactyla"
+              data-desc="Bovidae: antelopes, bison, wild cattle — many of the large grazers in the game.">
+              Bovidae
+            </button>
+
+            <button class="tree-node family"
+              data-type="family"
+              data-name="Cervidae"
+              data-order="Artiodactyla"
+              data-desc="Cervidae: deer, elk, moose — antlered browsers and grazers in forests and tundra.">
+              Cervidae
+            </button>
+
+            <button class="tree-node family"
+              data-type="family"
+              data-name="Delphinidae"
+              data-order="Artiodactyla"
+              data-desc="Delphinidae includes dolphins and orcas — showing that whales are actually artiodactyls.">
+              Delphinidae
+            </button>
+
+            <button class="tree-node species"
+              data-type="species"
+              data-name="American Bison"
+              data-order="Artiodactyla"
+              data-family="Bovidae"
+              data-ability="A Bovidae grazer that pairs well with other hoofstock in Family combos.">
+              American Bison
+            </button>
+
+            <button class="tree-node species"
+              data-type="species"
+              data-name="Moose"
+              data-order="Artiodactyla"
+              data-family="Cervidae"
+              data-ability="A giant Cervidae browser — memorable silhouette, memorable Family.">
+              Moose
+            </button>
+
+            <button class="tree-node species"
+              data-type="species"
+              data-name="Giraffe"
+              data-order="Artiodactyla"
+              data-family="Giraffidae"
+              data-gesture="STRETCH!"
+              data-ability="A wild card: instead of slapping, everyone reaches up for STRETCH!">
+              Giraffe (Wild)
+            </button>
+          </div>
+        </div>
+
+        <!-- RODENTIA -->
+        <div class="order-column" data-order="Rodentia">
+          <h3>Rodentia</h3>
+          <div class="order-sub">The gnawing majority — rodents of all sizes.</div>
+          <div class="tree-nodes">
+            <button class="tree-node order"
+              data-type="order"
+              data-name="Rodentia"
+              data-desc="Rodentia is the most diverse order in Mammal Mania — squirrels, porcupines, cavies, rats and more.">
+              Rodentia
+            </button>
+
+            <button class="tree-node family"
+              data-type="family"
+              data-name="Sciuridae"
+              data-order="Rodentia"
+              data-desc="Sciuridae includes squirrels, marmots and chipmunks — small, fast, seed-moving mammals.">
+              Sciuridae
+            </button>
+
+            <button class="tree-node family"
+              data-type="family"
+              data-name="Hystricidae"
+              data-order="Rodentia"
+              data-desc="Hystricidae is the Old World porcupine family, armed with sharp quills.">
+              Hystricidae
+            </button>
+
+            <button class="tree-node family"
+              data-type="family"
+              data-name="Caviidae"
+              data-order="Rodentia"
+              data-desc="Caviidae includes capybaras, maras and guinea pigs — key herbivores in many ecosystems.">
+              Caviidae
+            </button>
+
+            <button class="tree-node species"
+              data-type="species"
+              data-name="Capybara"
+              data-order="Rodentia"
+              data-family="Caviidae"
+              data-ability="The world’s largest rodent — a memorable anchor for the Caviidae family in players’ minds.">
+              Capybara
+            </button>
+
+            <button class="tree-node species"
+              data-type="species"
+              data-name="Crested Porcupine"
+              data-order="Rodentia"
+              data-family="Hystricidae"
+              data-ability="A spiky representative of Hystricidae, helping players link porcupines to Rodentia.">
+              Crested Porcupine
+            </button>
+
+            <button class="tree-node species"
+              data-type="species"
+              data-name="North American Beaver"
+              data-order="Rodentia"
+              data-family="Castoridae"
+              data-gesture="KNOCK!"
+              data-ability="Your mascot wild card: everyone knocks on the table (KNOCK!) instead of slapping.">
+              Beaver (Wild)
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="node-details" id="nodeDetails">
+        <h3>Click a node to explore</h3>
+        <p>
+          Choose an Order, Family, or species card above to see how it fits into the Mammal Mania deck and the real mammal tree of life.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- RULES + PATTERNS -->
+  <section>
+    <h2>Patterns that Power the Game</h2>
+    <p>
+      Mammal Mania turns real taxonomic patterns into quick reactions. These two core patterns are how
+      players accidentally memorize Orders and Families.
+    </p>
+
+    <div class="rules-grid">
+      <div class="rule-card">
+        <h3>Order Sandwich</h3>
+        <p>
+          Two cards from the <strong>same Order</strong> with exactly one card in between.
+        </p>
+        <p class="example">
+          Example: <em>Wolf (Carnivora)</em> → <em>Rat (Rodentia)</em> → <em>Badger (Carnivora)</em><br>
+          The Carnivora cards “sandwich” the Rodentia card.
+        </p>
+        <p>
+          If you can spot the shared Order color faster than everyone else, you win the pile.
+        </p>
+      </div>
+
+      <div class="rule-card">
+        <h3>Family Feast</h3>
+        <p>
+          Two cards from the <strong>same Family</strong> played back-to-back.
+        </p>
+        <p class="example">
+          Example: <em>Lion (Felidae)</em> → <em>Tiger (Felidae)</em><br>
+          or <em>Capybara (Caviidae)</em> → <em>Guinea Pig (Caviidae)</em>.
+        </p>
+        <p>
+          Matching the Family bar and text makes you slap — and teaches you which species actually belong together.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- GESTURE CARDS -->
+  <section>
+    <h2>Wild Cards & Gestures</h2>
+    <p>
+      Wild Cards flip the core rule: instead of slapping, you have to perform a gesture. The last player to do it burns a card into the center pile.
+    </p>
+
+    <ul class="gesture-list">
+      <li>
+        <span class="gesture-name">Walrus – “TUSKS!”</span><br>
+        Index fingers down from your mouth like tusks. Don’t slap — just tusk.
+      </li>
+      <li>
+        <span class="gesture-name">Giraffe – “STRETCH!”</span><br>
+        Arms straight up like a tall neck. The table suddenly becomes a savannah.
+      </li>
+      <li>
+        <span class="gesture-name">North American Beaver – “KNOCK!”</span><br>
+        Knock your knuckles on the table like a tail slap. Mess up and you feed the pot.
+      </li>
+      <li>
+        <span class="gesture-name">Philippine Tarsier – “GOGGLES!”</span><br>
+        Make big circles around your eyes with your fingers. Huge eyes, huge chaos.
+      </li>
+    </ul>
+  </section>
+
+  <!-- EDUCATIONAL BLURB -->
+  <section>
+    <h2>How Mammal Mania Teaches Without Trying</h2>
+    <p>
+      By repeating Orders, Families, and species over dozens of rounds, Mammal Mania quietly wires
+      mammal phylogeny into players’ brains. Colors, bars, and reactions all point to the same
+      scientific structure — so winning the game means learning the tree.
+    </p>
+    <p>
+      Teachers can use the deck as a warm-up activity, and families can treat it as a noisy, hands-on
+      way to talk about real animals, lineages, and conservation.
+    </p>
+  </section>
+
+</main>
+
+<footer>
+  <p>&copy; 2025 Goldwire Games. All rights reserved.</p>
+  <p>
+    Instagram: <a href="https://instagram.com/goldwiregames" target="_blank">@goldwiregames</a> |
+    X: <a href="https://x.com/GoldwireGames" target="_blank">@GoldwireGames</a>
+  </p>
+</footer>
+
+<script>
+// Night mode
+const moon = document.getElementById("moon-toggle");
+moon.onclick = () => {
+  document.body.classList.toggle("night");
+  moon.textContent = document.body.classList.contains("night") ? "🌕" : "🌙";
+};
+
+// Clickable phylogenetic tree
+const nodes = document.querySelectorAll(".tree-node");
+const details = document.getElementById("nodeDetails");
+
+nodes.forEach(node => {
+  node.addEventListener("click", () => {
+    nodes.forEach(n => n.classList.remove("active"));
+    node.classList.add("active");
+
+    const type = node.dataset.type;
+    const name = node.dataset.name;
+    const order = node.dataset.order || "";
+    const family = node.dataset.family || "";
+    const desc = node.dataset.desc || "";
+    const gesture = node.dataset.gesture || "";
+    const ability = node.dataset.ability || "";
+
+    let html = `<h3>${name}</h3><div>`;
+
+    if (order && type !== "order") {
+      html += `<span class="node-chip">Order: ${order}</span>`;
+    }
+    if (family && type !== "family") {
+      html += `<span class="node-chip" style="font-style:italic;">Family: ${family}</span>`;
+    }
+    if (gesture) {
+      html += `<span class="node-chip">Wild Card · Gesture: ${gesture}</span>`;
+    }
+    html += `</div>`;
+
+    if (desc) {
+      html += `<p style="margin-top:8px;">${desc}</p>`;
+    }
+
+    if (ability) {
+      html += `<p style="margin-top:4px; font-size:0.9rem;"><strong>In the game:</strong> ${ability}</p>`;
+    }
+
+    details.innerHTML = html;
+  });
+});
+</script>
+
+</body>
+</html>
