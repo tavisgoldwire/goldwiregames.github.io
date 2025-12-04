@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Goldwire Games | Mammal Mania</title>
+<meta name="description" content="Goldwire Games - Home of Mammal Mania, the fast-paced card game of evolutionary chaos. $2 donated per copy to wildlife rewilding.">
+
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Cabin:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+/* EVERYTHING BELOW IS YOUR ORIGINAL CSS, UNCHANGED */
+[KEEP ALL YOUR EXISTING CSS HERE — NOTHING NEEDS TO CHANGE]
+</style>
+</head>
+
+<body>
+
+<div id="stars"></div>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="learn.html">Learn</a>
+  <a href="about.html">About</a>
+  <a href="shop.html">Shop</a>
+  <a href="contact.html">Contact</a>
+
+  <div class="dropdown">
+    <a class="dropbtn" href="#">More ▾</a>
+    <div class="dropdown-content">
+      <a href="calculator.html">Score Calculator</a>
+      <a href="deckbuilder.html">Deck Builder</a>
+      <a href="#">Kickstarter</a>
+    </div>
+  </div>
+</nav>
+
+<!-- MOON BUTTON -->
+<div id="moon-toggle">🌙</div>
+
+<main class="container">
+
+<header class="hero">
+  <h1>MAMMAL MANIA</h1>
+  <p>The Fast-Paced Card Game of Evolutionary Chaos.</p>
+</header>
+
+<section>
+  <h2>The Four Mammal Orders</h2>
+  <p>Tap or click a panel to flip it and discover the real species inside Mammal Mania.</p>
+
+  <div class="grid">
+
+    <div class="card">
+      <div class="inner">
+        <div class="face front">
+          <div class="bg" style="background-image:url('carnivora.png')"></div>
+          <div class="title">Carnivora</div>
+        </div>
+        <div class="face back">
+          <p>Meet wolves, tigers, otters, foxes, walruses and more. Watch for matching families!</p>
+          <a class="learn-link" href="learn.html">Learn More →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="inner">
+        <div class="face front">
+          <div class="bg" style="background-image:url('primates.png')"></div>
+          <div class="title">Primates</div>
+        </div>
+        <div class="face back">
+          <p>Gorillas, lemurs, monkeys — and the wild-card Tarsier. Eyes ready? GOGGLES!</p>
+          <a class="learn-link" href="learn.html">Learn More →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="inner">
+        <div class="face front">
+          <div class="bg" style="background-image:url('artiodactyla.png')"></div>
+          <div class="title">Artiodactyla</div>
+        </div>
+        <div class="face back">
+          <p>Hoofstock and ocean giants — bison, deer, boar, dolphins, and the mighty giraffe.</p>
+          <a class="learn-link" href="learn.html">Learn More →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="inner">
+        <div class="face front">
+          <div class="bg" style="background-image:url('rodentia.png')"></div>
+          <div class="title">Rodentia</div>
+        </div>
+        <div class="face back">
+          <p>Capybaras, porcupines, squirrels, rats — plus the mascot wild-card BEAVER!</p>
+          <a class="learn-link" href="learn.html">Learn More →</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section>
+  <h2>What Is Mammal Mania?</h2>
+  <p>
+    Mammal Mania is a chaotic, educational, slap-reaction card game where real mammal phylogeny becomes your secret weapon.
+    Match Families, create Order Sandwiches, react to Wild Gestures, and out-slap your rivals using real biological patterns.
+  </p>
+  <p>
+    Designed by biologist Tavis Goldwire, the game blends fast-paced party energy with genuine animal science — 
+    teaching players taxonomy without them even realizing it.
+  </p>
+  <div style="text-align:center;">
+    <a class="learn-link" href="about.html">Meet the Creator →</a>
+  </div>
+</section>
+
+<section>
+  <h2>Our Mission</h2>
+  <p>
+    For every copy sold, we donate <strong>$2 directly to Planet Wild</strong>, funding real-world rewilding projects filmed and shared with the world.
+    Every game helps bring back habitat for the animals that inspired Mammal Mania.
+  </p>
+</section>
+
+<div class="signup-box">
+  <h2 style="color:var(--accent-gold); font-family:'Merriweather';">Join the Herd</h2>
+  <p>Sign up to get notified when Mammal Mania launches on Kickstarter and unlock exclusive Early Bird rewards.</p>
+
+  <div id="mc_embed_signup">
+    <form action="https://gmail.us18.list-manage.com/subscribe/post?u=e45d46138093844d88767df27&amp;id=1440e8d9e1"
+      method="post" target="_blank" novalidate>
+
+      <input type="email" name="EMAIL" class="email" placeholder="Enter your email...">
+      <input type="submit" value="Notify Me on Launch" class="button">
+    </form>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <p>&copy; 2025 Goldwire Games. All rights reserved.</p>
+  <p>
+    Instagram: <a href="https://instagram.com/goldwiregames" target="_blank">@goldwiregames</a> |
+    X: <a href="https://x.com/GoldwireGames" target="_blank">@GoldwireGames</a>
+  </p>
+</footer>
+
+<script>
+// Night mode toggle
+const moon = document.getElementById("moon-toggle");
+moon.onclick = () => {
+  document.body.classList.toggle("night");
+  moon.textContent = document.body.classList.contains("night") ? "🌕" : "🌙";
+};
+
+// Card flipping
+document.querySelectorAll(".card").forEach(card => {
+  card.addEventListener("click", e => {
+    if (e.target.closest(".learn-link")) return;
+    card.classList.toggle("flipped");
+  });
+});
+</script>
+
+</body>
+</html>
