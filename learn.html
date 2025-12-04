@@ -9,7 +9,7 @@
 
 <style>
 /* -------------------------------------------------------
-   ROOT + THEME COLORS (MATCH HOMEPAGE)
+   ROOT + THEME COLORS (MATCH SITE)
 -------------------------------------------------------- */
 :root{
   --bg-color: #f7f3e9;
@@ -40,7 +40,7 @@ body.night{
 }
 
 /* -------------------------------------------------------
-   STARFIELD (MATCH HOMEPAGE)
+   STARFIELD
 -------------------------------------------------------- */
 #stars{
   pointer-events:none;
@@ -68,7 +68,7 @@ body.night #stars{ opacity:1; }
 }
 
 /* -------------------------------------------------------
-   NAVIGATION (MATCH HOMEPAGE)
+   NAV (MATCH HOME/ABOUT)
 -------------------------------------------------------- */
 nav{
   position:sticky;
@@ -119,7 +119,7 @@ body.night .dropdown-content a{ color:var(--text-night); }
 .dropdown:hover .dropdown-content{ display:block; }
 
 /* -------------------------------------------------------
-   MOON BUTTON (MATCH HOMEPAGE)
+   MOON BUTTON (BOTTOM-RIGHT)
 -------------------------------------------------------- */
 #moon-toggle{
   position:fixed;
@@ -173,11 +173,18 @@ body.night section{
 }
 
 /* -------------------------------------------------------
+   PHYLOGENY EXPLAINER
+-------------------------------------------------------- */
+.explain-list{
+  margin:10px 0 0;
+  padding-left:18px;
+  font-size:0.95rem;
+}
+
+/* -------------------------------------------------------
    PHYLOGENETIC TREE
 -------------------------------------------------------- */
-.tree-wrapper{
-  margin-top:10px;
-}
+.tree-wrapper{ margin-top:10px; }
 
 .tree-legend{
   font-size:0.9rem;
@@ -211,7 +218,6 @@ body.night .order-column{
   margin:0 0 6px;
   font-size:1.1rem;
 }
-
 .order-sub{
   font-size:0.8rem;
   color:#777;
@@ -257,6 +263,10 @@ body.night .tree-node.family{
 .tree-node.active{
   outline:2px solid var(--accent-orange);
   transform:translateY(-1px);
+}
+
+.tree-node[data-wild="true"]{
+  border:1px solid var(--accent-orange);
 }
 
 /* DETAILS PANEL */
@@ -310,12 +320,10 @@ body.night .rule-card{
   background:#141619;
   border-color:#333;
 }
-
 .rule-card h3{
   margin-top:0;
   margin-bottom:6px;
 }
-
 .example{
   font-size:0.85rem;
   color:#666;
@@ -327,12 +335,8 @@ body.night .example{ color:#aaa; }
   padding-left:0;
   margin:0;
 }
-.gesture-list li{
-  margin-bottom:10px;
-}
-.gesture-name{
-  font-weight:700;
-}
+.gesture-list li{ margin-bottom:10px; }
+.gesture-name{ font-weight:700; }
 
 /* -------------------------------------------------------
    FOOTER
@@ -364,7 +368,6 @@ footer a{ color:var(--accent-gold); }
     <div class="dropdown-content">
       <a href="calculator.html">Score Calculator</a>
       <a href="deckbuilder.html">Deck Builder</a>
-      <a href="#">Rulebook</a>
       <a href="#">Kickstarter</a>
     </div>
   </div>
@@ -377,17 +380,39 @@ footer a{ color:var(--accent-gold); }
   <header class="hero-intro">
     <h1>Learn Mammal Mania</h1>
     <p>
-      Mammal Mania is built on real mammal phylogeny. This page shows how the animals in the deck
-      fit into the tree of life — and how that turns into fast, chaotic gameplay.
+      Mammal Mania is secretly a biology lesson. This page explains what “orders” and “families”
+      actually mean, and shows where every animal in the deck sits on the mammal family tree.
     </p>
   </header>
 
-  <!-- PHYLOGENETIC TREE SECTION -->
+  <!-- PHYLOGENY EXPLAINER -->
   <section>
-    <h2>Phylogenetic “Tree” of Mammal Mania</h2>
+    <h2>What All This Phylogeny Stuff Means</h2>
     <p>
-      This is a simplified phylogenetic map of the mammals in the game. Click an Order, Family, or
-      Species node to see how it appears in Mammal Mania.
+      Phylogeny is just a fancy word for the <strong>evolutionary family tree of life</strong>.
+      Instead of parents and grandparents, we talk about older and younger common ancestors.
+      When we say two species are closely related, we mean they share a more recent ancestor on that tree.
+    </p>
+    <ul class="explain-list">
+      <li><strong>Order</strong> = a big branch of the mammal tree.  
+        <br>In Mammal Mania you see four: <em>Carnivora, Primates, Artiodactyla, Rodentia</em>. The colored top bar of each card marks its Order.</li>
+      <li><strong>Family</strong> = a smaller, tighter cluster of species inside an Order.  
+        <br>Examples: <em>Felidae</em> (cats), <em>Canidae</em> (dogs), <em>Caviidae</em> (capybara + guinea pig + mara).</li>
+      <li><strong>Species</strong> = one specific kind of animal, like <em>Maned Wolf</em> or <em>Capybara</em>.</li>
+    </ul>
+    <p style="margin-top:10px;">
+      Mammal Mania turns those categories into reflex patterns. If you want to win, you have to
+      notice Orders and Families faster than everyone else — which means you end up memorizing
+      real mammal phylogeny without flashcards or homework.
+    </p>
+  </section>
+
+  <!-- PHYLOGENETIC TREE -->
+  <section>
+    <h2>Clickable “Family Tree” of Mammal Mania</h2>
+    <p>
+      This is a simplified phylogenetic map of all the unique species in the game.
+      Click an Order, Family, or Species to see where it fits and how it behaves in play.
     </p>
 
     <div class="tree-wrapper">
@@ -403,20 +428,23 @@ footer a{ color:var(--accent-gold); }
         <!-- CARNIVORA -->
         <div class="order-column" data-order="Carnivora">
           <h3>Carnivora</h3>
-          <div class="order-sub">Dogs, cats, bears, mustelids, and the walrus.</div>
+          <div class="order-sub">Cats, dogs, bears, mustelids, and the walrus.</div>
           <div class="tree-nodes">
+
+            <!-- Order node -->
             <button class="tree-node order"
               data-type="order"
               data-name="Carnivora"
-              data-desc="The order of primarily meat-eating mammals, including cats, dogs, bears, mustelids, and pinnipeds like the walrus.">
+              data-desc="Mammals with specialized teeth for slicing and gripping. Includes cats, dogs, bears, mustelids, and pinnipeds like the walrus.">
               Carnivora
             </button>
 
+            <!-- Families -->
             <button class="tree-node family"
               data-type="family"
               data-name="Felidae"
               data-order="Carnivora"
-              data-desc="Felidae is the cat family: lions, tigers, ocelots and more — many of your classic apex predators.">
+              data-desc="The cat family: lions, tigers, lynx and other stealthy, clawed predators.">
               Felidae
             </button>
 
@@ -424,33 +452,42 @@ footer a{ color:var(--accent-gold); }
               data-type="family"
               data-name="Canidae"
               data-order="Carnivora"
-              data-desc="Canidae includes wolves, wild dogs, foxes and other dog-like canids, experts at pack hunting and endurance.">
+              data-desc="The dog family: wolves, foxes, wild dogs and the maned wolf — expert endurance hunters.">
               Canidae
-            </button>
-
-            <button class="tree-node family"
-              data-type="family"
-              data-name="Ursidae"
-              data-order="Carnivora"
-              data-desc="Ursidae is the bear family — from brown bears to polar bears and pandas.">
-              Ursidae
             </button>
 
             <button class="tree-node family"
               data-type="family"
               data-name="Mustelidae"
               data-order="Carnivora"
-              data-desc="Mustelidae includes otters, badgers, weasels and wolverines — small, fierce carnivores.">
+              data-desc="Weasels, otters, badgers and wolverines — smaller carnivores with big attitudes.">
               Mustelidae
             </button>
 
+            <button class="tree-node family"
+              data-type="family"
+              data-name="Ursidae"
+              data-order="Carnivora"
+              data-desc="Bears: from forest grizzlies to sea-ice–haunting polar bears.">
+              Ursidae
+            </button>
+
+            <button class="tree-node family"
+              data-type="family"
+              data-name="Odobenidae"
+              data-order="Carnivora"
+              data-desc="A tiny family with one iconic member: the walrus. In the game, it’s a Wild card.">
+              Odobenidae
+            </button>
+
+            <!-- Species -->
+            <!-- Felidae -->
             <button class="tree-node species"
               data-type="species"
               data-name="Lion"
               data-order="Carnivora"
               data-family="Felidae"
-              data-ability="A high-level predator that can help you trigger big Family combos."
-              >
+              data-ability="Big-cat predator that helps you chain Felidae Family matches.">
               Lion
             </button>
 
@@ -459,17 +496,94 @@ footer a{ color:var(--accent-gold); }
               data-name="Tiger"
               data-order="Carnivora"
               data-family="Felidae"
-              data-ability="Another Felidae heavy-hitter — perfect for Family Feasts and Order Sandwiches.">
+              data-ability="Another Felidae heavy-hitter — useful for Family Feasts and Order Sandwiches.">
               Tiger
             </button>
 
             <button class="tree-node species"
               data-type="species"
+              data-name="Canada Lynx"
+              data-order="Carnivora"
+              data-family="Felidae"
+              data-ability="A cold-adapted cat that rounds out the Felidae set in the deck.">
+              Canada Lynx
+            </button>
+
+            <!-- Canidae -->
+            <button class="tree-node species"
+              data-type="species"
+              data-name="Maned Wolf"
+              data-order="Carnivora"
+              data-family="Canidae"
+              data-ability="Tall, long-legged fox-like canid that makes Canidae feel more diverse.">
+              Maned Wolf
+            </button>
+
+            <button class="tree-node species"
+              data-type="species"
+              data-name="Grey Wolf"
+              data-order="Carnivora"
+              data-family="Canidae"
+              data-ability="Classic pack-hunting canid; great anchor for recognizing Canidae cards.">
+              Grey Wolf
+            </button>
+
+            <button class="tree-node species"
+              data-type="species"
+              data-name="Fennec Fox"
+              data-order="Carnivora"
+              data-family="Canidae"
+              data-ability="Desert fox with giant ears — visually distinct, easy to remember as Canidae.">
+              Fennec Fox
+            </button>
+
+            <!-- Mustelidae -->
+            <button class="tree-node species"
+              data-type="species"
+              data-name="Honey Badger"
+              data-order="Carnivora"
+              data-family="Mustelidae"
+              data-ability="Tough-as-nails mustelid; helps players remember that badgers are not rodents.">
+              Honey Badger
+            </button>
+
+            <button class="tree-node species"
+              data-type="species"
+              data-name="River Otter"
+              data-order="Carnivora"
+              data-family="Mustelidae"
+              data-ability="Aquatic mustelid that expands the family beyond land predators.">
+              River Otter
+            </button>
+
+            <button class="tree-node species"
+              data-type="species"
+              data-name="Wolverine"
+              data-order="Carnivora"
+              data-family="Mustelidae"
+              data-ability="Compact, powerful carnivore — memorable face of Mustelidae.">
+              Wolverine
+            </button>
+
+            <!-- Ursidae -->
+            <button class="tree-node species"
+              data-type="species"
+              data-name="Polar Bear"
+              data-order="Carnivora"
+              data-family="Ursidae"
+              data-ability="Arctic apex predator; makes Ursidae easy to associate with cold ecosystems.">
+              Polar Bear
+            </button>
+
+            <!-- Wild: Walrus -->
+            <button class="tree-node species"
+              data-type="species"
               data-name="Walrus"
               data-order="Carnivora"
               data-family="Odobenidae"
+              data-wild="true"
               data-gesture="TUSKS!"
-              data-ability="A Mammal Mania wild card. Instead of slapping, everyone does the TUSKS! gesture. Last player burns a card.">
+              data-ability="Wild gesture card: instead of slapping, everyone does the TUSKS! motion. Last to gesture burns a card.">
               Walrus (Wild)
             </button>
 
@@ -479,20 +593,22 @@ footer a{ color:var(--accent-gold); }
         <!-- PRIMATES -->
         <div class="order-column" data-order="Primates">
           <h3>Primates</h3>
-          <div class="order-sub">Apes, monkeys, and lemurs — including you.</div>
+          <div class="order-sub">Apes, monkeys, lemurs, and tarsiers — including our closest relatives.</div>
           <div class="tree-nodes">
+
             <button class="tree-node order"
               data-type="order"
               data-name="Primates"
-              data-desc="Primates include apes, monkeys, lemurs, lorises — and humans. In Mammal Mania, they’re agile, social, and expressive.">
+              data-desc="Mammals with grasping hands, big brains, and complex social lives. Includes lemurs, monkeys, apes, and humans.">
               Primates
             </button>
 
+            <!-- Families -->
             <button class="tree-node family"
               data-type="family"
               data-name="Hominidae"
               data-order="Primates"
-              data-desc="The great apes: gorillas, chimpanzees, orangutans — large-brained, social, and often tool-using.">
+              data-desc="The great apes: orangutans, gorillas, chimpanzees — our closest non-human relatives.">
               Hominidae
             </button>
 
@@ -500,16 +616,43 @@ footer a{ color:var(--accent-gold); }
               data-type="family"
               data-name="Cercopithecidae"
               data-order="Primates"
-              data-desc="Old World monkeys: mandrills, macaques, proboscis monkeys and more.">
+              data-desc="Old World monkeys such as mandrills, macaques and proboscis monkeys.">
               Cercopithecidae
+            </button>
+
+            <button class="tree-node family"
+              data-type="family"
+              data-name="Atelidae"
+              data-order="Primates"
+              data-desc="New World monkeys like howlers, spider monkeys, and woolly monkeys.">
+              Atelidae
             </button>
 
             <button class="tree-node family"
               data-type="family"
               data-name="Lemuridae"
               data-order="Primates"
-              data-desc="Lemuridae includes Madagascar’s lemurs — arboreal specialists with huge ecological roles.">
+              data-desc="Lemurs of Madagascar — iconic, highly endangered primates.">
               Lemuridae
+            </button>
+
+            <button class="tree-node family"
+              data-type="family"
+              data-name="Tarsiidae"
+              data-order="Primates"
+              data-desc="Tiny nocturnal primates with enormous eyes: the tarsiers.">
+              Tarsiidae
+            </button>
+
+            <!-- Species -->
+            <!-- Hominidae -->
+            <button class="tree-node species"
+              data-type="species"
+              data-name="Orangutan"
+              data-order="Primates"
+              data-family="Hominidae"
+              data-ability="Arboreal great ape card; helps cement Hominidae as the great ape family.">
+              Orangutan
             </button>
 
             <button class="tree-node species"
@@ -517,48 +660,119 @@ footer a{ color:var(--accent-gold); }
               data-name="Gorilla"
               data-order="Primates"
               data-family="Hominidae"
-              data-ability="A flagship Primates card that helps you memorize where great apes sit in the tree of life.">
+              data-ability="Large-bodied leaf eater that anchors Hominidae in players’ minds.">
               Gorilla
             </button>
 
             <button class="tree-node species"
               data-type="species"
-              data-name="Ring-tailed Lemur"
+              data-name="Chimpanzee"
               data-order="Primates"
-              data-family="Lemuridae"
-              data-ability="Part of the Lemuridae set — great for chaining Family matches.">
-              Ring-tailed Lemur
+              data-family="Hominidae"
+              data-ability="Tool-using primate; very recognizable as a great ape.">
+              Chimpanzee
+            </button>
+
+            <!-- Cercopithecidae -->
+            <button class="tree-node species"
+              data-type="species"
+              data-name="Mandrill"
+              data-order="Primates"
+              data-family="Cercopithecidae"
+              data-ability="Brightly colored Old World monkey; visually loud, great teaching tool.">
+              Mandrill
             </button>
 
             <button class="tree-node species"
               data-type="species"
-              data-name="Philippine Tarsier"
+              data-name="Proboscis Monkey"
+              data-order="Primates"
+              data-family="Cercopithecidae"
+              data-ability="Big-nosed river-dweller; emphasizes how weird Cercopithecidae can get.">
+              Proboscis Monkey
+            </button>
+
+            <button class="tree-node species"
+              data-type="species"
+              data-name="Japanese Macaque"
+              data-order="Primates"
+              data-family="Cercopithecidae"
+              data-ability="Snow monkey famous for hot springs; another anchor for Old World monkeys.">
+              Japanese Macaque
+            </button>
+
+            <!-- Atelidae -->
+            <button class="tree-node species"
+              data-type="species"
+              data-name="Black Howler"
+              data-order="Primates"
+              data-family="Atelidae"
+              data-ability="Loud, vocal New World monkey card — shows off Atelid calls.">
+              Black Howler
+            </button>
+
+            <button class="tree-node species"
+              data-type="species"
+              data-name="Brown Spider Monkey"
+              data-order="Primates"
+              data-family="Atelidae"
+              data-ability="Long-limbed canopy specialist that makes Atelidae feel acrobatic.">
+              Brown Spider Monkey
+            </button>
+
+            <button class="tree-node species"
+              data-type="species"
+              data-name="Common Woolly Monkey"
+              data-order="Primates"
+              data-family="Atelidae"
+              data-ability="Fluffy, social Atelid; rounds out the New World monkey trio.">
+              Common Woolly Monkey
+            </button>
+
+            <!-- Lemuridae -->
+            <button class="tree-node species"
+              data-type="species"
+              data-name="Ring-tailed Lemur"
+              data-order="Primates"
+              data-family="Lemuridae"
+              data-ability="Striped tail icon; instantly memorable face of Lemuridae.">
+              Ring-tailed Lemur
+            </button>
+
+            <!-- Tarsiidae Wild -->
+            <button class="tree-node species"
+              data-type="species"
+              data-name="Tarsier"
               data-order="Primates"
               data-family="Tarsiidae"
+              data-wild="true"
               data-gesture="GOGGLES!"
-              data-ability="A wild card: when it appears, don’t slap — make the GOGGLES! gesture instead.">
+              data-ability="Wild gesture card: when it appears, everyone makes GOGGLES! around their eyes instead of slapping.">
               Tarsier (Wild)
             </button>
+
           </div>
         </div>
 
         <!-- ARTIODACTYLA -->
         <div class="order-column" data-order="Artiodactyla">
           <h3>Artiodactyla</h3>
-          <div class="order-sub">Even-toed hoofed mammals — plus dolphins.</div>
+          <div class="order-sub">Even-toed hoofed mammals — plus dolphins and orcas.</div>
           <div class="tree-nodes">
+
             <button class="tree-node order"
               data-type="order"
               data-name="Artiodactyla"
-              data-desc="Artiodactyls include bison, cows, deer, pigs and even cetaceans like dolphins and orcas.">
+              data-desc="Even-toed hoofed mammals: bovids, deer, pigs and their unexpected cousins — dolphins and orcas.">
               Artiodactyla
             </button>
 
+            <!-- Families -->
             <button class="tree-node family"
               data-type="family"
               data-name="Bovidae"
               data-order="Artiodactyla"
-              data-desc="Bovidae: antelopes, bison, wild cattle — many of the large grazers in the game.">
+              data-desc="Antelopes, sheep, bison, and other horned grazers and browsers.">
               Bovidae
             </button>
 
@@ -566,111 +780,311 @@ footer a{ color:var(--accent-gold); }
               data-type="family"
               data-name="Cervidae"
               data-order="Artiodactyla"
-              data-desc="Cervidae: deer, elk, moose — antlered browsers and grazers in forests and tundra.">
+              data-desc="Deer and their relatives: moose, elk, red deer and more.">
               Cervidae
+            </button>
+
+            <button class="tree-node family"
+              data-type="family"
+              data-name="Suidae"
+              data-order="Artiodactyla"
+              data-desc="The pig family: wild boars, babirusas, and hogs.">
+              Suidae
+            </button>
+
+            <button class="tree-node family"
+              data-type="family"
+              data-name="Tayassuidae"
+              data-order="Artiodactyla"
+              data-desc="New World peccaries, separate from true pigs.">
+              Tayassuidae
             </button>
 
             <button class="tree-node family"
               data-type="family"
               data-name="Delphinidae"
               data-order="Artiodactyla"
-              data-desc="Delphinidae includes dolphins and orcas — showing that whales are actually artiodactyls.">
+              data-desc="Oceanic dolphins and orcas — a reminder that whales are actually artiodactyls.">
               Delphinidae
+            </button>
+
+            <button class="tree-node family"
+              data-type="family"
+              data-name="Giraffidae"
+              data-order="Artiodactyla"
+              data-desc="The giraffe family: long-necked browsers with high-reaching feeding strategies.">
+              Giraffidae
+            </button>
+
+            <!-- Bovidae -->
+            <button class="tree-node species"
+              data-type="species"
+              data-name="Springbok"
+              data-order="Artiodactyla"
+              data-family="Bovidae"
+              data-ability="Fast, bounding antelope; helps cement Bovidae as the horned grazer family.">
+              Springbok
             </button>
 
             <button class="tree-node species"
               data-type="species"
-              data-name="American Bison"
+              data-name="Bighorn Sheep"
               data-order="Artiodactyla"
               data-family="Bovidae"
-              data-ability="A Bovidae grazer that pairs well with other hoofstock in Family combos.">
-              American Bison
+              data-ability="Mountain bovid with iconic curled horns; great visual hook for Bovidae.">
+              Bighorn Sheep
             </button>
 
+            <button class="tree-node species"
+              data-type="species"
+              data-name="Bison"
+              data-order="Artiodactyla"
+              data-family="Bovidae"
+              data-ability="Massive grazer; an anchor species for the Bovidae set.">
+              Bison
+            </button>
+
+            <!-- Cervidae -->
             <button class="tree-node species"
               data-type="species"
               data-name="Moose"
               data-order="Artiodactyla"
               data-family="Cervidae"
-              data-ability="A giant Cervidae browser — memorable silhouette, memorable Family.">
+              data-ability="Largest living deer; makes Cervidae impossible to forget.">
               Moose
             </button>
 
+            <!-- Suidae / Tayassuidae -->
+            <button class="tree-node species"
+              data-type="species"
+              data-name="Red River Hog"
+              data-order="Artiodactyla"
+              data-family="Suidae"
+              data-ability="Brightly colored wild pig showing off Suidae diversity.">
+              Red River Hog
+            </button>
+
+            <button class="tree-node species"
+              data-type="species"
+              data-name="Babirusa"
+              data-order="Artiodactyla"
+              data-family="Suidae"
+              data-ability="Curved-tusked pig; visually weird in the best possible way.">
+              Babirusa
+            </button>
+
+            <button class="tree-node species"
+              data-type="species"
+              data-name="Collared Peccary"
+              data-order="Artiodactyla"
+              data-family="Tayassuidae"
+              data-ability="Shows that peccaries are not just “desert pigs” but their own family.">
+              Collared Peccary
+            </button>
+
+            <!-- Delphinidae -->
+            <button class="tree-node species"
+              data-type="species"
+              data-name="Irrawaddy Dolphin"
+              data-order="Artiodactyla"
+              data-family="Delphinidae"
+              data-ability="Riverine dolphin card that makes people ask why dolphins are artiodactyls.">
+              Irrawaddy Dolphin
+            </button>
+
+            <button class="tree-node species"
+              data-type="species"
+              data-name="Bottlenose Dolphin"
+              data-order="Artiodactyla"
+              data-family="Delphinidae"
+              data-ability="Familiar dolphin that reinforces the Delphinidae family.">
+              Bottlenose Dolphin
+            </button>
+
+            <button class="tree-node species"
+              data-type="species"
+              data-name="Orca"
+              data-order="Artiodactyla"
+              data-family="Delphinidae"
+              data-ability="Apex marine predator; makes the artiodactyl–whale connection unforgettable.">
+              Orca
+            </button>
+
+            <!-- Wild Giraffe -->
             <button class="tree-node species"
               data-type="species"
               data-name="Giraffe"
               data-order="Artiodactyla"
               data-family="Giraffidae"
+              data-wild="true"
               data-gesture="STRETCH!"
-              data-ability="A wild card: instead of slapping, everyone reaches up for STRETCH!">
+              data-ability="Wild gesture card: everyone raises their arms for STRETCH! instead of slapping.">
               Giraffe (Wild)
             </button>
+
           </div>
         </div>
 
         <!-- RODENTIA -->
         <div class="order-column" data-order="Rodentia">
           <h3>Rodentia</h3>
-          <div class="order-sub">The gnawing majority — rodents of all sizes.</div>
+          <div class="order-sub">The gnawing majority — from squirrels to capybaras and beavers.</div>
           <div class="tree-nodes">
+
             <button class="tree-node order"
               data-type="order"
               data-name="Rodentia"
-              data-desc="Rodentia is the most diverse order in Mammal Mania — squirrels, porcupines, cavies, rats and more.">
+              data-desc="Rodents with ever-growing incisors: squirrels, cavies, rats, porcupines and beavers. The most species-rich order in Mammal Mania.">
               Rodentia
+            </button>
+
+            <!-- Families -->
+            <button class="tree-node family"
+              data-type="family"
+              data-name="Caviidae"
+              data-order="Rodentia"
+              data-desc="Cavy family: capybaras, guinea pigs, maras — many semi-aquatic or grassland herbivores.">
+              Caviidae
             </button>
 
             <button class="tree-node family"
               data-type="family"
               data-name="Sciuridae"
               data-order="Rodentia"
-              data-desc="Sciuridae includes squirrels, marmots and chipmunks — small, fast, seed-moving mammals.">
+              data-desc="Squirrels, marmots, prairie dogs and flying squirrels.">
               Sciuridae
+            </button>
+
+            <button class="tree-node family"
+              data-type="family"
+              data-name="Muridae"
+              data-order="Rodentia"
+              data-desc="The “classic” rats and mice group, including spiny mice, rakali and maned rats.">
+              Muridae
             </button>
 
             <button class="tree-node family"
               data-type="family"
               data-name="Hystricidae"
               data-order="Rodentia"
-              data-desc="Hystricidae is the Old World porcupine family, armed with sharp quills.">
+              data-desc="Old World porcupines armed with quills.">
               Hystricidae
             </button>
 
             <button class="tree-node family"
               data-type="family"
-              data-name="Caviidae"
+              data-name="Castoridae"
               data-order="Rodentia"
-              data-desc="Caviidae includes capybaras, maras and guinea pigs — key herbivores in many ecosystems.">
-              Caviidae
+              data-desc="The beavers — ecosystem engineers that build dams and wetlands.">
+              Castoridae
             </button>
 
+            <!-- Caviidae -->
             <button class="tree-node species"
               data-type="species"
               data-name="Capybara"
               data-order="Rodentia"
               data-family="Caviidae"
-              data-ability="The world’s largest rodent — a memorable anchor for the Caviidae family in players’ minds.">
+              data-ability="World’s largest rodent; obvious face of Caviidae.">
               Capybara
             </button>
 
             <button class="tree-node species"
               data-type="species"
-              data-name="Crested Porcupine"
+              data-name="Guinea Pig"
               data-order="Rodentia"
-              data-family="Hystricidae"
-              data-ability="A spiky representative of Hystricidae, helping players link porcupines to Rodentia.">
-              Crested Porcupine
+              data-family="Caviidae"
+              data-ability="Domesticated cavy; pairs perfectly with Capybara and Mara for Family Feasts.">
+              Guinea Pig
             </button>
 
             <button class="tree-node species"
               data-type="species"
-              data-name="North American Beaver"
+              data-name="Mara"
+              data-order="Rodentia"
+              data-family="Caviidae"
+              data-ability="Long-legged Patagonian cavy; looks like a deer, plays like a rodent.">
+              Mara
+            </button>
+
+            <!-- Sciuridae -->
+            <button class="tree-node species"
+              data-type="species"
+              data-name="Red Squirrel"
+              data-order="Rodentia"
+              data-family="Sciuridae"
+              data-ability="Tree squirrel that helps players recognize Sciuridae on sight.">
+              Red Squirrel
+            </button>
+
+            <button class="tree-node species"
+              data-type="species"
+              data-name="Prairie Dog"
+              data-order="Rodentia"
+              data-family="Sciuridae"
+              data-ability="Burrowing colonial rodent; good contrast with arboreal squirrels.">
+              Prairie Dog
+            </button>
+
+            <button class="tree-node species"
+              data-type="species"
+              data-name="Flying Squirrel"
+              data-order="Rodentia"
+              data-family="Sciuridae"
+              data-ability="Gliding specialist; completes a very memorable Sciuridae trio.">
+              Flying Squirrel
+            </button>
+
+            <!-- Muridae -->
+            <button class="tree-node species"
+              data-type="species"
+              data-name="Spiny Mouse"
+              data-order="Rodentia"
+              data-family="Muridae"
+              data-ability="Shows that “mice” can be desert-adapted and spiny, not just lab animals.">
+              Spiny Mouse
+            </button>
+
+            <button class="tree-node species"
+              data-type="species"
+              data-name="Rakali"
+              data-order="Rodentia"
+              data-family="Muridae"
+              data-ability="Australian water-rat; demonstrates semi-aquatic Muridae diversity.">
+              Rakali
+            </button>
+
+            <button class="tree-node species"
+              data-type="species"
+              data-name="Maned Rat"
+              data-order="Rodentia"
+              data-family="Muridae"
+              data-ability="Poison-coated rodent; a weird, memorable example of Muridae.">
+              Maned Rat
+            </button>
+
+            <!-- Hystricidae -->
+            <button class="tree-node species"
+              data-type="species"
+              data-name="Porcupine"
+              data-order="Rodentia"
+              data-family="Hystricidae"
+              data-ability="Quilled rodent that clarifies porcupines are rodents, not hedgehogs.">
+              Porcupine
+            </button>
+
+            <!-- Wild Beaver -->
+            <button class="tree-node species"
+              data-type="species"
+              data-name="Beaver"
               data-order="Rodentia"
               data-family="Castoridae"
+              data-wild="true"
               data-gesture="KNOCK!"
-              data-ability="Your mascot wild card: everyone knocks on the table (KNOCK!) instead of slapping.">
+              data-ability="Wild gesture card: everyone knocks their knuckles on the table for KNOCK! instead of slapping.">
               Beaver (Wild)
             </button>
+
           </div>
         </div>
 
@@ -679,18 +1093,19 @@ footer a{ color:var(--accent-gold); }
       <div class="node-details" id="nodeDetails">
         <h3>Click a node to explore</h3>
         <p>
-          Choose an Order, Family, or species card above to see how it fits into the Mammal Mania deck and the real mammal tree of life.
+          Choose an Order, Family, or species card above to see how it fits into the Mammal Mania deck
+          and the real mammal family tree.
         </p>
       </div>
     </div>
   </section>
 
-  <!-- RULES + PATTERNS -->
+  <!-- PATTERN RULES -->
   <section>
-    <h2>Patterns that Power the Game</h2>
+    <h2>Patterns That Power the Game</h2>
     <p>
-      Mammal Mania turns real taxonomic patterns into quick reactions. These two core patterns are how
-      players accidentally memorize Orders and Families.
+      Mammal Mania turns real taxonomic categories into quick-reaction patterns.
+      If you’re good at spotting these, you win piles — and accidentally memorize phylogeny.
     </p>
 
     <div class="rules-grid">
@@ -700,11 +1115,11 @@ footer a{ color:var(--accent-gold); }
           Two cards from the <strong>same Order</strong> with exactly one card in between.
         </p>
         <p class="example">
-          Example: <em>Wolf (Carnivora)</em> → <em>Rat (Rodentia)</em> → <em>Badger (Carnivora)</em><br>
-          The Carnivora cards “sandwich” the Rodentia card.
+          Example: <em>Maned Wolf (Carnivora)</em> → <em>Capybara (Rodentia)</em> → <em>Honey Badger (Carnivora)</em>.<br>
+          The two Carnivora cards form an Order Sandwich around the Rodentia card.
         </p>
         <p>
-          If you can spot the shared Order color faster than everyone else, you win the pile.
+          If you can match the colored Order bar faster than everyone else, you slap first and take the pile.
         </p>
       </div>
 
@@ -714,54 +1129,55 @@ footer a{ color:var(--accent-gold); }
           Two cards from the <strong>same Family</strong> played back-to-back.
         </p>
         <p class="example">
-          Example: <em>Lion (Felidae)</em> → <em>Tiger (Felidae)</em><br>
+          Example: <em>Lion (Felidae)</em> → <em>Tiger (Felidae)</em>  
           or <em>Capybara (Caviidae)</em> → <em>Guinea Pig (Caviidae)</em>.
         </p>
         <p>
-          Matching the Family bar and text makes you slap — and teaches you which species actually belong together.
+          Matching the Family bar and text makes you slap — and trains you to recognize which species truly belong together.
         </p>
       </div>
     </div>
   </section>
 
-  <!-- GESTURE CARDS -->
+  <!-- GESTURES -->
   <section>
     <h2>Wild Cards & Gestures</h2>
     <p>
-      Wild Cards flip the core rule: instead of slapping, you have to perform a gesture. The last player to do it burns a card into the center pile.
+      Wild cards flip the normal rule: when one appears, you <em>don’t</em> slap.
+      You perform a gesture instead. The last player to do it adds a card to the pile.
     </p>
 
     <ul class="gesture-list">
       <li>
         <span class="gesture-name">Walrus – “TUSKS!”</span><br>
-        Index fingers down from your mouth like tusks. Don’t slap — just tusk.
+        Index fingers down from your mouth like tusks. No slapping, just tusking.
       </li>
       <li>
         <span class="gesture-name">Giraffe – “STRETCH!”</span><br>
-        Arms straight up like a tall neck. The table suddenly becomes a savannah.
+        Both arms straight up like a long neck reaching for the canopy.
       </li>
       <li>
-        <span class="gesture-name">North American Beaver – “KNOCK!”</span><br>
-        Knock your knuckles on the table like a tail slap. Mess up and you feed the pot.
+        <span class="gesture-name">Beaver – “KNOCK!”</span><br>
+        Knock your knuckles on the table like a tail slap on the water.
       </li>
       <li>
-        <span class="gesture-name">Philippine Tarsier – “GOGGLES!”</span><br>
-        Make big circles around your eyes with your fingers. Huge eyes, huge chaos.
+        <span class="gesture-name">Tarsier – “GOGGLES!”</span><br>
+        Make big circles around your eyes with your fingers to copy those huge primate eyes.
       </li>
     </ul>
   </section>
 
   <!-- EDUCATIONAL BLURB -->
   <section>
-    <h2>How Mammal Mania Teaches Without Trying</h2>
+    <h2>Why This Actually Works as a Teaching Tool</h2>
     <p>
-      By repeating Orders, Families, and species over dozens of rounds, Mammal Mania quietly wires
-      mammal phylogeny into players’ brains. Colors, bars, and reactions all point to the same
-      scientific structure — so winning the game means learning the tree.
+      Repeating Orders and Families over dozens of rounds wires them into long-term memory.
+      Players start to say things like “Wait — dolphins are artiodactyls?” or
+      “I keep forgetting that porcupines are rodents,” and then they stop forgetting.
     </p>
     <p>
-      Teachers can use the deck as a warm-up activity, and families can treat it as a noisy, hands-on
-      way to talk about real animals, lineages, and conservation.
+      Teachers can use Mammal Mania as a five-minute warm-up, and families can treat it as a
+      noisy way to talk about real animals, evolution and conservation — no lecture required.
     </p>
   </section>
 
@@ -802,10 +1218,10 @@ nodes.forEach(node => {
 
     let html = `<h3>${name}</h3><div>`;
 
-    if (order && type !== "order") {
+    if (type !== "order" && order) {
       html += `<span class="node-chip">Order: ${order}</span>`;
     }
-    if (family && type !== "family") {
+    if (type !== "family" && family) {
       html += `<span class="node-chip" style="font-style:italic;">Family: ${family}</span>`;
     }
     if (gesture) {
@@ -816,7 +1232,6 @@ nodes.forEach(node => {
     if (desc) {
       html += `<p style="margin-top:8px;">${desc}</p>`;
     }
-
     if (ability) {
       html += `<p style="margin-top:4px; font-size:0.9rem;"><strong>In the game:</strong> ${ability}</p>`;
     }
@@ -828,3 +1243,4 @@ nodes.forEach(node => {
 
 </body>
 </html>
+
