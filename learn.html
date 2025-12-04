@@ -205,13 +205,28 @@ body.night section{
 
 .order-column{
   border-radius:12px;
-  padding:12px 10px 14px;
+  padding:12px 10px 14px 28px;
   background:rgba(77,123,72,0.04);
   border:1px solid rgba(77,123,72,0.15);
+  position:relative;
 }
 body.night .order-column{
   background:rgba(255,255,255,0.03);
   border-color:rgba(255,255,255,0.1);
+}
+
+/* order-level trunk */
+.order-column::before{
+  content:"";
+  position:absolute;
+  top:60px;   /* just below the order button */
+  left:16px;
+  bottom:16px;
+  width:2px;
+  background:rgba(77,123,72,0.35);
+}
+body.night .order-column::before{
+  background:rgba(255,255,255,0.25);
 }
 
 .order-column h3{
@@ -226,11 +241,10 @@ body.night .order-column{
 body.night .order-sub{ color:#aaa; }
 
 .tree-nodes{
-  display:flex;
-  flex-wrap:wrap;
-  gap:6px;
+  display:block; /* stacked tree, families inside */
 }
 
+/* generic node style */
 .tree-node{
   border:none;
   border-radius:999px;
@@ -240,33 +254,81 @@ body.night .order-sub{ color:#aaa; }
   background:#fff;
   color:var(--text-color);
   box-shadow:0 2px 5px rgba(0,0,0,0.08);
+  margin-right:6px;
+  margin-bottom:4px;
 }
 body.night .tree-node{
   background:#1a1d21;
   color:var(--text-night);
 }
+
+/* order node pill */
 .tree-node.order{
   font-weight:700;
   background:var(--accent-green);
   color:#fff;
+  margin-bottom:10px;
 }
+
+/* family label styled as node */
 .tree-node.family{
   font-style:italic;
   background:#f7f3e9;
+  margin-bottom:6px;
 }
 body.night .tree-node.family{
   background:#141619;
 }
+
+/* species nodes with twig connectors */
 .tree-node.species{
+  position:relative;
+  padding-left:14px;
   background:#ffffff;
 }
+body.night .tree-node.species{
+  background:#1a1d21;
+}
+.tree-node.species::before{
+  content:"";
+  position:absolute;
+  top:50%;
+  left:-10px;
+  width:10px;
+  height:2px;
+  background:rgba(77,123,72,0.28);
+}
+body.night .tree-node.species::before{
+  background:rgba(255,255,255,0.2);
+}
+
+/* active click highlight */
 .tree-node.active{
   outline:2px solid var(--accent-orange);
   transform:translateY(-1px);
 }
 
+/* wild cards visually flagged */
 .tree-node[data-wild="true"]{
   border:1px solid var(--accent-orange);
+}
+
+/* family block & branches */
+.tree-family-block{
+  position:relative;
+  margin-bottom:12px;
+  padding-left:16px;
+}
+.tree-family-block .branch-connector{
+  position:absolute;
+  top:14px;
+  left:-14px;
+  width:14px;
+  height:2px;
+  background:rgba(77,123,72,0.35);
+}
+body.night .tree-family-block .branch-connector{
+  background:rgba(255,255,255,0.25);
 }
 
 /* DETAILS PANEL */
@@ -425,448 +487,687 @@ footer a{ color:var(--accent-gold); }
 
       <div class="tree-grid" id="treeGrid">
 
-<!-- ============================
-     CARNIVORA
-============================ -->
-<div class="order-column" data-order="Carnivora">
-  <h3>Carnivora</h3>
-  <div class="order-sub">Cats, dogs, bears, mustelids, and the walrus.</div>
-  <div class="tree-nodes">
-
-    <!-- ORDER -->
-    <button class="tree-node order" data-type="order" data-name="Carnivora"
-      data-desc="Predatory mammals with specialized shearing teeth. Includes cats, dogs, bears, mustelids, and pinnipeds.">
-      Carnivora
-    </button>
-
-    <!-- FAMILIES -->
-    <button class="tree-node family" data-type="family" data-name="Felidae" data-order="Carnivora"
-      data-desc="Cats: solitary, stealth hunters with retractable claws.">
-      Felidae
-    </button>
-
-    <button class="tree-node family" data-type="family" data-name="Canidae" data-order="Carnivora"
-      data-desc="Dogs, wolves, foxes — long-legged endurance hunters or omnivores.">
-      Canidae
-    </button>
-
-    <button class="tree-node family" data-type="family" data-name="Mustelidae" data-order="Carnivora"
-      data-desc="Weasels, otters, badgers, wolverines — bold mid-sized predators.">
-      Mustelidae
-    </button>
-
-    <button class="tree-node family" data-type="family" data-name="Ursidae" data-order="Carnivora"
-      data-desc="Bears — large omnivores or predators with powerful builds.">
-      Ursidae
-    </button>
-
-    <button class="tree-node family" data-type="family" data-name="Odobenidae" data-order="Carnivora"
-      data-desc="Walrus — a one-species family of tusked Arctic pinnipeds.">
-      Odobenidae
-    </button>
-
-    <!-- FELIDAE -->
-    <button class="tree-node species" data-type="species" data-name="Tiger"
-      data-order="Carnivora" data-family="Felidae"
-      data-ability="Apex big cat; strong visual anchor for Felidae.">
-      Tiger
-    </button>
-
-    <button class="tree-node species" data-type="species" data-name="Margay"
-      data-order="Carnivora" data-family="Felidae"
-      data-ability="Arboreal spotted cat; adds small-cat diversity to Felidae.">
-      Margay
-    </button>
-
-    <button class="tree-node species" data-type="species" data-name="Canada Lynx"
-      data-order="Carnivora" data-family="Felidae"
-      data-ability="Snow-adapted cat; expands the Felidae range into colder biomes.">
-      Canada Lynx
-    </button>
-
-    <!-- CANIDAE -->
-    <button class="tree-node species" data-type="species" data-name="Grey Wolf"
-      data-order="Carnivora" data-family="Canidae"
-      data-ability="Pack-hunter card; instantly readable as Canidae.">
-      Grey Wolf
-    </button>
-
-    <button class="tree-node species" data-type="species" data-name="Maned Wolf"
-      data-order="Carnivora" data-family="Canidae"
-      data-ability="Long-legged omnivore; unique silhouette for recognizing Canidae.">
-      Maned Wolf
-    </button>
-
-    <button class="tree-node species" data-type="species" data-name="Fennec Fox"
-      data-order="Carnivora" data-family="Canidae"
-      data-ability="Small desert fox with huge ears; strong contrast within Canidae.">
-      Fennec Fox
-    </button>
-
-    <!-- MUSTELIDAE -->
-    <button class="tree-node species" data-type="species" data-name="Honey Badger"
-      data-order="Carnivora" data-family="Mustelidae">
-      Honey Badger
-    </button>
-
-    <button class="tree-node species" data-type="species" data-name="Eurasian Otter"
-      data-order="Carnivora" data-family="Mustelidae">
-      Eurasian Otter
-    </button>
-
-    <button class="tree-node species" data-type="species" data-name="Wolverine"
-      data-order="Carnivora" data-family="Mustelidae">
-      Wolverine
-    </button>
-
-    <!-- URSIDAE -->
-    <button class="tree-node species" data-type="species" data-name="Polar Bear"
-      data-order="Carnivora" data-family="Ursidae">
-      Polar Bear
-    </button>
-
-    <!-- ODOBENIDAE -->
-    <button class="tree-node species" data-type="species" data-name="Walrus"
-      data-order="Carnivora" data-family="Odobenidae" data-wild="true"
-      data-gesture="TUSKS!"
-      data-ability="Wild card: perform the tusk gesture instead of slapping.">
-      Walrus (Wild)
-    </button>
-
-  </div>
-</div>
-
-<!-- ============================
-     PRIMATES
-============================ -->
-<div class="order-column" data-order="Primates">
-  <h3>Primates</h3>
-  <div class="order-sub">Lemurs, monkeys, apes, and our closest relatives.</div>
-  <div class="tree-nodes">
-
-    <!-- ORDER -->
-    <button class="tree-node order" data-type="order" data-name="Primates"
-      data-desc="Flexible hands, big brains, complex social behavior.">
-      Primates
-    </button>
-
-    <!-- FAMILIES -->
-    <button class="tree-node family" data-type="family" data-name="Hominidae"
-      data-order="Primates" data-desc="Great apes: orangutans, gorillas, chimpanzees.">
-      Hominidae
-    </button>
-
-    <button class="tree-node family" data-type="family" data-name="Cercopithecidae"
-      data-order="Primates" data-desc="Old World monkeys: mandrills, macaques, proboscis monkeys.">
-      Cercopithecidae
-    </button>
-
-    <button class="tree-node family" data-type="family" data-name="Atelidae"
-      data-order="Primates" data-desc="New World monkeys: howlers, spider monkeys, woolly monkeys.">
-      Atelidae
-    </button>
-
-    <button class="tree-node family" data-type="family" data-name="Lemuridae"
-      data-order="Primates" data-desc="Lemurs — an ancient primate lineage from Madagascar.">
-      Lemuridae
-    </button>
-
-    <button class="tree-node family" data-type="family" data-name="Tarsiidae"
-      data-order="Primates" data-desc="Tiny nocturnal primates with huge eyes.">
-      Tarsiidae
-    </button>
-
-    <!-- HOMINIDAE -->
-    <button class="tree-node species" data-name="Orangutan" data-type="species"
-      data-order="Primates" data-family="Hominidae">
-      Orangutan
-    </button>
-
-    <button class="tree-node species" data-name="Gorilla" data-type="species"
-      data-order="Primates" data-family="Hominidae">
-      Gorilla
-    </button>
-
-    <button class="tree-node species" data-name="Chimpanzee" data-type="species"
-      data-order="Primates" data-family="Hominidae">
-      Chimpanzee
-    </button>
-
-    <!-- CERCOPITHECIDAE -->
-    <button class="tree-node species" data-name="Mandrill" data-type="species"
-      data-order="Primates" data-family="Cercopithecidae">
-      Mandrill
-    </button>
-
-    <button class="tree-node species" data-name="Proboscis Monkey" data-type="species"
-      data-order="Primates" data-family="Cercopithecidae">
-      Proboscis Monkey
-    </button>
-
-    <button class="tree-node species" data-name="Japanese Macaque" data-type="species"
-      data-order="Primates" data-family="Cercopithecidae">
-      Japanese Macaque
-    </button>
-
-    <!-- ATELIDAE -->
-    <button class="tree-node species" data-name="Black Howler" data-type="species"
-      data-order="Primates" data-family="Atelidae">
-      Black Howler
-    </button>
-
-    <button class="tree-node species" data-name="Brown Spider Monkey" data-type="species"
-      data-order="Primates" data-family="Atelidae">
-      Brown Spider Monkey
-    </button>
-
-    <button class="tree-node species" data-name="Common Woolly Monkey" data-type="species"
-      data-order="Primates" data-family="Atelidae">
-      Common Woolly Monkey
-    </button>
-
-    <!-- LEMURIDAE -->
-    <button class="tree-node species" data-name="Ring-tailed Lemur" data-type="species"
-      data-order="Primates" data-family="Lemuridae">
-      Ring-tailed Lemur
-    </button>
-
-    <!-- TARSIIDAE -->
-    <button class="tree-node species" data-name="Tarsier" data-type="species"
-      data-order="Primates" data-family="Tarsiidae" data-wild="true"
-      data-gesture="GOGGLES!"
-      data-ability="Wild card: make the GOGGLES! gesture.">
-      Tarsier (Wild)
-    </button>
-
-  </div>
-</div>
-
-<!-- ============================
-     ARTIODACTYLA
-============================ -->
-<div class="order-column" data-order="Artiodactyla">
-  <h3>Artiodactyla</h3>
-  <div class="order-sub">Even-toed hoofed mammals — plus dolphins and orcas.</div>
-  <div class="tree-nodes">
-
-    <!-- ORDER -->
-    <button class="tree-node order" data-type="order" data-name="Artiodactyla"
-      data-desc="Hoofed mammals and their surprising relatives — whales and dolphins.">
-      Artiodactyla
-    </button>
-
-    <!-- FAMILIES -->
-    <button class="tree-node family" data-type="family" data-name="Bovidae"
-      data-order="Artiodactyla" data-desc="Antelopes, sheep, musk oxen, bison.">
-      Bovidae
-    </button>
-
-    <button class="tree-node family" data-type="family" data-name="Cervidae"
-      data-order="Artiodactyla" data-desc="Deer: moose, elk, red deer.">
-      Cervidae
-    </button>
-
-    <button class="tree-node family" data-type="family" data-name="Suidae"
-      data-order="Artiodactyla" data-desc="True pigs: wild boar, warty pigs, babirusas.">
-      Suidae
-    </button>
-
-    <button class="tree-node family" data-type="family" data-name="Tayassuidae"
-      data-order="Artiodactyla" data-desc="New World peccaries.">
-      Tayassuidae
-    </button>
-
-    <button class="tree-node family" data-type="family" data-name="Delphinidae"
-      data-order="Artiodactyla" data-desc="Oceanic dolphins, pilot whales, and orcas.">
-      Delphinidae
-    </button>
-
-    <button class="tree-node family" data-type="family" data-name="Giraffidae"
-      data-order="Artiodactyla" data-desc="Giraffes — long-necked browsers.">
-      Giraffidae
-    </button>
-
-    <!-- BOVIDAE -->
-    <button class="tree-node species" data-name="Bighorn Sheep" data-type="species"
-      data-order="Artiodactyla" data-family="Bovidae">
-      Bighorn Sheep
-    </button>
-
-    <button class="tree-node species" data-name="Saiga Antelope" data-type="species"
-      data-order="Artiodactyla" data-family="Bovidae">
-      Saiga Antelope
-    </button>
-
-    <button class="tree-node species" data-name="Musk Ox" data-type="species"
-      data-order="Artiodactyla" data-family="Bovidae">
-      Musk Ox
-    </button>
-
-    <button class="tree-node species" data-name="Bison" data-type="species"
-      data-order="Artiodactyla" data-family="Bovidae">
-      Bison
-    </button>
-
-    <!-- CERVIDAE -->
-    <button class="tree-node species" data-name="Moose" data-type="species"
-      data-order="Artiodactyla" data-family="Cervidae">
-      Moose
-    </button>
-
-    <!-- SUIDAE -->
-    <button class="tree-node species" data-name="Visayan Warty Pig" data-type="species"
-      data-order="Artiodactyla" data-family="Suidae">
-      Visayan Warty Pig
-    </button>
-
-    <button class="tree-node species" data-name="Red River Hog" data-type="species"
-      data-order="Artiodactyla" data-family="Suidae">
-      Red River Hog
-    </button>
-
-    <button class="tree-node species" data-name="Babirusa" data-type="species"
-      data-order="Artiodactyla" data-family="Suidae">
-      Babirusa
-    </button>
-
-    <!-- TAYASSUIDAE -->
-    <button class="tree-node species" data-name="Collared Peccary" data-type="species"
-      data-order="Artiodactyla" data-family="Tayassuidae">
-      Collared Peccary
-    </button>
-
-    <!-- DELPHINIDAE -->
-    <button class="tree-node species" data-name="Short-finned Pilot Whale" data-type="species"
-      data-order="Artiodactyla" data-family="Delphinidae">
-      Short-finned Pilot Whale
-    </button>
-
-    <button class="tree-node species" data-name="Spinner Dolphin" data-type="species"
-      data-order="Artiodactyla" data-family="Delphinidae">
-      Spinner Dolphin
-    </button>
-
-    <button class="tree-node species" data-name="Orca" data-type="species"
-      data-order="Artiodactyla" data-family="Delphinidae">
-      Orca
-    </button>
-
-    <!-- GIRAFFIDAE -->
-    <button class="tree-node species" data-name="Giraffe" data-type="species"
-      data-order="Artiodactyla" data-family="Giraffidae" data-wild="true"
-      data-gesture="STRETCH!">
-      Giraffe (Wild)
-    </button>
-
-  </div>
-</div>
-
-<!-- ============================
-     RODENTIA
-============================ -->
-<div class="order-column" data-order="Rodentia">
-  <h3>Rodentia</h3>
-  <div class="order-sub">The gnawing majority — capybaras, squirrels, mice, porcupines, beavers.</div>
-  <div class="tree-nodes">
-
-    <!-- ORDER -->
-    <button class="tree-node order" data-type="order" data-name="Rodentia"
-      data-desc="Rodents with continuously growing incisors — the biggest Order in the game.">
-      Rodentia
-    </button>
-
-    <!-- FAMILIES -->
-    <button class="tree-node family" data-type="family" data-name="Caviidae"
-      data-order="Rodentia" data-desc="Cavy family: capybaras, guinea pigs, maras.">
-      Caviidae
-    </button>
-
-    <button class="tree-node family" data-type="family" data-name="Sciuridae"
-      data-order="Rodentia" data-desc="Squirrels, prairie dogs, flying squirrels.">
-      Sciuridae
-    </button>
-
-    <button class="tree-node family" data-type="family" data-name="Muridae"
-      data-order="Rodentia" data-desc="True mice & rats: spiny mice, rakali, hopping mice.">
-      Muridae
-    </button>
-
-    <button class="tree-node family" data-type="family" data-name="Hystricidae"
-      data-order="Rodentia" data-desc="Old World porcupines.">
-      Hystricidae
-    </button>
-
-    <button class="tree-node family" data-type="family" data-name="Castoridae"
-      data-order="Rodentia" data-desc="Beavers — dam-building ecosystem engineers.">
-      Castoridae
-    </button>
-
-    <!-- CAVIIDAE -->
-    <button class="tree-node species" data-name="Capybara" data-type="species"
-      data-order="Rodentia" data-family="Caviidae">
-      Capybara
-    </button>
-
-    <button class="tree-node species" data-name="Guinea Pig" data-type="species"
-      data-order="Rodentia" data-family="Caviidae">
-      Guinea Pig
-    </button>
-
-    <button class="tree-node species" data-name="Patagonian Mara" data-type="species"
-      data-order="Rodentia" data-family="Caviidae">
-      Patagonian Mara
-    </button>
-
-    <!-- SCIURIDAE -->
-    <button class="tree-node species" data-name="Prevost's Squirrel" data-type="species"
-      data-order="Rodentia" data-family="Sciuridae">
-      Prevost's Squirrel
-    </button>
-
-    <button class="tree-node species" data-name="Black-tailed Prairie Dog" data-type="species"
-      data-order="Rodentia" data-family="Sciuridae">
-      Black-tailed Prairie Dog
-    </button>
-
-    <button class="tree-node species" data-name="Flying Squirrel" data-type="species"
-      data-order="Rodentia" data-family="Sciuridae">
-      Flying Squirrel
-    </button>
-
-    <!-- MURIDAE -->
-    <button class="tree-node species" data-name="Spinifex Hopping Mouse" data-type="species"
-      data-order="Rodentia" data-family="Muridae">
-      Spinifex Hopping Mouse
-    </button>
-
-    <button class="tree-node species" data-name="Rakali" data-type="species"
-      data-order="Rodentia" data-family="Muridae">
-      Rakali
-    </button>
-
-    <button class="tree-node species" data-name="Maned Rat" data-type="species"
-      data-order="Rodentia" data-family="Muridae">
-      Maned Rat
-    </button>
-
-    <!-- HYSTRICIDAE -->
-    <button class="tree-node species" data-name="Crested Porcupine" data-type="species"
-      data-order="Rodentia" data-family="Hystricidae">
-      Crested Porcupine
-    </button>
-
-    <!-- CASTORIDAE -->
-    <button class="tree-node species" data-name="Beaver" data-type="species"
-      data-order="Rodentia" data-family="Castoridae" data-wild="true"
-      data-gesture="KNOCK!">
-      Beaver (Wild)
-    </button>
-
-  </div>
-</div>
-
-</div> <!-- END TREE GRID -->
-
+        <!-- ============================
+             CARNIVORA
+        ============================ -->
+        <div class="order-column" data-order="Carnivora">
+          <h3>Carnivora</h3>
+          <div class="order-sub">Cats, dogs, bears, mustelids, and the walrus.</div>
+          <div class="tree-nodes">
+
+            <!-- Order node -->
+            <button class="tree-node order"
+              data-type="order"
+              data-name="Carnivora"
+              data-desc="Predatory mammals with specialized shearing teeth. Includes cats, dogs, bears, mustelids, and pinnipeds.">
+              Carnivora
+            </button>
+
+            <!-- Felidae -->
+            <div class="tree-family-block">
+              <div class="branch-connector"></div>
+              <button class="tree-node family"
+                data-type="family"
+                data-name="Felidae"
+                data-order="Carnivora"
+                data-desc="The cat family: stealthy ambush predators from small margays to big tigers.">
+                Felidae
+              </button>
+
+              <button class="tree-node species"
+                data-type="species"
+                data-name="Tiger"
+                data-order="Carnivora"
+                data-family="Felidae">
+                Tiger
+              </button>
+
+              <button class="tree-node species"
+                data-type="species"
+                data-name="Margay"
+                data-order="Carnivora"
+                data-family="Felidae">
+                Margay
+              </button>
+
+              <button class="tree-node species"
+                data-type="species"
+                data-name="Canada Lynx"
+                data-order="Carnivora"
+                data-family="Felidae">
+                Canada Lynx
+              </button>
+            </div>
+
+            <!-- Canidae -->
+            <div class="tree-family-block">
+              <div class="branch-connector"></div>
+              <button class="tree-node family"
+                data-type="family"
+                data-name="Canidae"
+                data-order="Carnivora"
+                data-desc="Dogs, wolves, foxes, and maned wolves — long-legged hunters and omnivores.">
+                Canidae
+              </button>
+
+              <button class="tree-node species"
+                data-type="species"
+                data-name="Grey Wolf"
+                data-order="Carnivora"
+                data-family="Canidae">
+                Grey Wolf
+              </button>
+
+              <button class="tree-node species"
+                data-type="species"
+                data-name="Maned Wolf"
+                data-order="Carnivora"
+                data-family="Canidae">
+                Maned Wolf
+              </button>
+
+              <button class="tree-node species"
+                data-type="species"
+                data-name="Fennec Fox"
+                data-order="Carnivora"
+                data-family="Canidae">
+                Fennec Fox
+              </button>
+            </div>
+
+            <!-- Mustelidae -->
+            <div class="tree-family-block">
+              <div class="branch-connector"></div>
+              <button class="tree-node family"
+                data-type="family"
+                data-name="Mustelidae"
+                data-order="Carnivora"
+                data-desc="Weasels, otters, badgers, and wolverines — small to mid-size hypercarnivores.">
+                Mustelidae
+              </button>
+
+              <button class="tree-node species"
+                data-type="species"
+                data-name="Honey Badger"
+                data-order="Carnivora"
+                data-family="Mustelidae">
+                Honey Badger
+              </button>
+
+              <button class="tree-node species"
+                data-type="species"
+                data-name="Eurasian Otter"
+                data-order="Carnivora"
+                data-family="Mustelidae">
+                Eurasian Otter
+              </button>
+
+              <button class="tree-node species"
+                data-type="species"
+                data-name="Wolverine"
+                data-order="Carnivora"
+                data-family="Mustelidae">
+                Wolverine
+              </button>
+            </div>
+
+            <!-- Ursidae -->
+            <div class="tree-family-block">
+              <div class="branch-connector"></div>
+              <button class="tree-node family"
+                data-type="family"
+                data-name="Ursidae"
+                data-order="Carnivora"
+                data-desc="The bear family — large omnivores and predators.">
+                Ursidae
+              </button>
+
+              <button class="tree-node species"
+                data-type="species"
+                data-name="Polar Bear"
+                data-order="Carnivora"
+                data-family="Ursidae">
+                Polar Bear
+              </button>
+            </div>
+
+            <!-- Odobenidae -->
+            <div class="tree-family-block">
+              <div class="branch-connector"></div>
+              <button class="tree-node family"
+                data-type="family"
+                data-name="Odobenidae"
+                data-order="Carnivora"
+                data-desc="Walruses — tusked Arctic pinnipeds with one living species.">
+                Odobenidae
+              </button>
+
+              <button class="tree-node species"
+                data-type="species"
+                data-name="Walrus"
+                data-order="Carnivora"
+                data-family="Odobenidae"
+                data-wild="true"
+                data-gesture="TUSKS!"
+                data-ability="Wild card: instead of slapping, everyone does the tusk gesture. Last player to gesture burns a card.">
+                Walrus (Wild)
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ============================
+             PRIMATES
+        ============================ -->
+        <div class="order-column" data-order="Primates">
+          <h3>Primates</h3>
+          <div class="order-sub">Lemurs, monkeys, apes, and our closest relatives.</div>
+          <div class="tree-nodes">
+
+            <!-- Order -->
+            <button class="tree-node order"
+              data-type="order"
+              data-name="Primates"
+              data-desc="Mammals with grasping hands, large brains, and complex social lives.">
+              Primates
+            </button>
+
+            <!-- Hominidae -->
+            <div class="tree-family-block">
+              <div class="branch-connector"></div>
+              <button class="tree-node family"
+                data-type="family"
+                data-name="Hominidae"
+                data-order="Primates"
+                data-desc="Great apes: orangutans, gorillas, chimpanzees — our closest non-human relatives.">
+                Hominidae
+              </button>
+
+              <button class="tree-node species"
+                data-type="species"
+                data-name="Orangutan"
+                data-order="Primates"
+                data-family="Hominidae">
+                Orangutan
+              </button>
+
+              <button class="tree-node species"
+                data-type="species"
+                data-name="Gorilla"
+                data-order="Primates"
+                data-family="Hominidae">
+                Gorilla
+              </button>
+
+              <button class="tree-node species"
+                data-type="species"
+                data-name="Chimpanzee"
+                data-order="Primates"
+                data-family="Hominidae">
+                Chimpanzee
+              </button>
+            </div>
+
+            <!-- Cercopithecidae -->
+            <div class="tree-family-block">
+              <div class="branch-connector"></div>
+              <button class="tree-node family"
+                data-type="family"
+                data-name="Cercopithecidae"
+                data-order="Primates"
+                data-desc="Old World monkeys like mandrills, macaques, and proboscis monkeys.">
+                Cercopithecidae
+              </button>
+
+              <button class="tree-node species"
+                data-type="species"
+                data-name="Mandrill"
+                data-order="Primates"
+                data-family="Cercopithecidae">
+                Mandrill
+              </button>
+
+              <button class="tree-node species"
+                data-type="species"
+                data-name="Proboscis Monkey"
+                data-order="Primates"
+                data-family="Cercopithecidae">
+                Proboscis Monkey
+              </button>
+
+              <button class="tree-node species"
+                data-type="species"
+                data-name="Japanese macaque"
+                data-order="Primates"
+                data-family="Cercopithecidae">
+                Japanese macaque
+              </button>
+            </div>
+
+            <!-- Atelidae -->
+            <div class="tree-family-block">
+              <div class="branch-connector"></div>
+              <button class="tree-node family"
+                data-type="family"
+                data-name="Atelidae"
+                data-order="Primates"
+                data-desc="New World monkeys with prehensile tails: howlers, spider monkeys, woolly monkeys.">
+                Atelidae
+              </button>
+
+              <button class="tree-node species"
+                data-type="species"
+                data-name="Black Howler"
+                data-order="Primates"
+                data-family="Atelidae">
+                Black Howler
+              </button>
+
+              <button class="tree-node species"
+                data-type="species"
+                data-name="Brown spider monkey"
+                data-order="Primates"
+                data-family="Atelidae">
+                Brown spider monkey
+              </button>
+
+              <button class="tree-node species"
+                data-type="species"
+                data-name="Common Woolly Monkey"
+                data-order="Primates"
+                data-family="Atelidae">
+                Common Woolly Monkey
+              </button>
+            </div>
+
+            <!-- Lemuridae -->
+            <div class="tree-family-block">
+              <div class="branch-connector"></div>
+              <button class="tree-node family"
+                data-type="family"
+                data-name="Lemuridae"
+                data-order="Primates"
+                data-desc="Lemurs from Madagascar, representing an ancient primate lineage.">
+                Lemuridae
+              </button>
+
+              <button class="tree-node species"
+                data-type="species"
+                data-name="Ring-Tailed Lemur"
+                data-order="Primates"
+                data-family="Lemuridae">
+                Ring-Tailed Lemur
+              </button>
+            </div>
+
+            <!-- Tarsiidae -->
+            <div class="tree-family-block">
+              <div class="branch-connector"></div>
+              <button class="tree-node family"
+                data-type="family"
+                data-name="Tarsiidae"
+                data-order="Primates"
+                data-desc="Tarsiers — tiny nocturnal primates with enormous eyes and long ankles.">
+                Tarsiidae
+              </button>
+
+              <button class="tree-node species"
+                data-type="species"
+                data-name="Tarsier"
+                data-order="Primates"
+                data-family="Tarsiidae"
+                data-wild="true"
+                data-gesture="GOGGLES!"
+                data-ability="Wild card: instead of slapping, everyone makes big GOGGLES! around their eyes.">
+                Tarsier (Wild)
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ============================
+             ARTIODACTYLA
+        ============================ -->
+        <div class="order-column" data-order="Artiodactyla">
+          <h3>Artiodactyla</h3>
+          <div class="order-sub">Even-toed hoofed mammals — plus dolphins and orcas.</div>
+          <div class="tree-nodes">
+
+            <!-- Order -->
+            <button class="tree-node order"
+              data-type="order"
+              data-name="Artiodactyla"
+              data-desc="Even-toed hoofed mammals and their surprising relatives — whales and dolphins.">
+              Artiodactyla
+            </button>
+
+            <!-- Bovidae -->
+            <div class="tree-family-block">
+              <div class="branch-connector"></div>
+              <button class="tree-node family"
+                data-type="family"
+                data-name="Bovidae"
+                data-order="Artiodactyla"
+                data-desc="Horned grazers and browsers: antelopes, sheep, musk oxen.">
+                Bovidae
+              </button>
+
+              <button class="tree-node species"
+                data-type="species"
+                data-name="Big Horn Sheep"
+                data-order="Artiodactyla"
+                data-family="Bovidae">
+                Big Horn Sheep
+              </button>
+
+              <button class="tree-node species"
+                data-type="species"
+                data-name="Saiga Antelope"
+                data-order="Artiodactyla"
+                data-family="Bovidae">
+                Saiga Antelope
+              </button>
+
+              <button class="tree-node species"
+                data-type="species"
+                data-name="Musk Ox"
+                data-order="Artiodactyla"
+                data-family="Bovidae">
+                Musk Ox
+              </button>
+            </div>
+
+            <!-- Cervidae -->
+            <div class="tree-family-block">
+              <div class="branch-connector"></div>
+              <button class="tree-node family"
+                data-type="family"
+                data-name="Cervidae"
+                data-order="Artiodactyla"
+                data-desc="The deer family: moose, elk, and their relatives.">
+                Cervidae
+              </button>
+
+              <button class="tree-node species"
+                data-type="species"
+                data-name="Moose"
+                data-order="Artiodactyla"
+                data-family="Cervidae">
+                Moose
+              </button>
+            </div>
+
+            <!-- Suidae -->
+            <div class="tree-family-block">
+              <div class="branch-connector"></div>
+              <button class="tree-node family"
+                data-type="family"
+                data-name="Suidae"
+                data-order="Artiodactyla"
+                data-desc="Pigs: wild boars, warty pigs, and tusked babirusas.">
+                Suidae
+              </button>
+
+              <button class="tree-node species"
+                data-type="species"
+                data-name="Visayan warty pig"
+                data-order="Artiodactyla"
+                data-family="Suidae">
+                Visayan Warty Pig
+              </button>
+
+              <button class="tree-node species"
+                data-type="species"
+                data-name="Red River Hog"
+                data-order="Artiodactyla"
+                data-family="Suidae">
+                Red River Hog
+              </button>
+
+              <button class="tree-node species"
+                data-type="species"
+                data-name="Babirusa"
+                data-order="Artiodactyla"
+                data-family="Suidae">
+                Babirusa
+              </button>
+            </div>
+
+            <!-- Delphinidae -->
+            <div class="tree-family-block">
+              <div class="branch-connector"></div>
+              <button class="tree-node family"
+                data-type="family"
+                data-name="Delphinidae"
+                data-order="Artiodactyla"
+                data-desc="Oceanic dolphins, pilot whales, and orcas — artiodactyls that returned to the sea.">
+                Delphinidae
+              </button>
+
+              <button class="tree-node species"
+                data-type="species"
+                data-name="Short Finned Pilot Whale"
+                data-order="Artiodactyla"
+                data-family="Delphinidae">
+                Short Finned Pilot Whale
+              </button>
+
+              <button class="tree-node species"
+                data-type="species"
+                data-name="Spinner Dolphin"
+                data-order="Artiodactyla"
+                data-family="Delphinidae">
+                Spinner Dolphin
+              </button>
+
+              <button class="tree-node species"
+                data-type="species"
+                data-name="Orca"
+                data-order="Artiodactyla"
+                data-family="Delphinidae">
+                Orca
+              </button>
+            </div>
+
+            <!-- Giraffidae -->
+            <div class="tree-family-block">
+              <div class="branch-connector"></div>
+              <button class="tree-node family"
+                data-type="family"
+                data-name="Giraffidae"
+                data-order="Artiodactyla"
+                data-desc="The giraffe family: long-necked browsers with only a few living species.">
+                Giraffidae
+              </button>
+
+              <button class="tree-node species"
+                data-type="species"
+                data-name="Giraffe"
+                data-order="Artiodactyla"
+                data-family="Giraffidae"
+                data-wild="true"
+                data-gesture="STRETCH!"
+                data-ability="Wild card: instead of slapping, everyone reaches up tall for STRETCH!.">
+                Giraffe (Wild)
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ============================
+             RODENTIA
+        ============================ -->
+        <div class="order-column" data-order="Rodentia">
+          <h3>Rodentia</h3>
+          <div class="order-sub">The gnawing majority — capybaras, squirrels, mice, porcupines, beavers.</div>
+          <div class="tree-nodes">
+
+            <!-- Order -->
+            <button class="tree-node order"
+              data-type="order"
+              data-name="Rodentia"
+              data-desc="Rodents with ever-growing incisors: cavies, squirrels, mice, porcupines, and beavers.">
+              Rodentia
+            </button>
+
+            <!-- Caviidae -->
+            <div class="tree-family-block">
+              <div class="branch-connector"></div>
+              <button class="tree-node family"
+                data-type="family"
+                data-name="Caviidae"
+                data-order="Rodentia"
+                data-desc="Cavy family: capybaras, guinea pigs, maras — many are grassland herbivores.">
+                Caviidae
+              </button>
+
+              <button class="tree-node species"
+                data-type="species"
+                data-name="Capybara"
+                data-order="Rodentia"
+                data-family="Caviidae">
+                Capybara
+              </button>
+
+              <button class="tree-node species"
+                data-type="species"
+                data-name="Guinea Pig"
+                data-order="Rodentia"
+                data-family="Caviidae">
+                Guinea Pig
+              </button>
+
+              <button class="tree-node species"
+                data-type="species"
+                data-name="Patagonian mara"
+                data-order="Rodentia"
+                data-family="Caviidae">
+                Patagonian mara
+              </button>
+            </div>
+
+            <!-- Sciuridae -->
+            <div class="tree-family-block">
+              <div class="branch-connector"></div>
+              <button class="tree-node family"
+                data-type="family"
+                data-name="Sciuridae"
+                data-order="Rodentia"
+                data-desc="Squirrels and their kin: tree squirrels, prairie dogs, flying squirrels.">
+                Sciuridae
+              </button>
+
+              <button class="tree-node species"
+                data-type="species"
+                data-name="Prevost's squirrel"
+                data-order="Rodentia"
+                data-family="Sciuridae">
+                Prevost's squirrel
+              </button>
+
+              <button class="tree-node species"
+                data-type="species"
+                data-name="Black-tailed prairie dog"
+                data-order="Rodentia"
+                data-family="Sciuridae">
+                Black-tailed prairie dog
+              </button>
+
+              <button class="tree-node species"
+                data-type="species"
+                data-name="Flying Squirrel"
+                data-order="Rodentia"
+                data-family="Sciuridae">
+                Flying Squirrel
+              </button>
+            </div>
+
+            <!-- Muridae -->
+            <div class="tree-family-block">
+              <div class="branch-connector"></div>
+              <button class="tree-node family"
+                data-type="family"
+                data-name="Muridae"
+                data-order="Rodentia"
+                data-desc="The true mice and rats: desert specialists, water-rats, and more.">
+                Muridae
+              </button>
+
+              <button class="tree-node species"
+                data-type="species"
+                data-name="Spinifex hopping mouse"
+                data-order="Rodentia"
+                data-family="Muridae">
+                Spinifex hopping mouse
+              </button>
+
+              <button class="tree-node species"
+                data-type="species"
+                data-name="Rakali"
+                data-order="Rodentia"
+                data-family="Muridae">
+                Rakali
+              </button>
+
+              <button class="tree-node species"
+                data-type="species"
+                data-name="Maned Rat"
+                data-order="Rodentia"
+                data-family="Muridae">
+                Maned Rat
+              </button>
+            </div>
+
+            <!-- Hystricidae -->
+            <div class="tree-family-block">
+              <div class="branch-connector"></div>
+              <button class="tree-node family"
+                data-type="family"
+                data-name="Hystricidae"
+                data-order="Rodentia"
+                data-desc="Old World porcupines armed with stiff defensive quills.">
+                Hystricidae
+              </button>
+
+              <button class="tree-node species"
+                data-type="species"
+                data-name="Crested Porcupine"
+                data-order="Rodentia"
+                data-family="Hystricidae">
+                Crested Porcupine
+              </button>
+            </div>
+
+            <!-- Castoridae -->
+            <div class="tree-family-block">
+              <div class="branch-connector"></div>
+              <button class="tree-node family"
+                data-type="family"
+                data-name="Castoridae"
+                data-order="Rodentia"
+                data-desc="Beavers — ecosystem engineers that build dams and wetlands.">
+                Castoridae
+              </button>
+
+              <button class="tree-node species"
+                data-type="species"
+                data-name="Beaver"
+                data-order="Rodentia"
+                data-family="Castoridae"
+                data-wild="true"
+                data-gesture="KNOCK!"
+                data-ability="Wild card: instead of slapping, everyone knocks on the table like a tail slap.">
+                Beaver (Wild)
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
 
       <div class="node-details" id="nodeDetails">
         <h3>Click a node to explore</h3>
@@ -907,7 +1208,7 @@ footer a{ color:var(--accent-gold); }
           Two cards from the <strong>same Family</strong> played back-to-back.
         </p>
         <p class="example">
-          Example: <em>Lion (Felidae)</em> → <em>Tiger (Felidae)</em>  
+          Example: <em>Tiger (Felidae)</em> → <em>Canada Lynx (Felidae)</em>  
           or <em>Capybara (Caviidae)</em> → <em>Guinea Pig (Caviidae)</em>.
         </p>
         <p>
@@ -1021,4 +1322,5 @@ nodes.forEach(node => {
 
 </body>
 </html>
+
 
