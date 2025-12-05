@@ -2,112 +2,97 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Learn | Goldwire Games</title>
 
 <!-- Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Cabin:wght@400;700&display=swap" rel="stylesheet">
 
-<!-- Phylotree.js -->
-<script src="https://cdn.jsdelivr.net/npm/d3@5"></script>
-<script src="https://cdn.jsdelivr.net/npm/phylotree@1.0.0/phylotree.js"></script>
+<!-- D3 + Phylotree.js (CRITICAL) -->
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/phylotree@1.0.2/phylotree.min.js"></script>
 
 <style>
-/* CLEANED STYLES (kept your theme, removed old fake-tree grid) */
-
+/* ROOT THEME */
 :root{
-  --bg-color: #f7f3e9;
-  --text-color: #2a2a2a;
-  --accent-green: #4d7b48;
-  --accent-orange: #d08a43;
-  --accent-gold: #b8913b;
-  --night-bg: #0d0f11;
-  --night-text: #e8e8e8;
+  --bg-color:#f7f3e9;
+  --text-color:#2a2a2a;
+  --accent-green:#4d7b48;
+  --accent-orange:#d08a43;
+  --accent-gold:#b8913b;
+  --card-bg:#ffffff;
+
+  /* Placeholder order colors — you can update these anytime */
+  --color-carnivora:#d9534f;
+  --color-primate:#f0ad4e;
+  --color-artiodactyla:#5cb85c;
+  --color-rodentia:#5bc0de;
 }
 
-/* General page styling */
 body{
   margin:0;
   font-family:"Cabin", sans-serif;
   background:var(--bg-color);
   color:var(--text-color);
 }
-body.night{
-  background:var(--night-bg);
-  color:var(--night-text);
-}
 
+/* NAV */
 nav{
-  display:flex;
-  justify-content:center;
-  gap:28px;
-  padding:14px 0;
-  background:rgba(241,236,223,0.85);
-  backdrop-filter:blur(6px);
-  position:sticky;
-  top:0;
-  z-index:10;
-}
-nav a{
+  position:sticky; top:0;
+  background:rgba(241,236,223,0.9);
+  padding:12px;
+  display:flex; gap:25px; justify-content:center;
   font-weight:700;
-  text-decoration:none;
-  color:var(--accent-gold);
+  border-bottom:1px solid rgba(0,0,0,0.1);
 }
-nav a:hover{
-  color:var(--accent-orange);
-}
+nav a{ color:var(--accent-gold); text-decoration:none; }
+nav a:hover{ color:var(--accent-orange); }
 
+/* MAIN LAYOUT */
 .container{
-  max-width:960px;
+  max-width:900px;
   margin:0 auto;
   padding:40px 20px;
 }
 
 section{
-  background:white;
-  padding:26px;
-  border-radius:14px;
-  margin-bottom:40px;
-  box-shadow:0 6px 20px rgba(0,0,0,0.06);
-}
-body.night section{
-  background:#141619;
+  background:#fff;
+  padding:25px;
+  margin:30px 0;
+  border-radius:12px;
+  box-shadow:0 4px 18px rgba(0,0,0,0.06);
 }
 
-h1,h2{
-  font-family:"Merriweather", serif;
-  color:var(--accent-green);
-}
-
-/* INTERACTIVE TREE */
-#phylo-container{
+/* TREE AREA */
+#tree-container{
   width:100%;
-  height:660px;
+  overflow-x:auto;
+  border-radius:12px;
   border:1px solid rgba(0,0,0,0.15);
-  border-radius:14px;
-  background:white;
-  overflow:hidden;
-}
-body.night #phylo-container{
-  background:#0f1113;
-  border-color:#333;
+  padding:10px;
 }
 
-#moon-toggle{
-  position:fixed;
-  right:18px;
-  bottom:18px;
-  font-size:2rem;
-  cursor:pointer;
-  user-select:none;
+/* Legend */
+.legend-box{
+  font-size:0.9rem;
+  margin-bottom:14px;
+}
+.legend-item{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  margin-right:18px;
+}
+.legend-color{
+  width:14px; height:14px;
+  border-radius:4px;
+  border:1px solid #444;
 }
 
 </style>
 </head>
 
 <body>
-
-<div id="moon-toggle">🌙</div>
 
 <nav>
   <a href="index.html">Home</a>
@@ -119,80 +104,127 @@ body.night #phylo-container{
 
 <main class="container">
 
-  <section>
-    <h1>Learn Mammal Mania</h1>
-    <p>The interactive family tree below shows every species included in Mammal Mania and how they are related.</p>
-  </section>
+<header>
+  <h1>Learn Mammal Mania</h1>
+  <p>Explore the real mammal family tree behind the game.</p>
+</header>
 
-  <!-- REAL INTERACTIVE TREE -->
-  <section>
-    <h2>Interactive Phylogenetic Tree</h2>
-    <p>This tree is generated directly from scientific data using your uploaded <code>.nwk</code> file.</p>
+<section>
+  <h2>Interactive Phylogenetic Tree</h2>
+  <p>
+    This tree shows how every species in <em>Mammal Mania</em> is related.
+    It is built directly from the <strong>Open Tree of Life</strong> using your real species list.
+  </p>
 
-    <div id="phylo-container"></div>
+  <!-- Legend -->
+  <div class="legend-box">
+    <span class="legend-item">
+      <span class="legend-color" style="background:var(--color-carnivora)"></span> Carnivora
+    </span>
+    <span class="legend-item">
+      <span class="legend-color" style="background:var(--color-primate)"></span> Primates
+    </span>
+    <span class="legend-item">
+      <span class="legend-color" style="background:var(--color-artiodactyla)"></span> Artiodactyla
+    </span>
+    <span class="legend-item">
+      <span class="legend-color" style="background:var(--color-rodentia)"></span> Rodentia
+    </span>
+  </div>
 
-    <script>
-    // Load the Newick file you uploaded to GitHub
-    d3.text("https://raw.githubusercontent.com/tavisgoldwire/goldwiregames.github.io/main/mammalmania_commonname.nwk")
-      .then(function(newick) {
-
-        const tree = new phylotree.phylotree(newick)
-          .svg(d3.select("#phylo-container"))
-          .options({
-            'zoom': true,
-            'align-tips': true
-          })
-          .layout();
-
-        // Color branches by order using placeholder colors
-        const orderColors = {
-          "Carnivora": "red",
-          "Artiodactyla": "green",
-          "Primates": "gold",
-          "Rodentia": "blue"
-        };
-
-        tree.get_nodes().forEach(n => {
-          if (n.data && n.data.name) {
-            const name = n.data.name;
-
-            for (let ord in orderColors) {
-              if (name.includes(ord)) {
-                n.branch_color = orderColors[ord];
-              }
-            }
-          }
-        });
-
-        tree.update();
-      });
-    </script>
-  </section>
-
-  <section>
-    <h2>How to Use the Tree</h2>
-    <ul>
-      <li><strong>Scroll</strong> to zoom.</li>
-      <li><strong>Click + drag</strong> to move the canvas.</li>
-      <li><strong>Click any species</strong> to highlight its branch.</li>
-      <li><strong>Colors</strong> show the Order (temporary placeholder colors).</li>
-    </ul>
-  </section>
+  <!-- Where the tree will appear -->
+  <div id="tree-container">
+    <svg id="phyloTree"></svg>
+  </div>
+</section>
 
 </main>
 
 <script>
-// Night mode toggle
-const moon = document.getElementById("moon-toggle");
-moon.onclick = () => {
-  document.body.classList.toggle("night");
-  moon.textContent = document.body.classList.contains("night") ? "🌕" : "🌙";
-};
+// --------------------------------------------------------------
+// 1. Load NWK Tree from Your GitHub Repo
+// --------------------------------------------------------------
+const nwkURL = "https://tavisgoldwire.github.io/mammalmania_commonname.nwk";
+
+// --------------------------------------------------------------
+// 2. Load & Render Tree Using phylotree.js
+// --------------------------------------------------------------
+fetch(nwkURL)
+  .then(response => response.text())
+  .then(newickText => {
+
+    const tree = new phylotree.phylotree(newickText)
+      .svg(d3.select("#phyloTree"))
+      .options({
+        'left-right-spacing':'fit-to-size',
+        'top-bottom-spacing':'fit-to-size'
+      })
+      .layout();
+
+    // Color species by Order using name matching
+    tree.style_nodes(node => {
+
+      if(!node.data.name) return {};
+
+      const nm = node.data.name.toLowerCase();
+
+      if(nm.includes("wolf") ||
+         nm.includes("tiger") ||
+         nm.includes("lynx") ||
+         nm.includes("badger") ||
+         nm.includes("otter") ||
+         nm.includes("bear") ||
+         nm.includes("walrus") ||
+         nm.includes("wolverine") ||
+         nm.includes("ocelot") ||
+         nm.includes("fox"))
+        return { 'stroke': 'var(--color-carnivora)', 'stroke-width': 3 };
+
+      if(nm.includes("lemur") ||
+         nm.includes("tarsier") ||
+         nm.includes("mandrill") ||
+         nm.includes("macaque") ||
+         nm.includes("gorilla") ||
+         nm.includes("chimp") ||
+         nm.includes("orang"))
+        return { 'stroke': 'var(--color-primate)', 'stroke-width': 3 };
+
+      if(nm.includes("sheep") ||
+         nm.includes("ox") ||
+         nm.includes("giraffe") ||
+         nm.includes("hog") ||
+         nm.includes("pig") ||
+         nm.includes("babirusa") ||
+         nm.includes("dolphin") ||
+         nm.includes("orca") ||
+         nm.includes("antelope") ||
+         nm.includes("moose"))
+        return { 'stroke': 'var(--color-artiodactyla)', 'stroke-width': 3 };
+
+      if(nm.includes("capybara") ||
+         nm.includes("guinea") ||
+         nm.includes("mara") ||
+         nm.includes("squirrel") ||
+         nm.includes("porcupine") ||
+         nm.includes("beaver") ||
+         nm.includes("rat") ||
+         nm.includes("mouse"))
+        return { 'stroke': 'var(--color-rodentia)', 'stroke-width': 3 };
+
+      return {};
+    });
+
+  })
+  .catch(err => {
+    document.getElementById("tree-container").innerHTML =
+      "<p style='color:red;'>Failed to load tree. Check your NWK file URL.</p>";
+    console.error(err);
+  });
+
 </script>
 
 </body>
 </html>
-
 
 
 
