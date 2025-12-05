@@ -2,393 +2,112 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Learn | Goldwire Games</title>
-<meta name="description" content="Learn how Mammal Mania sneaks real mammal phylogeny and taxonomy into fast, chaotic gameplay. Explore the four orders, family patterns, and wild gesture cards.">
+
+<!-- Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Cabin:wght@400;700&display=swap" rel="stylesheet">
 
-<!-- Bootstrap + Phylotree (for interactive tree) -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://phylotree.hyphy.org/assets/css/phylotree.css">
+<!-- Phylotree.js -->
+<script src="https://cdn.jsdelivr.net/npm/d3@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/phylotree@1.0.0/phylotree.js"></script>
 
 <style>
-/* -------------------------------------------------------
-   ROOT + THEME COLORS (MATCH SITE)
--------------------------------------------------------- */
+/* CLEANED STYLES (kept your theme, removed old fake-tree grid) */
+
 :root{
   --bg-color: #f7f3e9;
   --text-color: #2a2a2a;
   --accent-green: #4d7b48;
   --accent-orange: #d08a43;
   --accent-gold: #b8913b;
-  --card-bg: #ffffff;
-  --nav-bg: rgba(241,236,223,0.85);
-
-  --bg-night: #0d0f11;
-  --text-night: #e8e8e8;
-  --card-night: #141619;
+  --night-bg: #0d0f11;
+  --night-text: #e8e8e8;
 }
 
-*{ box-sizing:border-box; transition: all 0.2s ease; }
-
+/* General page styling */
 body{
   margin:0;
-  font-family:"Cabin", system-ui, sans-serif;
-  background: var(--bg-color) url('paper-texture.png');
-  background-size:350px;
+  font-family:"Cabin", sans-serif;
+  background:var(--bg-color);
   color:var(--text-color);
 }
 body.night{
-  background:var(--bg-night);
-  color:var(--text-night);
+  background:var(--night-bg);
+  color:var(--night-text);
 }
 
-/* -------------------------------------------------------
-   STARFIELD
--------------------------------------------------------- */
-#stars{
-  pointer-events:none;
-  position:fixed;
-  inset:0;
-  z-index:0;
-  opacity:0;
-  transition:opacity 0.9s;
-}
-body.night #stars{ opacity:1; }
-#stars::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background-image:
-    radial-gradient(circle at 20% 30%, rgba(255,255,255,0.9) 1px, transparent 3px),
-    radial-gradient(circle at 70% 18%, rgba(255,255,255,0.85) 1px, transparent 3px),
-    radial-gradient(circle at 40% 70%, rgba(255,255,255,0.8) 1px, transparent 3px);
-  filter: blur(0.6px);
-  animation: twinkle 4s infinite;
-}
-@keyframes twinkle{
-  0%,100%{ opacity:0.7; }
-  50%{ opacity:1; }
-}
-
-/* -------------------------------------------------------
-   NAV (MATCH HOME/ABOUT)
--------------------------------------------------------- */
 nav{
-  position:sticky;
-  top:0;
-  z-index:40;
   display:flex;
   justify-content:center;
   gap:28px;
   padding:14px 0;
-  background:var(--nav-bg);
+  background:rgba(241,236,223,0.85);
   backdrop-filter:blur(6px);
-  border-bottom:1px solid rgba(77,123,72,0.2);
-}
-nav a, .dropbtn{
-  color:var(--accent-gold);
-  text-decoration:none;
-  font-weight:700;
-  cursor:pointer;
-}
-nav a:hover, .dropbtn:hover{ color:var(--accent-orange); }
-
-.dropdown{ position:relative; }
-.dropdown-content{
-  display:none;
-  position:absolute;
-  top:100%;
-  left:50%;
-  transform:translateX(-50%);
-  min-width:160px;
-  background:var(--card-bg);
-  border-radius:10px;
-  box-shadow:0 8px 16px rgba(0,0,0,0.25);
-  border:1px solid rgba(77,123,72,0.2);
-  padding:6px 0;
-  z-index:100;
-}
-body.night .dropdown-content{
-  background:var(--card-night);
-  border-color:rgba(255,255,255,0.1);
-}
-.dropdown-content a{
-  display:block;
-  padding:12px 16px;
-  text-decoration:none;
-  color:var(--text-color);
-}
-body.night .dropdown-content a{ color:var(--text-night); }
-.dropdown:hover .dropdown-content{ display:block; }
-
-/* -------------------------------------------------------
-   MOON BUTTON (BOTTOM-RIGHT)
--------------------------------------------------------- */
-#moon-toggle{
-  position:fixed;
-  right:18px;
-  bottom:18px;
-  z-index:200;
-  font-size:1.8rem;
-  cursor:pointer;
-  user-select:none;
-  background:rgba(0,0,0,0.25);
-  padding:10px 14px;
-  border-radius:50%;
-  backdrop-filter:blur(4px);
-}
-body.night #moon-toggle{
-  background:rgba(255,255,255,0.2);
-}
-
-/* -------------------------------------------------------
-   PAGE LAYOUT + SECTIONS
--------------------------------------------------------- */
-.container{
-  max-width:900px;
-  margin:0 auto;
-  padding:40px 20px 60px;
-  position:relative;
+  position:sticky;
+  top:0;
   z-index:10;
 }
+nav a{
+  font-weight:700;
+  text-decoration:none;
+  color:var(--accent-gold);
+}
+nav a:hover{
+  color:var(--accent-orange);
+}
 
-h1,h2,h3{
+.container{
+  max-width:960px;
+  margin:0 auto;
+  padding:40px 20px;
+}
+
+section{
+  background:white;
+  padding:26px;
+  border-radius:14px;
+  margin-bottom:40px;
+  box-shadow:0 6px 20px rgba(0,0,0,0.06);
+}
+body.night section{
+  background:#141619;
+}
+
+h1,h2{
   font-family:"Merriweather", serif;
   color:var(--accent-green);
 }
 
-.hero-intro{
-  text-align:center;
-  margin-bottom:30px;
-}
-
-section{
-  background:var(--card-bg);
-  border-radius:16px;
-  padding:24px 22px;
-  margin:32px 0;
-  border-left:6px solid rgba(77,123,72,0.28);
-  box-shadow:0 6px 20px rgba(0,0,0,0.06);
-}
-body.night section{
-  background:var(--card-night);
-  border-left-color:rgba(200,200,200,0.18);
-}
-
-/* -------------------------------------------------------
-   PHYLOGENY EXPLAINER
--------------------------------------------------------- */
-.explain-list{
-  margin:10px 0 0;
-  padding-left:18px;
-  font-size:0.95rem;
-}
-
-/* -------------------------------------------------------
-   INTERACTIVE TREE WIDGET
--------------------------------------------------------- */
-.tree-section-header p{
-  margin-bottom:10px;
-}
-
-#tree-container{
-  margin-top:18px;
-}
-
-#tree-legend{
-  display:flex;
-  flex-wrap:wrap;
-  align-items:center;
-  gap:10px;
-  font-size:0.9rem;
-  margin-bottom:10px;
-}
-
-.legend-label{
-  font-weight:700;
-}
-
-.legend-swatch{
-  display:inline-block;
-  width:14px;
-  height:14px;
-  border-radius:3px;
-  margin-right:4px;
-  border:1px solid rgba(0,0,0,0.25);
-}
-body.night .legend-swatch{
-  border-color:rgba(255,255,255,0.35);
-}
-
-#tree-vis-wrapper{
-  background:#fff;
+/* INTERACTIVE TREE */
+#phylo-container{
+  width:100%;
+  height:660px;
+  border:1px solid rgba(0,0,0,0.15);
   border-radius:14px;
-  padding:10px;
-  border:1px solid rgba(0,0,0,0.08);
-  overflow-x:auto;
+  background:white;
+  overflow:hidden;
 }
-body.night #tree-vis-wrapper{
-  background:#141619;
+body.night #phylo-container{
+  background:#0f1113;
   border-color:#333;
 }
 
-/* phylotree container */
-#mm-tree{
-  width:100%;
-  min-height:420px;
-}
-#mm-tree svg{
-  width:100%;
-}
-
-/* tooltip / click details */
-#tree-details{
-  margin-top:12px;
-  padding:10px 12px;
-  border-radius:10px;
-  background:rgba(77,123,72,0.06);
-  font-size:0.9rem;
-}
-body.night #tree-details{
-  background:rgba(255,255,255,0.05);
-}
-#tree-details h3{
-  margin-top:0;
-  margin-bottom:4px;
-}
-.node-chip{
-  display:inline-block;
-  font-size:0.75rem;
-  padding:2px 8px;
-  border-radius:999px;
-  margin-right:6px;
-  background:#fff;
-  border:1px solid rgba(0,0,0,0.08);
-}
-body.night .node-chip{
-  background:#141619;
-  border-color:#333;
+#moon-toggle{
+  position:fixed;
+  right:18px;
+  bottom:18px;
+  font-size:2rem;
+  cursor:pointer;
+  user-select:none;
 }
 
-
-
-<!-- ============================
-     PHYLOGENETIC TREE (INTERACTIVE)
-============================ -->
-<section>
-  <h2>Interactive Mammal Mania Family Tree</h2>
-  <p>
-    This is the real evolutionary tree behind Mammal Mania.  
-    Click species or branches to explore relationships!
-  </p>
-
-  <!-- Tree container -->
-  <div id="phyloContainer" style="width: 100%; height: 650px; border-radius: 12px; background: rgba(0,0,0,0.04);"></div>
-</section>
-
-<!-- Load d3 + phylotree.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.16.0/d3.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/phylotree@1.0.0/phylotree.min.js"></script>
-
-<script>
-// ====== LOAD NWK FILE FROM GITHUB PAGES ======
-const nwkURL = "https://raw.githubusercontent.com/tavisgoldwire/goldwiregames.github.io/main/mammalmania_commonname.nwk";
-
-fetch(nwkURL)
-  .then(response => response.text())
-  .then(newick => drawTree(newick))
-  .catch(err => {
-    document.getElementById("phyloContainer").innerHTML =
-      "<p style='color:red;'>Could not load the tree file.</p>";
-    console.error(err);
-  });
-
-// ====== DRAW INTERACTIVE TREE ======
-function drawTree(newickData) {
-  const container = d3.select("#phyloContainer");
-
-  // Clear any prior
-  container.selectAll("*").remove();
-
-  // Create tree object
-  const tree = new phylotree.phylotree(newickData)
-    .layout();
-
-  // Draw
-  tree.render({
-    container: "#phyloContainer",
-    width: 850,
-    height: 650
-  });
-
-  // Node click behavior
-  tree.on("node_click", function(node) {
-    alert("Clicked: " + node.name);
-  });
-}
-</script>
-
-
-
-   
-/* -------------------------------------------------------
-   RULES + GESTURES
--------------------------------------------------------- */
-.rules-grid{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:18px;
-}
-@media (max-width:700px){
-  .rules-grid{ grid-template-columns:1fr; }
-}
-
-.rule-card{
-  background:rgba(255,255,255,0.9);
-  border-radius:12px;
-  padding:14px 16px;
-  border:1px solid rgba(0,0,0,0.05);
-}
-body.night .rule-card{
-  background:#141619;
-  border-color:#333;
-}
-.rule-card h3{
-  margin-top:0;
-  margin-bottom:6px;
-}
-.example{
-  font-size:0.85rem;
-  color:#666;
-}
-body.night .example{ color:#aaa; }
-
-.gesture-list{
-  list-style:none;
-  padding-left:0;
-  margin:0;
-}
-.gesture-list li{ margin-bottom:10px; }
-.gesture-name{ font-weight:700; }
-
-/* -------------------------------------------------------
-   FOOTER
--------------------------------------------------------- */
-footer{
-  text-align:center;
-  padding:30px 10px;
-  color:#666;
-  font-size:0.95rem;
-}
-body.night footer{ color:#aaa; }
-footer a{ color:var(--accent-gold); }
 </style>
 </head>
 
 <body>
 
-<div id="stars"></div>
+<div id="moon-toggle">🌙</div>
 
 <nav>
   <a href="index.html">Home</a>
@@ -396,181 +115,71 @@ footer a{ color:var(--accent-gold); }
   <a href="about.html">About</a>
   <a href="shop.html">Shop</a>
   <a href="contact.html">Contact</a>
-
-  <div class="dropdown">
-    <span class="dropbtn">More ▾</span>
-    <div class="dropdown-content">
-      <a href="calculator.html">Score Calculator</a>
-      <a href="deckbuilder.html">Deck Builder</a>
-      <a href="#">Kickstarter</a>
-    </div>
-  </div>
 </nav>
-
-<div id="moon-toggle">🌙</div>
 
 <main class="container">
 
-  <header class="hero-intro">
+  <section>
     <h1>Learn Mammal Mania</h1>
-    <p>
-      Mammal Mania is secretly a biology lesson. This page explains what “orders” and “families”
-      actually mean, and shows where every animal in the deck sits on the mammal family tree.
-    </p>
-  </header>
+    <p>The interactive family tree below shows every species included in Mammal Mania and how they are related.</p>
+  </section>
 
-  <!-- PHYLOGENY EXPLAINER -->
+  <!-- REAL INTERACTIVE TREE -->
   <section>
-    <h2>What All This Phylogeny Stuff Means</h2>
-    <p>
-      Phylogeny is just a fancy word for the <strong>evolutionary family tree of life</strong>.
-      Instead of parents and grandparents, we talk about older and younger common ancestors.
-      When we say two species are closely related, we mean they share a more recent ancestor on that tree.
-    </p>
-    <ul class="explain-list">
-      <li><strong>Order</strong> = a big branch of the mammal tree.  
-        <br>In Mammal Mania you see four: <em>Carnivora, Primates, Artiodactyla, Rodentia</em>. The colored top bar of each card marks its Order.</li>
-      <li><strong>Family</strong> = a smaller, tighter cluster of species inside an Order.  
-        <br>Examples: <em>Felidae</em> (cats), <em>Canidae</em> (dogs), <em>Caviidae</em> (capybara + guinea pig + mara).</li>
-      <li><strong>Species</strong> = one specific kind of animal, like <em>Maned Wolf</em> or <em>Capybara</em>.</li>
+    <h2>Interactive Phylogenetic Tree</h2>
+    <p>This tree is generated directly from scientific data using your uploaded <code>.nwk</code> file.</p>
+
+    <div id="phylo-container"></div>
+
+    <script>
+    // Load the Newick file you uploaded to GitHub
+    d3.text("https://tavisgoldwire.github.io/mammalmania_commonname.nwk")
+      .then(function(newick) {
+
+        const tree = new phylotree.phylotree(newick)
+          .svg(d3.select("#phylo-container"))
+          .options({
+            'zoom': true,
+            'align-tips': true
+          })
+          .layout();
+
+        // Color branches by order using placeholder colors
+        const orderColors = {
+          "Carnivora": "red",
+          "Artiodactyla": "green",
+          "Primates": "gold",
+          "Rodentia": "blue"
+        };
+
+        tree.get_nodes().forEach(n => {
+          if (n.data && n.data.name) {
+            const name = n.data.name;
+
+            for (let ord in orderColors) {
+              if (name.includes(ord)) {
+                n.branch_color = orderColors[ord];
+              }
+            }
+          }
+        });
+
+        tree.update();
+      });
+    </script>
+  </section>
+
+  <section>
+    <h2>How to Use the Tree</h2>
+    <ul>
+      <li><strong>Scroll</strong> to zoom.</li>
+      <li><strong>Click + drag</strong> to move the canvas.</li>
+      <li><strong>Click any species</strong> to highlight its branch.</li>
+      <li><strong>Colors</strong> show the Order (temporary placeholder colors).</li>
     </ul>
-    <p style="margin-top:10px;">
-      Mammal Mania turns those categories into reflex patterns. If you want to win, you have to
-      notice Orders and Families faster than everyone else — which means you end up memorizing
-      real mammal phylogeny without flashcards or homework.
-    </p>
-  </section>
-
-  <!-- INTERACTIVE PHYLOGENETIC TREE -->
-  <section>
-    <div class="tree-section-header">
-      <h2>Interactive “Family Tree” of Mammal Mania</h2>
-      <p>
-        This tree is built directly from the mammal list used in the game. It’s a circular phylogram:
-        distance from the center roughly tracks evolutionary divergence, and colors mark the four Orders.
-      </p>
-    </div>
-
-    <div id="tree-container">
-      <div id="tree-legend">
-        <span class="legend-label">Order colors (update these to match your card frames):</span>
-        <span><span class="legend-swatch" data-order="Artiodactyla"></span>Artiodactyla</span>
-        <span><span class="legend-swatch" data-order="Carnivora"></span>Carnivora</span>
-        <span><span class="legend-swatch" data-order="Primates"></span>Primates</span>
-        <span><span class="legend-swatch" data-order="Rodentia"></span>Rodentia</span>
-      </div>
-
-      <div id="tree-vis-wrapper">
-        <!-- phylotree.js will inject an SVG into this div -->
-        <div id="mm-tree"></div>
-      </div>
-
-      <div id="tree-details">
-        <h3>Click a species on the tree</h3>
-        <p>
-          When you click a tip label, you’ll see its Order and Family here.
-          Later we can connect this to a CSV with full card text, abilities, and conservation blurbs.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- PATTERN RULES -->
-  <section>
-    <h2>Patterns That Power the Game</h2>
-    <p>
-      Mammal Mania turns real taxonomic categories into quick-reaction patterns.
-      If you’re good at spotting these, you win piles — and accidentally memorize phylogeny.
-    </p>
-
-    <div class="rules-grid">
-      <div class="rule-card">
-        <h3>Order Sandwich</h3>
-        <p>
-          Two cards from the <strong>same Order</strong> with exactly one card in between.
-        </p>
-        <p class="example">
-          Example: <em>Maned Wolf (Carnivora)</em> → <em>Capybara (Rodentia)</em> → <em>Honey Badger (Carnivora)</em>.<br>
-          The two Carnivora cards form an Order Sandwich around the Rodentia card.
-        </p>
-        <p>
-          If you can match the colored Order bar faster than everyone else, you slap first and take the pile.
-        </p>
-      </div>
-
-      <div class="rule-card">
-        <h3>Family Feast</h3>
-        <p>
-          Two cards from the <strong>same Family</strong> played back-to-back.
-        </p>
-        <p class="example">
-          Example: <em>Tiger (Felidae)</em> → <em>Canada Lynx (Felidae)</em>  
-          or <em>Capybara (Caviidae)</em> → <em>Guinea Pig (Caviidae)</em>.
-        </p>
-        <p>
-          Matching the Family bar and text makes you slap — and trains you to recognize which species truly belong together.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- GESTURES -->
-  <section>
-    <h2>Wild Cards & Gestures</h2>
-    <p>
-      Wild cards flip the normal rule: when one appears, you <em>don’t</em> slap.
-      You perform a gesture instead. The last player to do it adds a card to the pile.
-    </p>
-
-    <ul class="gesture-list">
-      <li>
-        <span class="gesture-name">Walrus – “TUSKS!”</span><br>
-        Index fingers down from your mouth like tusks. No slapping, just tusking.
-      </li>
-      <li>
-        <span class="gesture-name">Giraffe – “STRETCH!”</span><br>
-        Both arms straight up like a long neck reaching for the canopy.
-      </li>
-      <li>
-        <span class="gesture-name">Beaver – “KNOCK!”</span><br>
-        Knock your knuckles on the table like a tail slap on the water.
-      </li>
-      <li>
-        <span class="gesture-name">Tarsier – “GOGGLES!”</span><br>
-        Make big circles around your eyes with your fingers to copy those huge primate eyes.
-      </li>
-    </ul>
-  </section>
-
-  <!-- EDUCATIONAL BLURB -->
-  <section>
-    <h2>Why This Actually Works as a Teaching Tool</h2>
-    <p>
-      Repeating Orders and Families over dozens of rounds wires them into long-term memory.
-      Players start to say things like “Wait — dolphins are artiodactyls?” or
-      “I keep forgetting that porcupines are rodents,” and then they stop forgetting.
-    </p>
-    <p>
-      Teachers can use Mammal Mania as a five-minute warm-up, and families can treat it as a
-      noisy way to talk about real animals, evolution and conservation — no lecture required.
-    </p>
   </section>
 
 </main>
-
-<footer>
-  <p>&copy; 2025 Goldwire Games. All rights reserved.</p>
-  <p>
-    Instagram: <a href="https://instagram.com/goldwiregames" target="_blank">@goldwiregames</a> |
-    X: <a href="https://x.com/GoldwireGames" target="_blank">@GoldwireGames</a>
-  </p>
-</footer>
-
-<!-- JS: jQuery + Bootstrap + D3 + Phylotree -->
-<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js"></script>
-<script src="https://d3js.org/d3.v3.min.js"></script>
-<script src="https://phylotree.hyphy.org/assets/js/phylotree.min.js"></script>
 
 <script>
 // Night mode toggle
@@ -579,163 +188,11 @@ moon.onclick = () => {
   document.body.classList.toggle("night");
   moon.textContent = document.body.classList.contains("night") ? "🌕" : "🌙";
 };
-
-// ---------------------------
-// Phylogenetic tree widget
-// ---------------------------
-
-// 1. Order colors – UPDATE THESE HEX VALUES when your card frame colors are final
-const ORDER_COLORS = {
-  Artiodactyla: "#00c853", // placeholder green
-  Carnivora:    "#ff1744", // placeholder red
-  Primates:     "#ffb300", // placeholder gold
-  Rodentia:     "#2979ff", // placeholder blue
-  default:      "#444444"
-};
-
-// apply order colors to legend swatches
-document.querySelectorAll(".legend-swatch").forEach(el => {
-  const ord = el.dataset.order;
-  if (ord && ORDER_COLORS[ord]) {
-    el.style.backgroundColor = ORDER_COLORS[ord];
-  }
-});
-
-// 2. Species metadata – minimal for now (order + family).
-//    Later you can auto-generate this from a CSV/JSON.
-const SPECIES_META = {
-  // Rodentia
-  "Spinifex_hopping_mouse": { order: "Rodentia", family: "Muridae" },
-  "Rakali": { order: "Rodentia", family: "Muridae" },
-  "Maned_Rat": { order: "Rodentia", family: "Muridae" },
-  "North_American_Beaver": { order: "Rodentia", family: "Castoridae" },
-  "Patagonian_mara": { order: "Rodentia", family: "Caviidae" },
-  "Rock_cavy": { order: "Rodentia", family: "Caviidae" },
-  "Capybara": { order: "Rodentia", family: "Caviidae" },
-  "Crested_Porcupine": { order: "Rodentia", family: "Hystricidae" },
-  "Black-tailed_prairie_dog": { order: "Rodentia", family: "Sciuridae" },
-  "Prevost's_squirrel": { order: "Rodentia", family: "Sciuridae" },
-  "Southern_flying_Squirrel": { order: "Rodentia", family: "Sciuridae" },
-
-  // Primates
-  "Proboscis_Monkey": { order: "Primates", family: "Cercopithecidae" },
-  "Mandrill": { order: "Primates", family: "Cercopithecidae" },
-  "Japanese_macaque": { order: "Primates", family: "Cercopithecidae" },
-  "Chimpanzee": { order: "Primates", family: "Hominidae" },
-  "Eastern_gorilla": { order: "Primates", family: "Hominidae" },
-  "Bornean_orangutan": { order: "Primates", family: "Hominidae" },
-  "Common_Woolly_Monkey": { order: "Primates", family: "Atelidae" },
-  "Brown_Spider_monkey": { order: "Primates", family: "Atelidae" },
-  "Black_Howler": { order: "Primates", family: "Atelidae" },
-  "Spectral_tarsier": { order: "Primates", family: "Tarsiidae" },
-  "Ring-Tailed_Lemur": { order: "Primates", family: "Lemuridae" },
-
-  // Artiodactyla
-  "Moose": { order: "Artiodactyla", family: "Cervidae" },
-  "Big_Horn_Sheep": { order: "Artiodactyla", family: "Bovidae" },
-  "Musk_Ox": { order: "Artiodactyla", family: "Bovidae" },
-  "Saiga_Antelope": { order: "Artiodactyla", family: "Bovidae" },
-  "Reticulated_Giraffe": { order: "Artiodactyla", family: "Giraffidae" },
-  "Rizzo's_Dolphin": { order: "Artiodactyla", family: "Delphinidae" },
-  "Spinner_Dolphin": { order: "Artiodactyla", family: "Delphinidae" },
-  "Orca": { order: "Artiodactyla", family: "Delphinidae" },
-  "Red_River_Hog": { order: "Artiodactyla", family: "Suidae" },
-  "Visayan_warty_pig": { order: "Artiodactyla", family: "Suidae" },
-  "Buru_Babirusa": { order: "Artiodactyla", family: "Suidae" },
-
-  // Carnivora
-  "Wolverine": { order: "Carnivora", family: "Mustelidae" },
-  "Eurasian_Otter": { order: "Carnivora", family: "Mustelidae" },
-  "Honey_Badger": { order: "Carnivora", family: "Mustelidae" },
-  "Polar_Bear": { order: "Carnivora", family: "Ursidae" },
-  "Walrus": { order: "Carnivora", family: "Odobenidae" },
-  "Grey_Wolf": { order: "Carnivora", family: "Canidae" },
-  "Maned_Wolf": { order: "Carnivora", family: "Canidae" },
-  "Fennec_Fox": { order: "Carnivora", family: "Canidae" },
-  "Tiger": { order: "Carnivora", family: "Felidae" },
-  "Canada_Lynx": { order: "Carnivora", family: "Felidae" },
-  "Ocelot": { order: "Carnivora", family: "Felidae" }
-};
-
-// details panel
-const detailsBox = document.getElementById("tree-details");
-
-// 3. Build the tree with phylotree.js
-function renderMammalTree(newickString) {
-  // create phylotree layout object
-  var tree = d3.layout.phylotree()
-    .svg(d3.select("#mm-tree"))
-    .radial(true)        // radial layout like your R plot
-    .align_tips(true);   // align tips nicely
-
-  tree(d3.layout.newick_parser(newickString)).layout();
-
-  // clean up tip labels (underscores -> spaces) and color by Order
-  d3.select("#mm-tree").selectAll("g.node")
-    .each(function(d) {
-      if (!d || d.children) return; // skip internal nodes
-
-      var rawName = d.name || "";
-      var meta = SPECIES_META[rawName] || {};
-      var order = meta.order || null;
-      var fam   = meta.family || null;
-
-      var pretty = rawName.replace(/_/g, " ");
-
-      var label = d3.select(this).select("text");
-      if (!label.empty()) {
-        label.text(pretty);
-
-        var color = order && ORDER_COLORS[order] ? ORDER_COLORS[order] : ORDER_COLORS.default;
-        label.style("fill", color);
-      }
-
-      // attach metadata to node for click handler
-      d.meta = {
-        prettyName: pretty,
-        order: order,
-        family: fam
-      };
-    });
-
-  // click handler: update details panel
-  d3.select("#mm-tree").selectAll("g.node").on("click", function(d) {
-    if (!d || d.children) return; // we only care about tips
-    var m = d.meta || {};
-    var name = m.prettyName || (d.name ? d.name.replace(/_/g," ") : "Unknown taxon");
-    var order = m.order || "Unknown order";
-    var family = m.family || null;
-
-    var html = `<h3>${name}</h3><div>`;
-    if (order) {
-      html += `<span class="node-chip">Order: ${order}</span>`;
-    }
-    if (family) {
-      html += `<span class="node-chip" style="font-style:italic;">Family: ${family}</span>`;
-    }
-    html += `</div>`;
-
-    html += `<p style="margin-top:8px;">
-      This position on the tree is based on the Open Tree of Life phylogeny and matches how the card is grouped in play.
-    </p>`;
-
-    detailsBox.innerHTML = html;
-  });
-}
-
-// 4. Load Newick file from GitHub Pages root.
-//    If something goes wrong, we fall back to a small error message.
-d3.text("mammalmania_commonname.nwk", function(err, text) {
-  if (err || !text) {
-    detailsBox.innerHTML = "<h3>Tree unavailable</h3><p>We couldn't load the Mammal Mania tree file. Check that <code>mammalmania_commonname.nwk</code> is in the same folder as this page.</p>";
-    return;
-  }
-  renderMammalTree(text.trim());
-});
 </script>
 
 </body>
 </html>
+
 
 
 
