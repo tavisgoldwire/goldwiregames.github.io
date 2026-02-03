@@ -1,0 +1,699 @@
+/* ===================================
+   TROPHIC LANDING PAGE STYLES
+   Goldwire Games
+   =================================== */
+
+/* ===================================
+   CSS VARIABLES - ECOSYSTEM COLORS
+   =================================== */
+
+:root {
+    /* Arctic Ice - Blue & White */
+    --arctic-primary: #2B5F7C;
+    --arctic-secondary: #4A8AAE;
+    --arctic-light: #D8E8F0;
+    --arctic-white: #F5F9FB;
+    
+    /* Savanna - Yellow */
+    --savanna-primary: #D4A017;
+    --savanna-secondary: #E8B84E;
+    --savanna-light: #F5E6B8;
+    --savanna-accent: #8B6914;
+    
+    /* Amazon - Green */
+    --amazon-primary: #2D5F3F;
+    --amazon-secondary: #4A8F5E;
+    --amazon-light: #B8D9C4;
+    --amazon-accent: #1A3D28;
+    
+    /* Rockies/Temperate - Orange */
+    --temperate-primary: #C66B3D;
+    --temperate-secondary: #D98B5C;
+    --temperate-light: #F0D5C4;
+    --temperate-accent: #8B4513;
+    
+    /* Neutral Palette */
+    --paper-white: #F9F7F4;
+    --paper-cream: #F2EDE7;
+    --charcoal: #2C2C2C;
+    --ink-black: #1A1A1A;
+    --soft-gray: #6B6B6B;
+    --border-gray: #D4CFC7;
+    
+    /* Typography */
+    --font-display: 'Libre Baskerville', serif;
+    --font-body: 'Work Sans', sans-serif;
+    
+    /* Spacing */
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 2rem;
+    --spacing-lg: 4rem;
+    --spacing-xl: 6rem;
+    
+    /* Layout */
+    --max-width: 1200px;
+    --content-width: 800px;
+}
+
+/* ===================================
+   RESET & BASE STYLES
+   =================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-body);
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--charcoal);
+    background-color: var(--paper-white);
+    overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--ink-black);
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button {
+    font-family: var(--font-body);
+    cursor: pointer;
+    border: none;
+    background: none;
+}
+
+/* ===================================
+   SECTION 1: HERO
+   =================================== */
+
+.hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-md);
+    background: linear-gradient(135deg, var(--paper-cream) 0%, var(--paper-white) 100%);
+    overflow: hidden;
+}
+
+.hero-background {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 100%;
+    opacity: 0.08;
+    background-image: 
+        radial-gradient(circle at 20% 50%, var(--amazon-primary) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, var(--savanna-primary) 0%, transparent 50%),
+        radial-gradient(circle at 60% 80%, var(--arctic-primary) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Paper grain texture */
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 2px,
+            rgba(0, 0, 0, 0.01) 2px,
+            rgba(0, 0, 0, 0.01) 4px
+        );
+    pointer-events: none;
+    z-index: 2;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 3;
+    text-align: center;
+    max-width: 700px;
+    opacity: 0;
+    animation: fadeInUp 1.2s ease-out 0.3s forwards;
+}
+
+.hero-title {
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    margin-bottom: var(--spacing-md);
+    letter-spacing: -0.02em;
+}
+
+.hero-subtitle {
+    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+    font-weight: 300;
+    color: var(--soft-gray);
+    margin-bottom: var(--spacing-lg);
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cta-button {
+    display: inline-block;
+    padding: 1rem 2.5rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--paper-white);
+    background: var(--amazon-primary);
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(45, 95, 63, 0.15);
+}
+
+.cta-button:hover {
+    background: var(--amazon-accent);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(45, 95, 63, 0.25);
+}
+
+.cta-button:active {
+    transform: translateY(0);
+}
+
+/* ===================================
+   SECTION 2: ECOSYSTEM DIVERSITY
+   =================================== */
+
+.ecosystems {
+    position: relative;
+    padding: var(--spacing-xl) var(--spacing-md);
+    background: var(--paper-white);
+}
+
+.ecosystems-intro {
+    text-align: center;
+    max-width: var(--content-width);
+    margin: 0 auto var(--spacing-lg);
+}
+
+.ecosystems-statement {
+    font-size: 1.3rem;
+    font-weight: 400;
+    color: var(--charcoal);
+    line-height: 1.6;
+    font-style: italic;
+    opacity: 0;
+    animation: fadeIn 1s ease-out 0.2s forwards;
+}
+
+.ecosystem-bands {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.ecosystem-band {
+    position: relative;
+    padding: var(--spacing-lg) var(--spacing-md);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.4s ease;
+    border-bottom: 1px solid var(--border-gray);
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.ecosystem-band:last-child {
+    border-bottom: none;
+}
+
+/* Staggered fade-in animation */
+.ecosystem-band:nth-child(1) { animation: fadeInUp 0.8s ease-out 0.2s forwards; }
+.ecosystem-band:nth-child(2) { animation: fadeInUp 0.8s ease-out 0.4s forwards; }
+.ecosystem-band:nth-child(3) { animation: fadeInUp 0.8s ease-out 0.6s forwards; }
+.ecosystem-band:nth-child(4) { animation: fadeInUp 0.8s ease-out 0.8s forwards; }
+.ecosystem-band:nth-child(5) { animation: fadeInUp 0.8s ease-out 1s forwards; }
+
+.band-content {
+    flex: 1;
+}
+
+.ecosystem-name {
+    font-size: 2rem;
+    margin-bottom: var(--spacing-xs);
+    transition: color 0.3s ease;
+}
+
+.ecosystem-phrase {
+    font-size: 1.1rem;
+    color: var(--soft-gray);
+    font-weight: 300;
+}
+
+.band-illustration {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+}
+
+/* Ecosystem-specific colors */
+.ecosystem-band.arctic {
+    background: linear-gradient(90deg, transparent 0%, rgba(216, 232, 240, 0.2) 100%);
+}
+.ecosystem-band.arctic .ecosystem-name { color: var(--arctic-primary); }
+.ecosystem-band.arctic .band-illustration {
+    background: radial-gradient(circle, var(--arctic-light) 0%, var(--arctic-secondary) 100%);
+}
+
+.ecosystem-band.savanna {
+    background: linear-gradient(90deg, transparent 0%, rgba(245, 230, 184, 0.2) 100%);
+}
+.ecosystem-band.savanna .ecosystem-name { color: var(--savanna-primary); }
+.ecosystem-band.savanna .band-illustration {
+    background: radial-gradient(circle, var(--savanna-light) 0%, var(--savanna-secondary) 100%);
+}
+
+.ecosystem-band.amazon {
+    background: linear-gradient(90deg, transparent 0%, rgba(184, 217, 196, 0.2) 100%);
+}
+.ecosystem-band.amazon .ecosystem-name { color: var(--amazon-primary); }
+.ecosystem-band.amazon .band-illustration {
+    background: radial-gradient(circle, var(--amazon-light) 0%, var(--amazon-secondary) 100%);
+}
+
+.ecosystem-band.rockies,
+.ecosystem-band.temperate {
+    background: linear-gradient(90deg, transparent 0%, rgba(240, 213, 196, 0.2) 100%);
+}
+.ecosystem-band.rockies .ecosystem-name,
+.ecosystem-band.temperate .ecosystem-name { 
+    color: var(--temperate-primary); 
+}
+.ecosystem-band.rockies .band-illustration,
+.ecosystem-band.temperate .band-illustration {
+    background: radial-gradient(circle, var(--temperate-light) 0%, var(--temperate-secondary) 100%);
+}
+
+.ecosystem-band:hover {
+    transform: translateX(8px);
+}
+
+.ecosystem-band:hover .band-illustration {
+    opacity: 1;
+}
+
+/* ===================================
+   SECTION 3: WHAT IS TROPHIC
+   =================================== */
+
+.about {
+    padding: var(--spacing-xl) var(--spacing-md);
+    background: var(--paper-cream);
+}
+
+.about-content {
+    max-width: var(--max-width);
+    margin: 0 auto;
+}
+
+.section-title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    text-align: center;
+    margin-bottom: var(--spacing-lg);
+}
+
+.about-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+}
+
+.about-feature {
+    opacity: 0;
+    animation: fadeIn 1s ease-out forwards;
+}
+
+.about-feature:nth-child(1) { animation-delay: 0.2s; }
+.about-feature:nth-child(2) { animation-delay: 0.4s; }
+.about-feature:nth-child(3) { animation-delay: 0.6s; }
+
+.about-feature h3 {
+    font-size: 1.5rem;
+    margin-bottom: var(--spacing-sm);
+    color: var(--amazon-primary);
+}
+
+.about-feature p {
+    color: var(--charcoal);
+    line-height: 1.8;
+}
+
+.muted-link {
+    display: inline-block;
+    margin-top: var(--spacing-md);
+    color: var(--soft-gray);
+    font-size: 0.95rem;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s ease;
+}
+
+.muted-link:hover {
+    border-bottom-color: var(--soft-gray);
+}
+
+/* ===================================
+   SECTION 4: GOLDWIRE GAMES MISSION
+   =================================== */
+
+.mission {
+    padding: var(--spacing-xl) var(--spacing-md);
+    background: var(--paper-white);
+}
+
+.mission-content {
+    max-width: var(--content-width);
+    margin: 0 auto;
+    text-align: center;
+}
+
+.mission-statement {
+    font-size: 1.6rem;
+    font-weight: 400;
+    margin-bottom: var(--spacing-md);
+    color: var(--ink-black);
+}
+
+.mission-detail {
+    font-size: 1.1rem;
+    color: var(--charcoal);
+    margin-bottom: var(--spacing-md);
+    line-height: 1.8;
+}
+
+/* ===================================
+   SECTION 5: EMAIL SIGNUP
+   =================================== */
+
+.signup {
+    padding: var(--spacing-xl) var(--spacing-md);
+    background: linear-gradient(135deg, var(--amazon-accent) 0%, var(--amazon-primary) 100%);
+    color: var(--paper-white);
+}
+
+.signup-content {
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.signup-title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    color: var(--paper-white);
+    margin-bottom: var(--spacing-sm);
+}
+
+.signup-text {
+    font-size: 1.2rem;
+    margin-bottom: var(--spacing-lg);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.signup-form {
+    width: 100%;
+}
+
+.form-group {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+}
+
+#email-input {
+    flex: 1;
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+    border: 2px solid transparent;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.95);
+    color: var(--charcoal);
+    transition: all 0.3s ease;
+}
+
+#email-input:focus {
+    outline: none;
+    border-color: var(--paper-white);
+    background: white;
+}
+
+#email-input::placeholder {
+    color: var(--soft-gray);
+}
+
+.submit-button {
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--amazon-primary);
+    background: var(--paper-white);
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.submit-button:hover {
+    background: var(--paper-cream);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.submit-button:active {
+    transform: translateY(0);
+}
+
+.form-note {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* ===================================
+   SECTION 6: FOOTER
+   =================================== */
+
+.footer {
+    padding: var(--spacing-lg) var(--spacing-md);
+    background: var(--ink-black);
+    color: var(--paper-cream);
+}
+
+.footer-content {
+    max-width: var(--max-width);
+    margin: 0 auto;
+}
+
+.footer-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-brand h3 {
+    font-size: 1.3rem;
+    color: var(--paper-white);
+    margin-bottom: var(--spacing-xs);
+}
+
+.footer-brand p {
+    font-size: 0.9rem;
+    color: var(--soft-gray);
+}
+
+.footer-social {
+    display: flex;
+    gap: var(--spacing-md);
+}
+
+.footer-social a {
+    color: var(--paper-cream);
+    transition: color 0.3s ease;
+}
+
+.footer-social a:hover {
+    color: var(--amazon-secondary);
+}
+
+.footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+    font-size: 0.95rem;
+}
+
+.footer-links a {
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: var(--amazon-secondary);
+}
+
+.footer-divider {
+    color: var(--soft-gray);
+}
+
+.footer-legal {
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--soft-gray);
+}
+
+/* ===================================
+   ANIMATIONS
+   =================================== */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===================================
+   RESPONSIVE DESIGN
+   =================================== */
+
+@media (max-width: 768px) {
+    .hero {
+        min-height: 90vh;
+        padding: var(--spacing-md) var(--spacing-sm);
+    }
+    
+    .hero-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .cta-button {
+        padding: 0.9rem 2rem;
+        font-size: 1rem;
+    }
+    
+    .ecosystems {
+        padding: var(--spacing-lg) var(--spacing-sm);
+    }
+    
+    .ecosystems-statement {
+        font-size: 1.1rem;
+    }
+    
+    .ecosystem-band {
+        padding: var(--spacing-md) var(--spacing-sm);
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-sm);
+    }
+    
+    .band-illustration {
+        width: 60px;
+        height: 60px;
+        align-self: flex-end;
+    }
+    
+    .about-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+    }
+    
+    .form-group {
+        flex-direction: column;
+    }
+    
+    .footer-main {
+        flex-direction: column;
+        gap: var(--spacing-md);
+        text-align: center;
+    }
+    
+    .footer-links {
+        flex-direction: column;
+        gap: var(--spacing-xs);
+    }
+    
+    .footer-divider {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 2.2rem;
+    }
+    
+    .ecosystem-name {
+        font-size: 1.5rem;
+    }
+    
+    .section-title {
+        font-size: 1.8rem;
+    }
+}
+
+/* ===================================
+   ACCESSIBILITY
+   =================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Focus states for keyboard navigation */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+    outline: 2px solid var(--amazon-secondary);
+    outline-offset: 2px;
+}
