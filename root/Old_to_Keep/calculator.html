@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Score Calculator | Goldwire Games</title>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Cabin:wght@400;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root{
+      --bg-color: #f7f3e9; --text-color: #2a2a2a;
+      --accent-green: #4d7b48; --accent-gold: #b8913b; --accent-orange: #d08a43;
+      --card-bg: #ffffff; --nav-bg: rgba(241,236,223,0.95);
+      --bg-night: #0d0f11; --text-night: #e8e8e8; --card-night: #141619;
+    }
+    *{box-sizing:border-box; transition: all 0.22s ease;}
+    body{ margin:0; font-family: 'Cabin', sans-serif; background: var(--bg-color) url('paper-texture.png'); background-size: 350px; color:var(--text-color); }
+    body.night{ background: var(--bg-night); color:var(--text-night); }
+    
+    #stars{ pointer-events:none; position:fixed; inset:0; z-index:0; opacity:0; transition:opacity 0.9s; }
+    body.night #stars{ opacity:1; }
+    #stars::after{ content:""; position:absolute; inset:0; background-image: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.9) 0.5px, transparent 2px); background-size: 100px 100px; opacity:0.8; }
+
+    nav{ position: sticky; top:0; z-index: 40; display:flex; justify-content:center; gap:30px; padding:14px 18px; background: var(--nav-bg); backdrop-filter: blur(4px); border-bottom: 1px solid rgba(77,123,72,0.18); border-radius: 0 0 12px 12px; }
+    nav a, .dropbtn { color: var(--accent-gold); text-decoration:none; font-weight:700; font-family: 'Cabin', sans-serif; cursor: pointer; font-size: 1rem; }
+    nav a:hover, .dropbtn:hover { color: var(--accent-orange); }
+    #moon-toggle{ position:absolute; right:16px; top:10px; font-size:1.5rem; cursor:pointer; }
+
+    .dropdown { position: relative; display: inline-block; }
+    .dropdown-content { display: none; position: absolute; top: 100%; left: 50%; transform: translateX(-50%); background-color: var(--card-bg); min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); border-radius: 8px; z-index: 50; border: 1px solid rgba(77,123,72,0.2); overflow: hidden; }
+    body.night .dropdown-content { background-color: var(--card-night); border-color: #444; }
+    .dropdown-content a { color: var(--text-color); padding: 12px 16px; text-decoration: none; display: block; text-align: center; }
+    body.night .dropdown-content a { color: var(--text-night); }
+    .dropdown-content a:hover { background-color: rgba(77,123,72,0.1); color: var(--accent-green); }
+    .dropdown:hover .dropdown-content { display: block; }
+
+    .container{ max-width:800px; margin:0 auto; padding:40px 20px; position:relative; z-index:10; }
+
+    h1 { font-family: 'Merriweather', serif; color: var(--accent-green); text-align: center; margin-bottom: 10px; }
+    .subtitle { text-align: center; color: #666; margin-bottom: 40px; }
+    body.night .subtitle { color: #aaa; }
+
+    .calc-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    @media (max-width: 700px) { .calc-layout { grid-template-columns: 1fr; } }
+
+    .card-panel { background: var(--card-bg); padding: 25px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border-top: 5px solid var(--accent-gold); }
+    body.night .card-panel { background: var(--card-night); }
+
+    h2 { font-size: 1.2rem; color: var(--accent-gold); margin-top: 0; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 10px; }
+    body.night h2 { border-bottom-color: rgba(255,255,255,0.1); }
+
+    .form-group { margin-bottom: 20px; }
+    label { display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 8px; color: var(--text-color); font-size: 0.95rem; }
+    body.night label { color: var(--text-night); }
+    
+    .input-wrapper { display: flex; align-items: center; gap: 10px; }
+    input[type="number"] { width: 70px; padding: 8px; border-radius: 8px; border: 2px solid #ddd; font-size: 1.1rem; text-align: center; font-weight: bold; font-family: 'Cabin', sans-serif; }
+    body.night input[type="number"] { background: #222; color: #fff; border-color: #444; }
+    input[type="range"] { flex-grow: 1; accent-color: var(--accent-green); cursor: pointer; }
+
+    .add-card-box { display: flex; gap: 10px; margin-bottom: 20px; }
+    .card-select { flex-grow: 1; padding: 10px; border-radius: 8px; border: 2px solid #ddd; font-family: 'Cabin', sans-serif; }
+    .add-btn { background: var(--accent-green); color: white; border: none; padding: 0 20px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+    .add-btn:hover { background: var(--accent-gold); }
+
+    .card-list { max-height: 400px; overflow-y: auto; }
+    .card-row { display: flex; align-items: center; justify-content: space-between; padding: 10px; border-bottom: 1px solid rgba(0,0,0,0.05); }
+    .card-name { font-weight: bold; flex-grow: 1; }
+    .card-qty { width: 50px !important; margin: 0 10px; }
+    .remove-btn { color: #d9534f; background: none; border: none; font-size: 1.2rem; cursor: pointer; }
+
+    .total-box { background: var(--accent-green); color: white; padding: 25px; border-radius: 12px; text-align: center; margin-top: 20px; grid-column: 1 / -1; box-shadow: 0 5px 15px rgba(77,123,72,0.3); position: sticky; bottom: 20px; }
+    .total-label { font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; opacity: 0.9; }
+    .total-score { font-size: 4rem; font-weight: 800; font-family: 'Merriweather', serif; line-height: 1; margin-top: 10px; }
+
+    .reset-btn { display: block; margin: 20px auto 0; background: transparent; border: none; color: #888; text-decoration: underline; cursor: pointer; font-size: 0.9rem; }
+    .reset-btn:hover { color: var(--accent-orange); }
+
+    #loading { text-align: center; font-style: italic; color: #888; padding: 20px; }
+
+    footer{ text-align:center; margin-top:40px; color:#666; font-size:0.9rem; }
+  </style>
+</head>
+<body>
+<div id="stars"></div>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="learn.html">Learn</a>
+  <a href="about.html">About</a>
+  <a href="shop.html">Shop</a>
+  <a href="contact.html">Contact</a>
+  <div class="dropdown">
+    <span class="dropbtn" style="color:var(--accent-orange);">More ▾</span>
+    <div class="dropdown-content">
+      <a href="calculator.html">Score Calculator</a>
+      <a href="deckbuilder.html">Deck Builder</a>
+      <a href="#">Rulebook (PDF)</a>
+      <a href="#">Kickstarter</a>
+    </div>
+  </div>
+  <div id="moon-toggle">🌙</div>
+</nav>
+
+<main class="container">
+  <h1>Ecosystem Scorer</h1>
+  <p class="subtitle">Calculate your food web's total biomass.</p>
+
+  <div class="calc-layout">
+      
+      <!-- Left Col: Habitat Resources -->
+      <div class="card-panel">
+          <h2>Habitat Resources</h2>
+          
+          <div class="form-group">
+              <label>Tucked Cards <span>(+1 pt)</span></label>
+              <div class="input-wrapper">
+                  <input type="range" id="tuckedRange" min="0" max="50" value="0">
+                  <input type="number" id="tuckedInput" value="0" min="0">
+              </div>
+          </div>
+
+          <div class="form-group">
+              <label>Stored Energy <span>(+1 pt)</span></label>
+              <div class="input-wrapper">
+                  <input type="range" id="energyRange" min="0" max="50" value="0">
+                  <input type="number" id="energyInput" value="0" min="0">
+              </div>
+          </div>
+
+          <div class="form-group">
+              <label>Leftover Resources <span>(0 pts*)</span></label>
+              <div class="input-wrapper">
+                  <input type="range" id="leftoverRange" min="0" max="20" value="0">
+                  <input type="number" id="leftoverInput" value="0" min="0">
+              </div>
+              <small style="color:var(--accent-orange); font-size:0.75rem;">*Scores 0 unless specific animals (e.g. Jaguar, Greenland Shark) are played.</small>
+          </div>
+      </div>
+
+      <!-- Right Col: Card Manager -->
+      <div class="card-panel">
+          <h2>Species Tableau</h2>
+          <div class="add-card-box">
+              <input list="cardOptions" id="cardSelector" class="card-select" placeholder="Type animal name...">
+              <datalist id="cardOptions"></datalist>
+              <button id="addCardBtn" class="add-btn">+</button>
+          </div>
+          <div class="card-list" id="activeCards">
+              <div id="loading">Loading cards.csv...</div>
+              <div style="text-align:center; color:#999; margin-top:20px; font-style:italic; display:none;" id="emptyMsg">No species added yet</div>
+          </div>
+      </div>
+
+  </div>
+
+  <div class="total-box">
+      <div class="total-label">Final Score</div>
+      <div class="total-score" id="finalScore">0</div>
+  </div>
+
+  <button type="button" class="reset-btn" id="resetBtn">Start New Game</button>
+  
+  <div style="text-align:center; margin-top:30px;">
+    <p>Did you build a stable ecosystem?</p>
+    <a href="index.html#signup" style="color:var(--accent-gold); font-weight:bold; text-decoration:none;">Share your high score →</a>
+  </div>
+
+</main>
+
+<footer>
+    <p>&copy; 2025 Goldwire Games. All rights reserved.</p>
+</footer>
+
+<script>
+  let cardDatabase = [];
+  const state = {
+      tucked: 0,
+      energy: 0,
+      leftover: 0,
+      cards: {} // { "Zebra": 2, "Lion": 1 }
+  };
+
+  // 1. Fetch CSV on Load
+  window.addEventListener('DOMContentLoaded', async () => {
+      try {
+          const response = await fetch('cards.csv');
+          if (!response.ok) throw new Error("Could not find cards.csv");
+          const text = await response.text();
+          parseCSV(text);
+      } catch (err) {
+          document.getElementById('loading').innerHTML = `Error: ${err.message}<br>Make sure 'cards.csv' is uploaded.`;
+      }
+  });
+
+  // 2. Parse CSV & Scoring Logic
+  function parseCSV(text) {
+      const lines = text.trim().split('\n');
+      cardDatabase = [];
+      
+      const parseLine = (line) => {
+          const result = [];
+          let current = '';
+          let inQuotes = false;
+          for (let char of line) {
+              if (char === '"') { inQuotes = !inQuotes; }
+              else if (char === ',' && !inQuotes) { result.push(current.trim()); current = ''; }
+              else { current += char; }
+          }
+          result.push(current.trim());
+          return result;
+      };
+
+      for (let i = 1; i < lines.length; i++) {
+          const cols = parseLine(lines[i]);
+          if (cols.length < 10) continue;
+          if (cols[10] !== "Base") continue;
+
+          const name = cols[0];
+          const levelStr = cols[5].replace(/"/g, ''); 
+          const scoreRule = cols[8].toLowerCase(); 
+          const strength = parseInt(cols[9]) || 0; 
+
+          let type = "FIXED";
+          let val = 0;
+          let target = null;
+          let targetLvl = null;
+          let divisor = 1;
+
+          // --- PARSE SCORING COLUMN ---
+          if (scoreRule.includes("per")) {
+              const parts = scoreRule.split("per");
+              val = parseFloat(parts[0]); // "1"
+              const condition = parts[1].trim();
+
+              // Check for divisor (e.g. "2 stored")
+              // Matches start of condition string for a number
+              const divMatch = condition.match(/^(\d+)\s/);
+              if (divMatch) {
+                  divisor = parseFloat(divMatch[1]);
+              }
+
+              if (condition.includes("self") || condition === name.toLowerCase()) {
+                  type = "PER_SELF";
+              } else if (condition.startsWith("l") || condition.startsWith("level")) {
+                  type = "PER_LEVEL";
+                  const match = condition.match(/\d+/);
+                  targetLvl = match ? match[0] : "0"; 
+              } else if (condition.includes("tucked")) {
+                  type = "PER_RESOURCE";
+                  target = "tucked";
+              } else if (condition.includes("leftover") || condition.includes("unspent")) {
+                  type = "PER_RESOURCE";
+                  target = "leftover";
+              } else if (condition.includes("stored") || condition.includes("energy")) {
+                  // Catch "stored energy" or "unspent energy" logic
+                  // Note: unspent checked above. This catches "stored".
+                  type = "PER_RESOURCE";
+                  target = "energy";
+              } else {
+                  type = "PER_OTHER";
+                  target = condition; 
+              }
+          } else if (!isNaN(parseFloat(scoreRule))) {
+              type = "FIXED";
+              val = parseFloat(scoreRule);
+          }
+
+          const primaryLevel = levelStr.includes(',') ? levelStr.split(',')[0].trim() : levelStr;
+
+          cardDatabase.push({ name, type, val, target, targetLvl, level: primaryLevel, divisor });
+      }
+
+      initUI();
+  }
+
+  function initUI() {
+      const dataList = document.getElementById('cardOptions');
+      dataList.innerHTML = '';
+      cardDatabase.sort((a,b) => a.name.localeCompare(b.name)).forEach(card => {
+          const opt = document.createElement('option');
+          opt.value = card.name;
+          dataList.appendChild(opt);
+      });
+      
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('emptyMsg').style.display = 'block';
+  }
+
+  const cardInput = document.getElementById('cardSelector');
+  const addBtn = document.getElementById('addCardBtn');
+  const cardContainer = document.getElementById('activeCards');
+  const emptyMsg = document.getElementById('emptyMsg');
+  const scoreDisplay = document.getElementById('finalScore');
+
+  const setupSync = (id1, id2, key) => {
+      const el1 = document.getElementById(id1);
+      const el2 = document.getElementById(id2);
+      const update = (val) => {
+          el1.value = val;
+          el2.value = val;
+          state[key] = parseInt(val) || 0;
+          calculate();
+      };
+      el1.addEventListener('input', (e) => update(e.target.value));
+      el2.addEventListener('input', (e) => update(e.target.value));
+  };
+
+  setupSync('tuckedInput', 'tuckedRange', 'tucked');
+  setupSync('energyInput', 'energyRange', 'energy');
+  setupSync('leftoverInput', 'leftoverRange', 'leftover');
+
+  addBtn.addEventListener('click', () => {
+      const name = cardInput.value;
+      const cardData = cardDatabase.find(c => c.name === name);
+      
+      if (cardData) {
+          if (!state.cards[name]) {
+              state.cards[name] = 0;
+              renderCardRow(name);
+          }
+          state.cards[name]++;
+          updateCardRow(name);
+          cardInput.value = '';
+          emptyMsg.style.display = 'none';
+          calculate();
+      }
+  });
+
+  function renderCardRow(name) {
+      const row = document.createElement('div');
+      row.className = 'card-row';
+      row.id = `row-${name.replace(/\s/g, '-')}`;
+      row.innerHTML = `
+          <span class="card-name">${name}</span>
+          <input type="number" class="card-qty" value="0" min="0" onchange="updateQty('${name}', this.value)">
+          <button class="remove-btn" onclick="removeCard('${name}')">×</button>
+      `;
+      cardContainer.appendChild(row);
+  }
+
+  window.updateQty = (name, val) => {
+      state.cards[name] = parseInt(val) || 0;
+      if (state.cards[name] <= 0) removeCard(name);
+      else calculate();
+  };
+
+  window.removeCard = (name) => {
+      delete state.cards[name];
+      const row = document.getElementById(`row-${name.replace(/\s/g, '-')}`);
+      if (row) row.remove();
+      if (Object.keys(state.cards).length === 0) emptyMsg.style.display = 'block';
+      calculate();
+  };
+
+  function updateCardRow(name) {
+      const row = document.getElementById(`row-${name.replace(/\s/g, '-')}`);
+      if (row) {
+          row.querySelector('.card-qty').value = state.cards[name];
+      }
+  }
+
+  function calculate() {
+      let score = 0;
+      
+      // 1. Habitat Resources
+      score += state.tucked; // 1 pt each
+      score += state.energy; // 1 pt each
+
+      // 2. Card Scores
+      Object.keys(state.cards).forEach(cardName => {
+          const count = state.cards[cardName];
+          const rules = cardDatabase.find(c => c.name === cardName);
+          if (!rules) return;
+
+          let cardPoints = 0;
+          const divisor = rules.divisor || 1;
+
+          if (rules.type === 'FIXED') {
+              cardPoints = rules.val * count;
+          } 
+          else if (rules.type === 'PER_SELF') {
+              cardPoints = (rules.val * count) * count; 
+          }
+          else if (rules.type === 'PER_RESOURCE') {
+              if (rules.target === 'leftover') {
+                  cardPoints = Math.floor((rules.val * state.leftover) / divisor) * count;
+              } else if (rules.target === 'tucked') {
+                  cardPoints = Math.floor((rules.val * state.tucked) / divisor) * count;
+              } else if (rules.target === 'energy') {
+                  cardPoints = Math.floor((rules.val * state.energy) / divisor) * count;
+              }
+          }
+          else if (rules.type === 'PER_LEVEL') {
+              let targetLevelCount = 0;
+              Object.keys(state.cards).forEach(cName => {
+                 const cData = cardDatabase.find(db => db.name === cName);
+                 if (cData && cData.level == rules.targetLvl) { 
+                     targetLevelCount += state.cards[cName];
+                 }
+              });
+              cardPoints = Math.floor((rules.val * targetLevelCount) / divisor) * count;
+          }
+          else if (rules.type === 'PER_OTHER') {
+              let otherCount = 0;
+              Object.keys(state.cards).forEach(cName => {
+                  if (cName.toLowerCase().includes(rules.target)) {
+                      otherCount += state.cards[cName];
+                  }
+              });
+              cardPoints = Math.floor((rules.val * otherCount) / divisor) * count;
+          }
+
+          score += cardPoints;
+      });
+
+      scoreDisplay.textContent = score;
+  }
+
+  document.getElementById('resetBtn').addEventListener('click', () => {
+      state.tucked = 0; state.energy = 0; state.leftover = 0; state.cards = {};
+      document.getElementById('tuckedInput').value = 0; document.getElementById('tuckedRange').value = 0;
+      document.getElementById('energyInput').value = 0; document.getElementById('energyRange').value = 0;
+      document.getElementById('leftoverInput').value = 0; document.getElementById('leftoverRange').value = 0;
+      cardContainer.innerHTML = '<div style="text-align:center; color:#999; margin-top:20px; font-style:italic;" id="emptyMsg">No species added yet</div>';
+      emptyMsg.style.display = 'block';
+      calculate();
+  });
+
+  // Night Mode
+  const moon = document.getElementById('moon-toggle');
+  moon.addEventListener('click', () => {
+    document.body.classList.toggle('night');
+    moon.textContent = document.body.classList.contains('night') ? '🌕' : '🌙';
+  });
+</script>
+
+</body>
+</html>
