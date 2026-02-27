@@ -4,11 +4,134 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Goldwire Games | Trophic - Enter the Ecosystem</title>
-    <meta name="description" content="Trophic is a science-informed asymmetric board game where you build ecosystems from producers to apex predators. Join the Goldwire Games community.">
+    <meta name="description" content="Trophic is a science-informed asymmetric card game where you build ecosystems from producers to apex predators across four distinct biomes.">
+    <meta name="author" content="Goldwire Games">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://goldwiregames.com/">
+    <meta property="og:title" content="Trophic — Enter the Ecosystem | Goldwire Games">
+    <meta property="og:description" content="An asymmetric engine-building card game about ecosystems. Build trophic pyramids across four biomes.">
+    <meta property="og:image" content="https://goldwiregames.com/savannahbackground.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://goldwiregames.com/">
+    <meta property="twitter:title" content="Trophic — Enter the Ecosystem | Goldwire Games">
+    <meta property="twitter:description" content="An asymmetric engine-building card game about ecosystems. Build trophic pyramids across four biomes.">
+    <meta property="twitter:image" content="https://goldwiregames.com/savannahbackground.png">
+
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* ── Card Preview Section ── */
+        .card-preview {
+            padding: 5rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .card-preview .section-title {
+            margin-bottom: 1rem;
+        }
+        .card-preview-subtitle {
+            font-family: 'Work Sans', sans-serif;
+            font-size: 1.05rem;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            line-height: 1.7;
+        }
+        .card-preview-grid {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 2rem;
+            flex-wrap: wrap;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .card-preview-item {
+            text-align: center;
+            transition: transform 0.4s ease;
+        }
+        .card-preview-item:hover {
+            transform: translateY(-8px);
+        }
+        .card-preview-item img {
+            max-height: 280px;
+            width: auto;
+            border-radius: 8px;
+            filter: drop-shadow(0 8px 24px rgba(0,0,0,0.3));
+        }
+        .card-preview-label {
+            margin-top: 0.75rem;
+            font-family: 'Libre Baskerville', serif;
+            font-size: 1rem;
+            color: #333;
+            font-weight: 700;
+        }
+        .card-preview-sublabel {
+            font-family: 'Work Sans', sans-serif;
+            font-size: 0.8rem;
+            color: #888;
+            margin-top: 0.2rem;
+        }
+
+        /* ── Color System Teaser ── */
+        .color-system {
+            padding: 4rem 2rem;
+            background: linear-gradient(180deg, transparent, rgba(45,95,63,0.03), transparent);
+        }
+        .color-dots {
+            display: flex;
+            justify-content: center;
+            gap: 1.2rem;
+            margin: 2rem auto 1.5rem;
+            flex-wrap: wrap;
+        }
+        .color-dot {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .color-dot .dot {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid rgba(0,0,0,0.1);
+        }
+        .color-dot .dot-label {
+            font-family: 'Work Sans', sans-serif;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #666;
+        }
+        .color-system-note {
+            font-family: 'Libre Baskerville', serif;
+            font-style: italic;
+            color: #555;
+            font-size: 0.95rem;
+            max-width: 560px;
+            margin: 0 auto;
+            line-height: 1.7;
+            text-align: center;
+        }
+
+        @media (max-width: 600px) {
+            .card-preview-item img {
+                max-height: 200px;
+            }
+            .card-preview-grid {
+                gap: 1.2rem;
+            }
+        }
+    </style>
 </head>
 <body>
     
@@ -16,7 +139,7 @@
     <section id="hero" class="hero">
         <div class="hero-content">
             <h1 class="hero-title">Enter the Ecosystem</h1>
-            <p class="hero-subtitle">Build trophic pyramids from producers to apex predators. Adapt, interact, and thrive across five living worlds.</p>
+            <p class="hero-subtitle">Build trophic pyramids from producers to apex predators. Adapt, interact, and thrive across four living worlds.</p>
             <button class="cta-button" id="hero-cta">Join the Ecosystem</button>
         </div>
         <div class="hero-background"></div>
@@ -50,6 +173,169 @@
                     <h3 class="ecosystem-name">Amazon</h3>
                     <p class="ecosystem-phrase">Abundance and complexity</p>
                 </div>
+                <div class="band-illustration amazon-animal"></div>
+            </div>
+
+            <div class="ecosystem-band rockies" data-ecosystem="rockies">
+                <div class="band-content">
+                    <h3 class="ecosystem-name">Rockies</h3>
+                    <p class="ecosystem-phrase">Adaptation through balance</p>
+                </div>
+                <div class="band-illustration rockies-animal"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 3: CARD PREVIEW -->
+    <section class="card-preview">
+        <h2 class="section-title">Meet the Inhabitants</h2>
+        <p class="card-preview-subtitle">Every animal in Trophic is hand-illustrated. From humble producers to apex predators, each card has personality.</p>
+        
+        <div class="card-preview-grid">
+            <div class="card-preview-item">
+                <img src="Giraffe.png" alt="Maasai Giraffe - Savanna Level 2 card illustration" loading="lazy">
+                <div class="card-preview-label">Maasai Giraffe</div>
+                <div class="card-preview-sublabel">Savanna · Level 2</div>
+            </div>
+            <div class="card-preview-item">
+                <img src="Lion.png" alt="Lion - Savanna Level 4 Apex Predator card illustration" loading="lazy">
+                <div class="card-preview-label">Lion</div>
+                <div class="card-preview-sublabel">Savanna · Level 4 Apex</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4: WHAT IS TROPHIC -->
+    <section id="about" class="about">
+        <div class="about-content">
+            <h2 class="section-title">What is Trophic?</h2>
+            
+            <div class="about-grid">
+                <div class="about-feature">
+                    <h3>Asymmetric Biomes</h3>
+                    <p>Each ecosystem operates differently. Arctic controls through storage and disruption. Savanna builds tempo through tuck synergy. Amazon creates explosive abundance. Choose your strategy.</p>
+                </div>
+
+                <div class="about-feature">
+                    <h3>The Cascade</h3>
+                    <p>Activate a producer at the base of your pyramid and watch energy cascade upward through your food web. Stack consumers and predators to build chains that fire every turn.</p>
+                </div>
+
+                <div class="about-feature">
+                    <h3>Interaction &amp; Adaptation</h3>
+                    <p>Animals migrate between pyramids, stun opponents' cards, steal energy, and disrupt rival food webs. Adapt your hand to gain energy. Build smarter, not just bigger.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 5: COLOR SYSTEM TEASER -->
+    <section class="color-system">
+        <h2 class="section-title" style="text-align:center;">Beyond the Biome</h2>
+        <div class="color-dots">
+            <div class="color-dot">
+                <div class="dot" style="background: #4A8F5E;"></div>
+                <span class="dot-label">Green</span>
+            </div>
+            <div class="color-dot">
+                <div class="dot" style="background: #D4A017;"></div>
+                <span class="dot-label">Yellow</span>
+            </div>
+            <div class="color-dot">
+                <div class="dot" style="background: #4A8AAE;"></div>
+                <span class="dot-label">Blue</span>
+            </div>
+            <div class="color-dot">
+                <div class="dot" style="background: #e8e8e8; border-color: #ccc;"></div>
+                <span class="dot-label">White</span>
+            </div>
+            <div class="color-dot">
+                <div class="dot" style="background: #D98B5C;"></div>
+                <span class="dot-label">Orange</span>
+            </div>
+        </div>
+        <p class="color-system-note">Every animal has ecological colors that span biomes. Master the base decks, then build your own 50-card constructed deck from any cards that share your color.</p>
+    </section>
+
+    <!-- SECTION 6: GOLDWIRE GAMES MISSION -->
+    <section id="mission" class="mission">
+        <div class="mission-content">
+            <h2 class="section-title">Goldwire Games</h2>
+            <p class="mission-statement">We design science-informed board games that make ecosystems playable.</p>
+            <p class="mission-detail">Trophic translates real ecological principles — trophic levels, energy transfer, niche competition — into asymmetric gameplay. Designed by a computational ecologist, every card is researched and every mechanic reflects how ecosystems actually work.</p>
+        </div>
+    </section>
+
+    <!-- SECTION 7: EMAIL SIGNUP (PRIMARY CTA) -->
+    <section id="signup" class="signup">
+        <div class="signup-content">
+            <h2 class="signup-title">Join the Ecosystem</h2>
+            <p class="signup-text">Be the first to hear about Trophic, playtesting opportunities, and our upcoming Kickstarter.</p>
+            
+            <!-- Mailchimp Signup Form -->
+            <form class="signup-form" id="signup-form"
+                  action="https://gmail.us18.list-manage.com/subscribe/post?u=e45d46138093844d88767df27&amp;id=1440e8d9e1"
+                  method="POST"
+                  target="_blank"
+                  novalidate>
+                <div class="form-group">
+                    <input 
+                        type="email" 
+                        name="EMAIL" 
+                        id="email-input" 
+                        placeholder="Enter your email" 
+                        required
+                        aria-label="Email address"
+                    >
+                    <button type="submit" class="submit-button">Join the Ecosystem</button>
+                </div>
+                <!-- Mailchimp bot honeypot -->
+                <div style="position: absolute; left: -5000px;" aria-hidden="true">
+                    <input type="text" name="b_e45d46138093844d88767df27_1440e8d9e1" tabindex="-1" value="">
+                </div>
+                <p class="form-note">We respect your inbox. Updates only when they matter.</p>
+            </form>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-main">
+                <div class="footer-brand">
+                    <h3>Goldwire Games</h3>
+                    <p>Science-informed board games</p>
+                </div>
+
+                <div class="footer-social">
+                    <a href="https://instagram.com/goldwiregames" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </svg>
+                    </a>
+                    <a href="https://x.com/GoldwireGames" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <div class="footer-links">
+                <a href="mailto:hello@goldwiregames.com">hello@goldwiregames.com</a>
+            </div>
+
+            <div class="footer-legal">
+                <p>&copy; 2026 Goldwire Games. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
                 <div class="band-illustration amazon-animal"></div>
             </div>
 
